@@ -8,8 +8,8 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int screenWidth = 1000;
-  const int screenHeight = 800;
+  const int screenWidth = 600;
+  const int screenHeight = 600;
   const int fps = 60;
 
   InitWindow(screenWidth, screenHeight, "fps");
@@ -65,7 +65,21 @@ int main() {
       break;
     case GAMEPLAY:
       // TODO: update game screen variables here
-      UpdateCamera(&camera, cameraMode); // default camera
+     UpdateCameraPro(&camera,
+            (Vector3){
+                (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))*0.1f -      // Move forward-backward
+                (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))*0.1f,    
+                (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))*0.1f -   // Move right-left
+                (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))*0.1f,
+                0.0f                                                // Move up-down
+            },
+            (Vector3){
+                GetMouseDelta().x*0.05f,                            // Rotation: yaw
+                GetMouseDelta().y*0.05f,                            // Rotation: pitch
+                0.0f                                                // Rotation: roll
+            },
+            GetMouseWheelMove()*2.0f);                              // Move to target (zoom) 
+
       break;
     case ENDING:
       // TODO: update ending variables here
