@@ -1,12 +1,14 @@
 #include "raylib.h"
 
+#define MAX_COLUMNS 20
+
 // Types and Structures Definition
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int screenWidth = 800;
+  const int screenWidth = 1000;
   const int screenHeight = 800;
   const int fps = 60;
 
@@ -16,6 +18,31 @@ int main() {
   int framesCounter = 0;
 
   GameScreen currentScreen = LOGO;
+
+  // camera Definition
+  Camera camera{0};
+  camera.position = (Vector3){0.0f, 2.0f, 4.0f}; // camera position
+  camera.target = (Vector3){0.0f, 0.0f, 0.0f};     // camera looking at point
+  camera.up =
+      (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector (rotation towards target)
+  camera.fovy = 90.0f;             // camera field of view Y
+  camera.projection = CAMERA_PERSPECTIVE;
+  int cameraMode = CAMERA_FIRST_PERSON;
+  DisableCursor(); // limit cursor to relative movement inside the window
+
+  // Generate some random columns
+  float heights[MAX_COLUMNS] = {0};
+  Vector3 positions[MAX_COLUMNS] = {0};
+  Color colors[MAX_COLUMNS] = {0};
+
+  for (int i = 0; i < MAX_COLUMNS; i++) {
+    heights[i] = (float)GetRandomValue(1, 12);
+    positions[i] = (Vector3){(float)GetRandomValue(-15, 15), heights[i] / 2.0f,
+                             (float)GetRandomValue(-15, 15)};
+    colors[i] =
+        (Color){GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255};
+  }
+
   //--------------------------------------------------------
 
   // Main game loop
@@ -38,6 +65,7 @@ int main() {
       break;
     case GAMEPLAY:
       // TODO: update game screen variables here
+      UpdateCamera(&camera, cameraMode); // default camera
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -50,7 +78,7 @@ int main() {
     // Draw
     // -------------------------------------------------------
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(RAYWHITE);
 
     switch (currentScreen) {
     case LOGO:
@@ -62,7 +90,25 @@ int main() {
       break;
     case GAMEPLAY:
       // TODO: update game screen variables here
-      DrawText("Gameplay screen", 20, 20, 40, LIGHTGRAY);
+      BeginMode3D(camera);
+
+      DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
+                LIGHTGRAY); // draw ground
+      DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+               BLUE); // draw blue wall
+      DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+               LIME); // draw green wall
+      DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
+               GOLD); // draw yellow wall
+      DrawGrid(10, 1.0f);
+
+      // Draw some cubes around
+      for (int i = 0; i < MAX_COLUMNS; i++) {
+        DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
+        DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
+      }
+      EndMode3D();
+      DrawFPS(10, 10);
       break;
     case ENDING:
       // TODO: update ending variables here
