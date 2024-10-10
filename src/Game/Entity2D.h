@@ -7,10 +7,10 @@ class Entity2D {
 public:
   Entity2D(Texture2D texture, Rectangle source, Rectangle destination,
            Vector2 origin, float rotation);
-  ~Entity2D();
-  void Event();
-  void Update();
-  void Draw();
+  virtual ~Entity2D();
+  virtual void Event();
+  virtual void Update();
+  virtual void Draw();
 
 protected:
   Texture2D texture;

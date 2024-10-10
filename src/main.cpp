@@ -1,8 +1,9 @@
+#include "Game/Entity2D.h"
+#include "Game/Weapon.h"
 #include "iostream"
 #include "raylib.h"
 #include <dirent.h>
 #include <memory>
-#include "Game/Entity2D.h"
 
 #define MAX_COLUMNS 20
 
@@ -53,12 +54,23 @@ int main() {
   // Loading entities
   // Game::Weapon *pistol = new Game::Weapon(playerGunIdle, (Rectangle){10, 50,
   // 110, 30},(Rectangle){500, 500, 110, 30}, (Vector2){0.0f, 0.0f}, 0.0f);
-  auto pistolIdle = std::make_unique<Game::Entity2D>(texture,(Rectangle){10, 50, 110, 95},(Rectangle){200, screenHeight - 95*3, 110*3, 95*3}, (Vector2){0.0f, 0.0f}, 0.0f);
+  Game::SpriteSourceRec pistolSource;
+  pistolSource.idleRec = (Rectangle){10, 50, 110, 95};
+  pistolSource.firingRec = (Rectangle){383, 300, 43, 39};
+  auto pistolIdle = std::make_unique<Game::Weapon>(
+      texture, pistolSource,
+      (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3},
+      (Vector2){0.0f, 0.0f}, 0.0f);
 
   //--------------------------------------------------------
 
   // Main game loop
   while (!WindowShouldClose()) {
+    // Events
+    // --------------------------------------------------------
+    pistolIdle->Event();
+
+    // --------------------------------------------------------
     // Update
     // --------------------------------------------------------
     switch (currentScreen) {
