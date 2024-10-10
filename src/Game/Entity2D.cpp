@@ -1,4 +1,4 @@
-#include "Entity2D.h"
+#include "Game/Entity2D.h"
 #include <raylib.h>
 
 namespace Game {

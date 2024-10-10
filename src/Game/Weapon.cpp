@@ -1,5 +1,5 @@
-#include "Weapon.h"
-#include "Entity2D.h"
+#include "Game/Weapon.h"
+#include "Game/Entity2D.h"
 #include "iostream"
 #include <cmath>
 #include <raylib.h>
