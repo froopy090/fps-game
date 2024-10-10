@@ -1,0 +1,82 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-ggdb",
+      "-Iinclude",
+      "-Isrc",
+      "-Isrc/Game",
+      "-Isrc/Utility",
+      "-c",
+      "-o",
+      "build/Game/Entity2D.o",
+      "src/Game/Entity2D.cpp"
+    ],
+    "directory": "/home/froopy/Programming/Raylib/fps-game",
+    "file": "/home/froopy/Programming/Raylib/fps-game/src/Game/Entity2D.cpp",
+    "output": "/home/froopy/Programming/Raylib/fps-game/build/Game/Entity2D.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-ggdb",
+      "-Iinclude",
+      "-Isrc",
+      "-Isrc/Game",
+      "-Isrc/Utility",
+      "-c",
+      "-o",
+      "build/Game/Weapon.o",
+      "src/Game/Weapon.cpp"
+    ],
+    "directory": "/home/froopy/Programming/Raylib/fps-game",
+    "file": "/home/froopy/Programming/Raylib/fps-game/src/Game/Weapon.cpp",
+    "output": "/home/froopy/Programming/Raylib/fps-game/build/Game/Weapon.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-ggdb",
+      "-Iinclude",
+      "-Isrc",
+      "-Isrc/Game",
+      "-Isrc/Utility",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/froopy/Programming/Raylib/fps-game",
+    "file": "/home/froopy/Programming/Raylib/fps-game/src/main.cpp",
+    "output": "/home/froopy/Programming/Raylib/fps-game/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-ggdb",
+      "-Iinclude",
+      "-Isrc",
+      "-Isrc/Game",
+      "-Isrc/Utility",
+      "-c",
+      "-o",
+      "build/Utility/Timer.o",
+      "src/Utility/Timer.cpp"
+    ],
+    "directory": "/home/froopy/Programming/Raylib/fps-game",
+    "file": "/home/froopy/Programming/Raylib/fps-game/src/Utility/Timer.cpp",
+    "output": "/home/froopy/Programming/Raylib/fps-game/build/Utility/Timer.o"
+  }
+]
