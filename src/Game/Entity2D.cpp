@@ -7,6 +7,10 @@ Entity2D::Entity2D(Texture2D texture, Rectangle source, Rectangle destination,
     : texture(texture), source(source), destination(destination),
       origin(origin), rotation(rotation) {}
 
+Entity2D::~Entity2D(){
+    UnloadTexture(texture);
+}
+
 void Entity2D::Event(){}
 
 void Entity2D::Update(){}

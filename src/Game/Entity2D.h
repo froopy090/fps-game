@@ -7,6 +7,7 @@ class Entity2D {
 public:
   Entity2D(Texture2D texture, Rectangle source, Rectangle destination,
            Vector2 origin, float rotation);
+  ~Entity2D();
   void Event();
   void Update();
   void Draw();

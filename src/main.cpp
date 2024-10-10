@@ -1,7 +1,8 @@
 #include "iostream"
 #include "raylib.h"
 #include <dirent.h>
-#include <filesystem>
+#include <memory>
+#include "Game/Entity2D.h"
 
 #define MAX_COLUMNS 20
 
@@ -47,17 +48,12 @@ int main() {
   }
 
   // Loading textures
-  Texture2D texture = LoadTexture("resources/raylib_logo.png");
-    
-  std::cout << "Current path is: " << std::filesystem::current_path() << std::endl;
-  if (texture.id == 0) {
-    std::cout << "TEXTURE LOADING FAILED" << std::endl;
-    CloseWindow();
-  }
+  Texture2D texture = LoadTexture("resources/DOOM_Pistol_Cropped.png");
 
   // Loading entities
   // Game::Weapon *pistol = new Game::Weapon(playerGunIdle, (Rectangle){10, 50,
   // 110, 30},(Rectangle){500, 500, 110, 30}, (Vector2){0.0f, 0.0f}, 0.0f);
+  auto pistolIdle = std::make_unique<Game::Entity2D>(texture,(Rectangle){10, 50, 110, 95},(Rectangle){200, screenHeight - 95*3, 110*3, 95*3}, (Vector2){0.0f, 0.0f}, 0.0f);
 
   //--------------------------------------------------------
 
@@ -142,7 +138,7 @@ int main() {
       }
       EndMode3D();
 
-      DrawTexture(texture, 0, 0, WHITE);
+      pistolIdle->Draw();
 
       DrawFPS(10, 10);
       break;
@@ -160,7 +156,6 @@ int main() {
   // De-initialization
   // TODO: unload all loaded data (textures, fonts, audio) here
   CloseWindow();
-  UnloadTexture(texture);
 
   return 0;
 }
