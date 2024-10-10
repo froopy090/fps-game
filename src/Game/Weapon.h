@@ -16,7 +16,6 @@ public:
   void Event() override;
 
 private:
-  bool isFired;
   SpriteSourceRec sprites;
 };
 } // namespace Game

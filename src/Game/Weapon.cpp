@@ -12,7 +12,6 @@ Weapon::Weapon(Texture2D texture, SpriteSourceRec sprites,
 
 void Weapon::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-    isFired = true;
     source = sprites.firingRec;
     std::cout << "Gun fired!" << std::endl;
   } else {

@@ -52,12 +52,11 @@ int main() {
   Texture2D texture = LoadTexture("resources/DOOM_Pistol_Cropped.png");
 
   // Loading entities
-  // Game::Weapon *pistol = new Game::Weapon(playerGunIdle, (Rectangle){10, 50,
-  // 110, 30},(Rectangle){500, 500, 110, 30}, (Vector2){0.0f, 0.0f}, 0.0f);
   Game::SpriteSourceRec pistolSource;
   pistolSource.idleRec = (Rectangle){10, 50, 110, 95};
   pistolSource.firingRec = (Rectangle){383, 300, 43, 39};
-  auto pistolIdle = std::make_unique<Game::Weapon>(
+
+  auto pistol = std::make_unique<Game::Weapon>(
       texture, pistolSource,
       (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3},
       (Vector2){0.0f, 0.0f}, 0.0f);
@@ -68,7 +67,7 @@ int main() {
   while (!WindowShouldClose()) {
     // Events
     // --------------------------------------------------------
-    pistolIdle->Event();
+    pistol->Event();
 
     // --------------------------------------------------------
     // Update
@@ -89,6 +88,8 @@ int main() {
       break;
     case GAMEPLAY:
       // TODO: update game screen variables here
+      pistol->Update();
+
       UpdateCameraPro(&camera,
                       (Vector3){
                           (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) *
@@ -150,7 +151,7 @@ int main() {
       }
       EndMode3D();
 
-      pistolIdle->Draw();
+      pistol->Draw();
 
       DrawFPS(10, 10);
       break;
