@@ -1,5 +1,6 @@
 #include "Game/Weapon.h"
 #include "Game/Entity2D.h"
+#include "Utility/Timer.h"
 #include "iostream"
 #include <cmath>
 #include <raylib.h>
@@ -13,9 +14,15 @@ Weapon::Weapon(Texture2D texture, SpriteSourceRec sprites,
 void Weapon::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     source = sprites.firingRec;
+    timer.Start(1.0f);
     std::cout << "Gun fired!" << std::endl;
-  } else {
-    source = sprites.idleRec;
   }
+}
+
+void Weapon::Update(){
+    timer.Update();
+    if(timer.Finished()){
+        source = sprites.idleRec;
+    }
 }
 } // namespace Game

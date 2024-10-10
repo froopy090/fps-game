@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity2D.h"
+#include "Utility/Timer.h"
 #include <raylib.h>
 
 namespace Game {
@@ -15,7 +16,10 @@ public:
 
   void Event() override;
 
+  void Update() override;
+
 private:
   SpriteSourceRec sprites;
+  Utility::Timer timer;
 };
 } // namespace Game
