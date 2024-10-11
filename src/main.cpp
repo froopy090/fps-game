@@ -4,6 +4,8 @@
 #include "raylib.h"
 #include <dirent.h>
 #include <memory>
+#include "globals.h"
+#include "Entities/Pistol.h"
 
 #define MAX_COLUMNS 20
 
@@ -13,8 +15,6 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int screenWidth = 1000;
-  const int screenHeight = 1000;
   const int fps = 60;
 
   InitWindow(screenWidth, screenHeight, "fps");
@@ -50,16 +50,19 @@ int main() {
 
   // Loading textures
   Texture2D texture = LoadTexture("resources/DOOM_Pistol_Cropped.png");
-
+  
   // Loading entities
-  Game::SpriteSourceRec pistolSource;
-  pistolSource.idleRec = (Rectangle){10, 50, 110, 95};
-  pistolSource.firingRec = (Rectangle){383, 300, 43, 39};
+  /*Game::SpriteSourceRec pistolSource;*/
+  /*pistolSource.idleRec = (Rectangle){10, 50, 120, 115};*/
+  /*pistolSource.firingRec1 = (Rectangle) {125, 30, 120,115};*/
+  /*pistolSource.firingRec2 = (Rectangle){383, 300, 120, 115};*/
+  /**/
+  /*auto pistol = std::make_unique<Game::Weapon>(*/
+  /*    texture, pistolSource,*/
+  /*    (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3},*/
+  /*    (Vector2){0.0f, 0.0f}, 0.0f);*/
 
-  auto pistol = std::make_unique<Game::Weapon>(
-      texture, pistolSource,
-      (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3},
-      (Vector2){0.0f, 0.0f}, 0.0f);
+  auto pistol = std::make_unique<Entities::Pistol>();
 
   //--------------------------------------------------------
 

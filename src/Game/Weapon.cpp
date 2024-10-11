@@ -9,20 +9,23 @@ namespace Game {
 Weapon::Weapon(Texture2D texture, SpriteSourceRec sprites,
                Rectangle destination, Vector2 origin, float rotation)
     : Game::Entity2D(texture, sprites.idleRec, destination, origin, rotation),
-      sprites(sprites) {}
+      sprites(sprites), state(IDLE) {}
 
 void Weapon::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-    source = sprites.firingRec;
-    timer.Start(1.0f);
+    timer.Start(0.5f);
     std::cout << "Gun fired!" << std::endl;
   }
 }
 
-void Weapon::Update(){
-    timer.Update();
-    if(timer.Finished()){
-        source = sprites.idleRec;
-    }
+void Weapon::Update() {
+  timer.Update();
+  if (timer.Finished()) {
+    state = IDLE;
+    source = sprites.idleRec;
+  } else {
+    state = FIRING;
+    source = sprites.firingRec2;
+  }
 }
 } // namespace Game

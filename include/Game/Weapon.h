@@ -6,8 +6,11 @@
 namespace Game {
 struct SpriteSourceRec {
   Rectangle idleRec;
-  Rectangle firingRec;
+  Rectangle firingRec1;
+  Rectangle firingRec2;
 };
+
+typedef enum WeaponState{IDLE, FIRING} WeaponState;
 
 class Weapon : public Entity2D {
 public:
@@ -21,5 +24,6 @@ public:
 private:
   SpriteSourceRec sprites;
   Utility::Timer timer;
+  WeaponState state;
 };
 } // namespace Game
