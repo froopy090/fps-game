@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include <dirent.h>
 #include <memory>
+#include "World/TestMap.h"
 
 #define MAX_COLUMNS 20
 
@@ -34,17 +35,20 @@ int main() {
   /*DisableCursor(); // limit cursor to relative movement inside the window*/
 
   // Generate some random columns
-  float heights[MAX_COLUMNS] = {0};
-  Vector3 positions[MAX_COLUMNS] = {0};
-  Color colors[MAX_COLUMNS] = {0};
-
-  for (int i = 0; i < MAX_COLUMNS; i++) {
-    heights[i] = (float)GetRandomValue(1, 12);
-    positions[i] = (Vector3){(float)GetRandomValue(-15, 15), heights[i] / 2.0f,
-                             (float)GetRandomValue(-15, 15)};
-    colors[i] =
-        (Color){GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255};
-  }
+  /*float heights[MAX_COLUMNS] = {0};*/
+  /*Vector3 positions[MAX_COLUMNS] = {0};*/
+  /*Color colors[MAX_COLUMNS] = {0};*/
+  /**/
+  /*for (int i = 0; i < MAX_COLUMNS; i++) {*/
+  /*  heights[i] = (float)GetRandomValue(1, 12);*/
+  /*  positions[i] = (Vector3){(float)GetRandomValue(-15, 15), heights[i] / 2.0f,*/
+  /*                           (float)GetRandomValue(-15, 15)};*/
+  /*  colors[i] =*/
+  /*      (Color){GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255};*/
+  /*}*/
+    
+  // World
+  auto testMap = std::make_unique<World::TestMap>();
 
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
@@ -107,26 +111,27 @@ int main() {
     case GAMEPLAY:
       // TODO: update game screen variables here
 
-      BeginMode3D(player1->camera);
+      /*BeginMode3D(player1->camera);*/
+      /**/
+      /*DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},*/
+      /*          LIGHTGRAY); // draw ground*/
+      /*DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,*/
+      /*         BLUE); // draw blue wall*/
+      /*DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,*/
+      /*         LIME); // draw green wall*/
+      /*DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,*/
+      /*         GOLD); // draw yellow wall*/
+      /*DrawGrid(10, 1.0f);*/
+      /**/
+      /*// Draw some cubes around*/
+      /*for (int i = 0; i < MAX_COLUMNS; i++) {*/
+      /*  DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);*/
+      /*  DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);*/
+      /*}*/
+      /**/
+      /*EndMode3D();*/
 
-      DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
-                LIGHTGRAY); // draw ground
-      DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-               BLUE); // draw blue wall
-      DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-               LIME); // draw green wall
-      DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
-               GOLD); // draw yellow wall
-      DrawGrid(10, 1.0f);
-
-      // Draw some cubes around
-      for (int i = 0; i < MAX_COLUMNS; i++) {
-        DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
-        DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
-      }
-
-      EndMode3D();
-
+      testMap->Draw(player1.get());
       player1->Draw();
       pistol->Draw();
 
