@@ -1,11 +1,9 @@
-#include "Game/Entity2D.h"
-#include "Game/Weapon.h"
-#include "iostream"
+#include "Entities/Pistol.h"
+#include "globals.h"
 #include "raylib.h"
 #include <dirent.h>
 #include <memory>
-#include "globals.h"
-#include "Entities/Pistol.h"
+#include "raymath.h"
 
 #define MAX_COLUMNS 20
 
@@ -25,12 +23,11 @@ int main() {
   GameScreen currentScreen = LOGO;
 
   // camera Definition
-  Camera camera{0};
+  Camera3D camera{0};
   camera.position = (Vector3){0.0f, 2.0f, 4.0f}; // camera position
   camera.target = (Vector3){0.0f, 0.0f, 0.0f};   // camera looking at point
-  camera.up =
-      (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector (rotation towards target)
-  camera.fovy = 90.0f;             // camera field of view Y
+  camera.up = (Vector3){0.0f, 1.0f, 0.0f};       // camera up vector
+  camera.fovy = 90.0f;                           // camera field of view Y
   camera.projection = CAMERA_PERSPECTIVE;
   int cameraMode = CAMERA_FIRST_PERSON;
   DisableCursor(); // limit cursor to relative movement inside the window
@@ -48,21 +45,9 @@ int main() {
         (Color){GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255};
   }
 
-  // Loading textures
-  Texture2D texture = LoadTexture("resources/DOOM_Pistol_Cropped.png");
-  
-  // Loading entities
-  /*Game::SpriteSourceRec pistolSource;*/
-  /*pistolSource.idleRec = (Rectangle){10, 50, 120, 115};*/
-  /*pistolSource.firingRec1 = (Rectangle) {125, 30, 120,115};*/
-  /*pistolSource.firingRec2 = (Rectangle){383, 300, 120, 115};*/
-  /**/
-  /*auto pistol = std::make_unique<Game::Weapon>(*/
-  /*    texture, pistolSource,*/
-  /*    (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3},*/
-  /*    (Vector2){0.0f, 0.0f}, 0.0f);*/
-
+  // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
+
 
   //--------------------------------------------------------
 
@@ -93,23 +78,8 @@ int main() {
       // TODO: update game screen variables here
       pistol->Update();
 
-      UpdateCameraPro(&camera,
-                      (Vector3){
-                          (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) *
-                                  0.1f - // Move forward-backward
-                              (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) * 0.1f,
-                          (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) *
-                                  0.1f - // Move right-left
-                              (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) * 0.1f,
-                          0.0f // Move up-down
-                      },
-                      (Vector3){
-                          GetMouseDelta().x * 0.05f, // Rotation: yaw
-                          GetMouseDelta().y * 0.05f, // Rotation: pitch
-                          0.0f                       // Rotation: roll
-                      },
-                      GetMouseWheelMove() * 2.0f); // Move to target (zoom)
-
+      UpdateCamera(&camera, cameraMode);
+      
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -152,6 +122,9 @@ int main() {
         DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
         DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
       }
+
+      DrawLine3D(camera.position, camera.target, RED);
+
       EndMode3D();
 
       pistol->Draw();
