@@ -5,7 +5,6 @@
 
 
 namespace Entities {
-
 struct Sprite{
   Rectangle source;
   Rectangle destination;
