@@ -9,16 +9,16 @@ Player::Player() {
   playerCube.width = 1.0f;
   playerCube.height = 2.0f;
   playerCube.length = 1.0f;
-  playerCube.position = (Vector3){0, 0, 4}; // spawn
+  playerCube.position = (Vector3){0, playerCube.height/2, 4}; // spawn
 
   // Camera init
   camera = {0};
-  camera.position = Vector3Add(playerCube.position, (Vector3) {0,2,0});
+  camera.position = Vector3Add(playerCube.position, (Vector3){0,playerCube.height/2,0});
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
   camera.fovy = 90.0f;
   camera.projection = CAMERA_PERSPECTIVE;
-  cameraMode = CAMERA_FIRST_PERSON;
+  cameraMode = CAMERA_FREE;
   DisableCursor(); // limit cursor movement to window
 }
 
