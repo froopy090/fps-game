@@ -18,6 +18,7 @@ public:
   void Event();
   void Update();
   void Draw();
+  Vector3 GetPosition();
 
 private:
   PlayerCube playerCube;
