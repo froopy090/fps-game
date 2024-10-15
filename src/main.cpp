@@ -42,6 +42,7 @@ int main() {
     // Events
     // --------------------------------------------------------
     pistol->Event();
+    player1->Event();
 
     // --------------------------------------------------------
     // Update
@@ -51,7 +52,8 @@ int main() {
       framesCounter++;
 
       // waiting for 4 seconds
-      if (framesCounter > fps * 4) {
+      // for debugging changed to 0
+      if (framesCounter > fps * 0) {
         currentScreen = TITLE;
       }
       break;
@@ -93,8 +95,15 @@ int main() {
       testMap->Draw(player1.get());
       player1->Draw();
       pistol->Draw();
+
+      // Debug stuff
       cameraHUD->Draw(player1.get());
       DrawFPS(10, 10);
+
+      BeginMode3D(player1->camera);
+      DrawLine3D(player1->GetPosition(),player1->camera.target, RED);
+      EndMode3D();
+
       break;
     case ENDING:
       // TODO: update ending variables here
