@@ -1,11 +1,12 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
+#include "Utility/CameraHUD.h"
+#include "World/TestMap.h"
 #include "globals.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <dirent.h>
 #include <memory>
-#include "World/TestMap.h"
 
 #define MAX_COLUMNS 20
 
@@ -23,13 +24,16 @@ int main() {
   int framesCounter = 0;
 
   GameScreen currentScreen = LOGO;
-      
+
   // World
   auto testMap = std::make_unique<World::TestMap>();
 
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
+
+  // Utility objects
+  auto cameraHUD = std::make_unique<Utility::CameraHUD>();
 
   //--------------------------------------------------------
 
@@ -61,8 +65,6 @@ int main() {
       pistol->Update();
       player1->Update();
 
-      // UpdateCamera(&camera, cameraMode);
-
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -91,37 +93,7 @@ int main() {
       testMap->Draw(player1.get());
       player1->Draw();
       pistol->Draw();
-
-      // Debug Stuff
-      DrawRectangle(700, 5, 350, 170, Fade(SKYBLUE, 0.5f));
-      DrawRectangleLines(700, 5, 350, 170, BLUE);
-
-      DrawText("Camera Status:", 710, 15, 15, BLACK);
-
-      DrawText(
-          TextFormat("- Mode: %s", (player1->cameraMode == CAMERA_FIRST_PERSON
-                                        ? "FIRST PERSON"
-                                        : "FUCK MY ASS")),
-          710, 40, 15, BLACK);
-      DrawText(TextFormat("- Projection: %s",
-                          (player1->camera.projection == CAMERA_PERSPECTIVE
-                               ? "PERSPECTIVE"
-                               : "FUCK MY ASS AGAIN")),
-               710, 65, 15, BLACK);
-      DrawText(TextFormat("- Position: (%06.3f, %06.3f, %03.6f)",
-                          player1->camera.position.x,
-                          player1->camera.position.y,
-                          player1->camera.position.z),
-               710, 90, 15, BLACK);
-      DrawText(TextFormat("- Target: (%06.3f, %06.3f, %03.6f)",
-                          player1->camera.target.x, player1->camera.target.y,
-                          player1->camera.target.z),
-               710, 115, 15, BLACK);
-      DrawText(TextFormat("- Up: (%06.3f, %06.3f, %03.6f)",
-                          player1->camera.up.x, player1->camera.up.y,
-                          player1->camera.up.z),
-               710, 140, 15, BLACK);
-
+      cameraHUD->Draw(player1.get());
       DrawFPS(10, 10);
       break;
     case ENDING:
