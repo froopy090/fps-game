@@ -94,7 +94,7 @@ int main() {
 
       testMap->Draw(player1.get());
       player1->Draw();
-      pistol->Draw();
+      pistol->Draw(player1.get());
 
       // Debug stuff
       cameraHUD->Draw(player1.get());

@@ -1,7 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include "Utility/Timer.h"
-
+#include "Entities/Player.h"
 
 
 namespace Entities {
@@ -21,7 +21,7 @@ public:
   ~Pistol();
   void Event();
   void Update();
-  void Draw();
+  void Draw(Player *player);
 
 private:
   Texture2D texture;
