@@ -11,8 +11,24 @@ TestMap::TestMap() {
                              (float)GetRandomValue(-15, 15)};
     colors[i] = (Color){GetRandomValue(20, 255), GetRandomValue(10, 55), 30,
                         255}; // this isn't actually an error
+    tempColors[i] = colors[i];
+    boundingBox[i].min =
+        (Vector3){positions[i].x - 1.0f, 0.0f, positions[i].z - 1.0f};
+    boundingBox[i].max =
+        (Vector3){positions[i].x + 1.0f, heights[i], positions[i].z + 1.0f};
   }
 }
+
+void TestMap::Update(Entities::Player *player) {
+  for (int i = 0; i < MAX_COLUMNS; i++) {
+    if (player->isShooting && GetRayCollisionBox(player->GetRay(), boundingBox[i]).hit) {
+      colors[i] = BLANK;
+    } else {
+      colors[i] = tempColors[i];
+    }
+  }
+}
+
 void TestMap::Draw(Entities::Player *player) {
   // TODO add draw calls in here
   BeginMode3D(player->camera);
@@ -31,6 +47,7 @@ void TestMap::Draw(Entities::Player *player) {
   for (int i = 0; i < MAX_COLUMNS; i++) {
     DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
     DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
+    DrawBoundingBox(boundingBox[i], BLACK);
   }
 
   EndMode3D();

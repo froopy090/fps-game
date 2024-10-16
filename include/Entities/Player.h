@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "Utility/Timer.h"
 
 namespace Entities {
 struct PlayerCube {
@@ -14,14 +15,18 @@ class Player {
 public:
   Camera3D camera;
   int cameraMode;
+  bool isShooting;
+
   Player();
   void Event();
   void Update();
   void Draw();
   Vector3 GetPosition();
+  Ray GetRay();
 
 private:
   PlayerCube playerCube;
   float health;
+  Utility::Timer timer;
 };
 } // namespace Entities

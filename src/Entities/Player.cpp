@@ -1,4 +1,5 @@
 #include "Entities/Player.h"
+#include "Utility/Timer.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -13,14 +14,16 @@ Player::Player() {
 
   // Camera init
   camera = {0};
-  camera.position = Vector3Add(playerCube.position,
-                               (Vector3){0, playerCube.height / 2.0f - 0.2f, 0});
+  camera.position = Vector3Add(
+      playerCube.position, (Vector3){0, playerCube.height / 2.0f - 0.2f, 0});
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
   camera.fovy = 90.0f;
   camera.projection = CAMERA_PERSPECTIVE;
   cameraMode = CAMERA_FIRST_PERSON;
   DisableCursor(); // limit cursor movement to window
+
+  isShooting = false;
 }
 
 void Player::Event() {
@@ -34,10 +37,19 @@ void Player::Event() {
     cameraMode = CAMERA_FIRST_PERSON;
     camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // reset roll
   }
+
+  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    isShooting = true;
+    timer.Start(0.1f);
+  }
 }
 
 void Player::Update() {
-  // TODO: update player variables here
+  // Update hitscan timer
+  timer.Update();
+  if (timer.Finished()) {
+    isShooting = false;
+  }
   // UpdateCamera(&camera, cameraMode);
   UpdateCameraPro(
       &camera,
@@ -70,12 +82,25 @@ void Player::Update() {
 
 void Player::Draw() {
   BeginMode3D(camera);
-    DrawCube(playerCube.position, playerCube.width, playerCube.height,
-             playerCube.length, playerCube.color);
-    DrawCubeWires(playerCube.position, playerCube.width, playerCube.height,
-                  playerCube.length, DARKPURPLE);
+  DrawCube(playerCube.position, playerCube.width, playerCube.height,
+           playerCube.length, playerCube.color);
+  DrawCubeWires(playerCube.position, playerCube.width, playerCube.height,
+                playerCube.length, DARKPURPLE);
+  if (isShooting) {
+    Ray hitscanRay = {
+        camera.position,
+        Vector3Normalize(Vector3Subtract(camera.target, playerCube.position))};
+    DrawRay(hitscanRay, RED);
+  }
   EndMode3D();
 }
 
 Vector3 Player::GetPosition() { return playerCube.position; }
+
+Ray Player::GetRay() {
+  Ray hitscanRay = {
+      camera.position,
+      Vector3Normalize(Vector3Subtract(camera.target, playerCube.position))};
+  return hitscanRay;
+}
 } // namespace Entities
