@@ -34,7 +34,7 @@ Pistol::~Pistol() { UnloadTexture(texture); }
 void Pistol::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     state = FIRING;
-    timer.Start(0.5f);
+    timer.Start(0.2f);
   }
 }
 
