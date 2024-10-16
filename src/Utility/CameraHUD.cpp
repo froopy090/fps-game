@@ -1,8 +1,10 @@
 #include "Utility/CameraHUD.h"
+#include "globals.h"
 #include "raylib.h"
 
 namespace Utility {
 void CameraHUD::Draw(Entities::Player *player) {
+  // Camera Info
   DrawRectangle(700, 5, 350, 170, Fade(SKYBLUE, 0.5f));
   DrawRectangleLines(700, 5, 350, 170, BLUE);
 
@@ -32,5 +34,11 @@ void CameraHUD::Draw(Entities::Player *player) {
                       player->GetPosition().x, player->GetPosition().y,
                       player->GetPosition().z),
            710, 165, 14, BLACK);
+
+  // Crosshair
+  DrawLineV((Vector2){screenWidth / 2.0f, screenHeight / 2.0f - 5},
+            (Vector2){screenWidth / 2.0f, screenHeight / 2.0f + 5}, PURPLE);
+  DrawLineV((Vector2){screenWidth / 2.0f - 5, screenHeight / 2.0f},
+            (Vector2){screenWidth / 2.0f + 5, screenHeight / 2.0f}, PURPLE);
 }
 } // namespace Utility

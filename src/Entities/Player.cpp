@@ -68,6 +68,11 @@ void Player::Update() {
       },
       GetMouseWheelMove() * 2.0f); // Move to target (zoom)
 
+  // Update camera target to be a point directly in fron of camera
+  Vector3 forward =
+      Vector3Normalize(Vector3Subtract(camera.target, camera.position));
+  camera.target = Vector3Add(camera.position, Vector3Scale(forward, 100.0f));
+
   // Update position
   if (cameraMode == CAMERA_FIRST_PERSON) {
     playerCube.position.x = camera.position.x;
@@ -98,9 +103,8 @@ void Player::Draw() {
 Vector3 Player::GetPosition() { return playerCube.position; }
 
 Ray Player::GetRay() {
-  Ray hitscanRay = {
-      camera.position,
-      Vector3Normalize(Vector3Subtract(camera.target, playerCube.position))};
+  Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(
+                                         camera.target, playerCube.position))};
   return hitscanRay;
 }
 } // namespace Entities
