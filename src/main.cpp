@@ -35,6 +35,13 @@ int main() {
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
 
+  // Testing
+  Vector3 startPoint;
+  Vector3 endPoint;
+  Vector3 rayDir;
+  Ray hitscanRay;
+
+
   //--------------------------------------------------------
 
   // Main game loop
@@ -66,6 +73,14 @@ int main() {
       // TODO: update game screen variables here
       pistol->Update();
       player1->Update();
+
+      // Creating hitscan ray
+      startPoint = player1->GetPosition();
+      endPoint = player1->camera.target;
+
+      rayDir = Vector3Subtract(endPoint, startPoint);
+      hitscanRay = {startPoint, Vector3Normalize(rayDir)};
+
 
       break;
     case ENDING:
@@ -101,7 +116,8 @@ int main() {
       DrawFPS(10, 10);
 
       BeginMode3D(player1->camera);
-      DrawLine3D(player1->GetPosition(),player1->camera.target, RED);
+      //DrawLine3D(player1->GetPosition(),player1->camera.target, RED);
+      DrawRay(hitscanRay, RED);
       EndMode3D();
 
       break;
