@@ -1,14 +1,14 @@
 #pragma once
-#include "raylib.h"
 #include "Utility/Timer.h"
+#include "raylib.h"
 
 namespace Entities {
-struct PlayerCube {
-  Vector3 position;
+struct Size{
+  //Vector3 position;
   float width;
   float height;
   float length;
-  Color color;
+  //Color color;
 };
 
 class Player {
@@ -23,10 +23,14 @@ public:
   void Draw();
   Vector3 GetPosition();
   Ray GetRay();
+  BoundingBox GetBoundingBox();
 
 private:
-  PlayerCube playerCube;
+  //PlayerCube playerCube;
+  Size size;
   float health;
   Utility::Timer timer;
+  BoundingBox boundingBox;
+  ;
 };
 } // namespace Entities
