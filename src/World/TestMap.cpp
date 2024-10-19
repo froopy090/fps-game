@@ -20,11 +20,20 @@ TestMap::TestMap() {
 }
 
 void TestMap::Update(Entities::Player *player) {
+  // Checks collision between player hitscan ray and columns
   for (int i = 0; i < MAX_COLUMNS; i++) {
-    if (player->isShooting && GetRayCollisionBox(player->GetRay(), boundingBox[i]).hit) {
+    if (player->isShooting &&
+        GetRayCollisionBox(player->GetRay(), boundingBox[i]).hit) {
       colors[i] = BLANK;
     } else {
       colors[i] = tempColors[i];
+    }
+  }
+
+  // Checkes collision between player bounding box and world map
+  for (int i = 0; i < MAX_COLUMNS; i++) {
+    if (CheckCollisionBoxes(player->GetBoundingBox(), boundingBox[i])){
+       player->camera.position = player->GetPreviousPosition(); 
     }
   }
 }

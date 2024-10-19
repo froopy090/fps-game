@@ -37,6 +37,7 @@ Player::Player() {
       (Vector3){camera.position.x + size.width / 2.0f, camera.position.y,
                 camera.position.z + size.length / 2.0f};
 
+  previousPosition = camera.position;
   isShooting = false;
 }
 
@@ -59,6 +60,9 @@ void Player::Event() {
 }
 
 void Player::Update() {
+  // Save player position before updating
+  this->SavePosition();
+
   // Update hitscan timer
   timer.Update();
   if (timer.Finished()) {
@@ -101,7 +105,7 @@ void Player::Update() {
   if (cameraMode == CAMERA_THIRD_PERSON) {
     /*playerCube.position.x = camera.target.x;*/
     /*playerCube.position.z = camera.target.z;*/
-   //idk kys 
+    // idk kys
   }
 }
 
@@ -129,7 +133,9 @@ Ray Player::GetRay() {
   return hitscanRay;
 }
 
-BoundingBox Player::GetBoundingBox(){
-    return boundingBox;
-}
+BoundingBox Player::GetBoundingBox() { return boundingBox; }
+
+void Player::SavePosition() { previousPosition = camera.position; }
+
+Vector3 Player::GetPreviousPosition() { return previousPosition; }
 } // namespace Entities

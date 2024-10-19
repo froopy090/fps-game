@@ -24,6 +24,8 @@ public:
   Vector3 GetPosition();
   Ray GetRay();
   BoundingBox GetBoundingBox();
+  void SavePosition();
+  Vector3 GetPreviousPosition();
 
 private:
   //PlayerCube playerCube;
@@ -31,6 +33,6 @@ private:
   float health;
   Utility::Timer timer;
   BoundingBox boundingBox;
-  ;
+  Vector3 previousPosition;
 };
 } // namespace Entities
