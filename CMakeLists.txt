@@ -18,7 +18,7 @@ include_directories(include)
 link_directories(lib)
 
 # Add the executable
-add_executable(MyProject ${SOURCES})
+add_executable(fps-game ${SOURCES})
 
 # Link the raylib library and the math library
-target_link_libraries(MyProject raylib m)
+target_link_libraries(fps-game raylib m)
