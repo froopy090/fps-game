@@ -58,3 +58,10 @@ To compile the project, follow these steps:
 ## Dependencies
 - raylib library
     - ensure libraylib.so, raylib.so.5.5.0, and raylib.so.550 is available in the lib directory
+
+## Acknowledgement
+- [Francesco](https://github.com/froopy090)
+    - Did most of the work
+- [Elia](https://github.com/Thenewchicken55)
+    - README.md
+    - CMakeLists.txt
