@@ -5,13 +5,6 @@
 
 namespace Entities {
 Player::Player() {
-  // PlayerCube init
-  /*playerCube.color = GREEN;*/
-  /*playerCube.width = 1.0f;*/
-  /*playerCube.height = 2.0f;*/
-  /*playerCube.length = 1.0f;*/
-  /*playerCube.position = (Vector3){0, playerCube.height / 2, 4}; // spawn*/
-
   // Player size init
   size.length = 0.5f;
   size.height = 4.0f;
@@ -19,9 +12,6 @@ Player::Player() {
 
   // Camera init
   camera = {0};
-  /*camera.position = Vector3Add(*/
-  /*    playerCube.position, (Vector3){0, playerCube.height / 2.0f - 0.2f,
-   * 0});*/
   camera.position = (Vector3){0.0f, 1.0f, size.height};
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
@@ -93,8 +83,6 @@ void Player::Update() {
 
   // Update position
   if (cameraMode == CAMERA_FIRST_PERSON) {
-    /*playerCube.position.x = camera.position.x;*/
-    /*playerCube.position.z = camera.position.z;*/
     boundingBox.min = (Vector3){camera.position.x - size.width / 2.0f, 0.0f,
                                 camera.position.z - size.length / 2.0f};
     boundingBox.max =
@@ -103,18 +91,12 @@ void Player::Update() {
   }
 
   if (cameraMode == CAMERA_THIRD_PERSON) {
-    /*playerCube.position.x = camera.target.x;*/
-    /*playerCube.position.z = camera.target.z;*/
-    // idk kys
+    // TODO: update variables for third person POV
   }
 }
 
 void Player::Draw() {
   BeginMode3D(camera);
-  /*DrawCube(playerCube.position, playerCube.width, playerCube.height,*/
-  /*         playerCube.length, playerCube.color);*/
-  /*DrawCubeWires(playerCube.position, playerCube.width, playerCube.height,*/
-  /*              playerCube.length, DARKPURPLE);*/
   DrawBoundingBox(boundingBox, DARKPURPLE);
   if (isShooting) {
     Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(

@@ -4,11 +4,9 @@
 
 namespace Entities {
 struct Size{
-  //Vector3 position;
   float width;
   float height;
   float length;
-  //Color color;
 };
 
 class Player {
@@ -28,7 +26,6 @@ public:
   Vector3 GetPreviousPosition();
 
 private:
-  //PlayerCube playerCube;
   Size size;
   float health;
   Utility::Timer timer;
