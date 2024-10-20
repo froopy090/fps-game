@@ -1,10 +1,15 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "globals.h"
+#include "iostream"
 
 namespace Entities {
-Pistol::Pistol()
-    : texture(LoadTexture("resources/DOOM_Pistol_Cropped.png")), state(IDLE) {
+Pistol::Pistol() {
+  // Loading texture
+  texture = LoadTexture("DOOM_Pistol_Cropped.png");
+  std::cout << "Loading texture with ID: " << texture.id << std::endl;
+
+  state = IDLE;
   // Idle sprite
   idle.source = (Rectangle){10, 50, 110, 95};
   idle.destination = (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3};
@@ -29,7 +34,10 @@ Pistol::Pistol()
   firing2.tint = WHITE;
 }
 
-Pistol::~Pistol() { UnloadTexture(texture); }
+Pistol::~Pistol() {
+  std::cout << "Unloading texture with ID: " << texture.id << std::endl;
+  UnloadTexture(texture);
+}
 
 void Pistol::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {

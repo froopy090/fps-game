@@ -7,6 +7,7 @@
 #include "raymath.h"
 #include <dirent.h>
 #include <memory>
+#include "resource_dir.h"
 
 #define MAX_COLUMNS 20
 
@@ -25,6 +26,8 @@ int main() {
 
   GameScreen currentScreen = LOGO;
 
+  SearchAndSetResourceDir("resources");
+  
   // World
   auto testMap = std::make_unique<World::TestMap>();
 
