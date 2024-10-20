@@ -1,3 +1,5 @@
 /bin/
 /build/
 .cache/
+Makefile.bak
+compile_commands.json.bak
