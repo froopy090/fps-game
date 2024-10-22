@@ -1,18 +1,20 @@
 #include "Entities/Player.h"
 #include "Utility/Timer.h"
+#include "World/TestMap.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <iostream>
 
 namespace Entities {
 Player::Player() {
   // Player size init
   size.length = 0.5f;
-  size.height = 4.0f;
+  size.height = 1.0f;
   size.width = 0.5f;
 
   // Camera init
   camera = {0};
-  camera.position = (Vector3){0.0f, 1.0f, size.height};
+  camera.position = (Vector3){0.0f, size.height, 4.0f};
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
   camera.fovy = 90.0f;
@@ -29,6 +31,11 @@ Player::Player() {
 
   previousPosition = camera.position;
   isShooting = false;
+
+  // Gravity physics
+  gravity = -10.0f;
+  jumpVelocity = 0.0f;
+  isJumping = false;
 }
 
 void Player::Event() {
@@ -43,13 +50,21 @@ void Player::Event() {
     camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // reset roll
   }
 
+  // shooting pistol
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     isShooting = true;
     timer.Start(0.1f);
   }
+
+  // jumping
+  // TODO: add check with plane in the if statement to avoid spam jumping
+  if (IsKeyPressed(KEY_SPACE) && !isJumping) {
+    jumpVelocity = 4.0f;
+    isJumping = true;
+  }
 }
 
-void Player::Update() {
+void Player::Update(World::TestMap *testMap) {
   // Save player position before updating
   this->SavePosition();
 
@@ -58,7 +73,8 @@ void Player::Update() {
   if (timer.Finished()) {
     isShooting = false;
   }
-  // UpdateCamera(&camera, cameraMode);
+
+  // Update Camera postion
   UpdateCameraPro(
       &camera,
       (Vector3){
@@ -81,9 +97,26 @@ void Player::Update() {
       Vector3Normalize(Vector3Subtract(camera.target, camera.position));
   camera.target = Vector3Add(camera.position, Vector3Scale(forward, 100.0f));
 
+  // Jumping
+  if (isJumping) {
+    jumpVelocity += gravity * GetFrameTime();
+  }
+  else{
+    jumpVelocity = gravity;
+  }
+
+  camera.position.y += jumpVelocity * GetFrameTime();
+
+  if (jumpVelocity < 0.0f &&
+      CheckCollisionBoxes(boundingBox, testMap->GetPlaneBoundingBox())) {
+    camera.position.y = size.height;
+    isJumping = false;
+  }
+
   // Update position
   if (cameraMode == CAMERA_FIRST_PERSON) {
-    boundingBox.min = (Vector3){camera.position.x - size.width / 2.0f, 0.0f,
+    boundingBox.min = (Vector3){camera.position.x - size.width / 2.0f,
+                                camera.position.y - size.height,
                                 camera.position.z - size.length / 2.0f};
     boundingBox.max =
         (Vector3){camera.position.x + size.width / 2.0f, camera.position.y,

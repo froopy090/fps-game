@@ -2,8 +2,12 @@
 #include "Utility/Timer.h"
 #include "raylib.h"
 
+namespace World {
+class TestMap;
+}
+
 namespace Entities {
-struct Size{
+struct Size {
   float width;
   float height;
   float length;
@@ -17,7 +21,7 @@ public:
 
   Player();
   void Event();
-  void Update();
+  void Update(World::TestMap *testMap);
   void Draw();
   Vector3 GetPosition();
   Ray GetRay();
@@ -31,5 +35,8 @@ private:
   Utility::Timer timer;
   BoundingBox boundingBox;
   Vector3 previousPosition;
+  float gravity;
+  float jumpVelocity;
+  bool isJumping;
 };
 } // namespace Entities

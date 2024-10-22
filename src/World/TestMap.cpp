@@ -23,6 +23,10 @@ TestMap::TestMap() {
   plane.position = Vector3Zero();
   plane.dimension = (Vector2){32.0f, 32.0f};
   plane.color = LIGHTGRAY;
+  plane.boundingBox.min =
+      (Vector3){-plane.dimension.x / 2.0f, 0.0f, -plane.dimension.y / 2.0f};
+  plane.boundingBox.max =
+      (Vector3){plane.dimension.x / 2.0f, 0.0f, plane.dimension.y / 2.0f};
 
   leftWall.position = (Vector3){16.0f, 2.5f, 0.0f};
   leftWall.size = (Vector3){1.0f, 5.0f, 32.0f};
@@ -50,9 +54,9 @@ TestMap::TestMap() {
   rightWall.boundingBox.min =
       (Vector3){rightWall.position.x - rightWall.size.x / 2.0f, 0.0f,
                 rightWall.position.z - rightWall.size.z / 2.0f};
-  rightWall.boundingBox.max =
-      (Vector3){rightWall.position.x + rightWall.size.x / 2.0f, rightWall.size.y,
-                rightWall.position.z + rightWall.size.z / 2.0f};
+  rightWall.boundingBox.max = (Vector3){
+      rightWall.position.x + rightWall.size.x / 2.0f, rightWall.size.y,
+      rightWall.position.z + rightWall.size.z / 2.0f};
 }
 
 void TestMap::Update(Entities::Player *player) {
@@ -111,4 +115,6 @@ void TestMap::Draw(Entities::Player *player) {
 
   EndMode3D();
 }
+
+BoundingBox TestMap::GetPlaneBoundingBox() { return plane.boundingBox; }
 } // namespace World

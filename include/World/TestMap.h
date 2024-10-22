@@ -9,6 +9,7 @@ struct Plane {
   Vector3 position;
   Vector2 dimension;
   Color color;
+  BoundingBox boundingBox;
 };
 
 struct Wall {
@@ -22,6 +23,7 @@ public:
   TestMap();
   void Update(Entities::Player *player);
   void Draw(Entities::Player *player);
+  BoundingBox GetPlaneBoundingBox();
 
 private:
   float heights[MAX_COLUMNS];
