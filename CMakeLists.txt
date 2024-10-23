@@ -7,6 +7,7 @@ set(SOURCES
     src/main.cpp
     src/Entities/Pistol.cpp
     src/Entities/Player.cpp
+    src/Entities/Enemy.cpp
     src/Utility/CameraHUD.cpp
     src/Utility/Timer.cpp
     src/World/TestMap.cpp
