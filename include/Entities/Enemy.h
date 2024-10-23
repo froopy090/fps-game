@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "Entities/Player.h"
 
 namespace Entities {
 class Enemy {
@@ -13,7 +14,7 @@ public:
   Enemy();
   void Event();
   void Update();
-  void Draw();
+  void Draw(Player *player);
 
 private:
   Size size;

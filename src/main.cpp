@@ -1,5 +1,6 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
+#include "Entities/Enemy.h"
 #include "Utility/CameraHUD.h"
 #include "World/TestMap.h"
 #include "globals.h"
@@ -34,6 +35,7 @@ int main() {
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
+  auto enemy1 = std::make_unique<Entities::Enemy>();
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
@@ -46,6 +48,7 @@ int main() {
     // --------------------------------------------------------
     pistol->Event();
     player1->Event();
+    enemy1->Event();
 
     // --------------------------------------------------------
     // Update
@@ -69,6 +72,7 @@ int main() {
       // TODO: update game screen variables here
       pistol->Update();
       player1->Update(testMap.get());
+      enemy1->Update();
 
       testMap->Update(player1.get());
 
@@ -100,6 +104,7 @@ int main() {
       testMap->Draw(player1.get());
       player1->Draw();
       pistol->Draw(player1.get());
+      enemy1->Draw(player1.get());
 
       // Debug stuff
       cameraHUD->Draw(player1.get());
