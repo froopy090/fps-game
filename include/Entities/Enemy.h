@@ -13,7 +13,7 @@ class Enemy {
   };
 
 public:
-  Enemy();
+  Enemy(Player *player);
   ~Enemy();
   void Event();
   void Update(Player *player, Pistol *pistol);
@@ -25,5 +25,7 @@ private:
   EnemySprite sprite;
   float health;
   BoundingBox boundingBox;
+  Vector3 forward;
+  float speed;
 };
 } // namespace Entities

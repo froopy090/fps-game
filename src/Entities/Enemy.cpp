@@ -1,12 +1,13 @@
 #include "Entities/Enemy.h"
-#include "Entities/Player.h"
 #include "Entities/Pistol.h"
+#include "Entities/Player.h"
 #include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <utility>
 
 namespace Entities {
-Enemy::Enemy() {
+Enemy::Enemy(Player *player) {
   // Dimensions init
   size.width = 0.5f;
   size.height = 1.5f;
@@ -28,6 +29,11 @@ Enemy::Enemy() {
 
   // Health init
   health = 150.0f;
+
+  // Forward-facing direction init (unit vector)
+  forward = Vector3Zero();
+  // Speed init
+  speed = 1.0f;
 }
 
 Enemy::~Enemy() { UnloadTexture(sprite.texture); }
@@ -47,6 +53,11 @@ void Enemy::Update(Player *player, Pistol *pistol) {
   if (health <= 0.0f) {
     sprite.tint = BLANK;
   }
+
+  // Move towards player
+  forward = Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
+  position =
+      Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
 }
 
 void Enemy::Draw(Player *player) {
