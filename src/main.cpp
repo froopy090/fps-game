@@ -2,6 +2,7 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/CameraHUD.h"
+#include "Utility/PlayerInfoHUD.h"
 #include "World/TestMap.h"
 #include "globals.h"
 #include "raylib.h"
@@ -39,6 +40,7 @@ int main() {
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
+  auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
 
   //--------------------------------------------------------
 
@@ -106,9 +108,10 @@ int main() {
       player1->Draw();
       pistol->Draw(player1.get());
 
-      // Debug stuff
+      // HUD
       cameraHUD->Draw(player1.get());
-      DrawFPS(10, 10);
+      playerInfoHUD->Draw(player1.get());
+      DrawFPS(screenWidth - 10, screenHeight - 10);
 
       break;
     case ENDING:
