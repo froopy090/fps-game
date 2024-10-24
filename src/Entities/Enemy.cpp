@@ -32,6 +32,9 @@ Enemy::Enemy(Player *player) {
   health = 150.0f;
   dead = false;
 
+  // Damage init
+  meleeDamage = 25.0f;
+
   // Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed init
@@ -42,8 +45,7 @@ Enemy::~Enemy() { UnloadTexture(sprite.texture); }
 
 void Enemy::Event() {
   // TODO: add event function
-  if(!dead){
-
+  if (!dead) {
   }
 }
 
@@ -76,6 +78,13 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     boundingBox.max =
         (Vector3){position.x + size.width / 2.0f, position.y + size.height,
                   position.z + size.length / 2.0f};
+
+    // Checks collision between player and itself
+    // also damages player
+    if (CheckCollisionBoxes(player->GetBoundingBox(), boundingBox)) {
+      player->TakeDamage(meleeDamage);
+      position = previousPosition;
+    }
   }
 }
 

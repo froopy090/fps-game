@@ -30,6 +30,7 @@ private:
   Vector3 position;
   EnemySprite sprite;
   float health;
+  float meleeDamage;
   bool dead;
   BoundingBox boundingBox;
   Vector3 forward;
