@@ -1,5 +1,6 @@
 #include "World/TestMap.h"
 #include "Entities/Player.h"
+#include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -62,8 +63,7 @@ TestMap::TestMap() {
 void TestMap::Update(Entities::Player *player) {
   // Checks collision between player hitscan ray and columns
   for (int i = 0; i < MAX_COLUMNS; i++) {
-    if (player->isShooting &&
-        GetRayCollisionBox(player->GetRay(), boundingBox[i]).hit) {
+    if (Utility::HitscanIntersectsBox(player, boundingBox[i])) {
       colors[i] = BLANK;
     } else {
       colors[i] = tempColors[i];
