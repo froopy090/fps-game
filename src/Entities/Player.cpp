@@ -53,7 +53,7 @@ void Player::Event() {
   // shooting pistol
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     isShooting = true;
-    timer.Start(0.1f);
+    timer.Start(0.04f);
   }
 
   // jumping
