@@ -81,7 +81,7 @@ void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
 
   // Checks collision between enemy bounding box and columns
   for (int i = 0; i < MAX_COLUMNS; i++) {
-    if (CheckCollisionBoxes(enemy->GetBoundingBox(), boundingBox[i])) {
+    if (!enemy->IsDead() && CheckCollisionBoxes(enemy->GetBoundingBox(), boundingBox[i])) {
       enemy->SetPosition(enemy->GetPreviousPosition());
     }
   }
@@ -98,7 +98,7 @@ void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
   }
 
   // Checks collision between enemy and world map
-  if (CheckCollisionBoxes(enemy->GetBoundingBox(), leftWall.boundingBox)) {
+  if (enemy->IsDead() && CheckCollisionBoxes(enemy->GetBoundingBox(), leftWall.boundingBox)) {
     enemy->SetPosition(enemy->GetPreviousPosition());
   }
   if (CheckCollisionBoxes(enemy->GetBoundingBox(), backWall.boundingBox)) {

@@ -23,12 +23,14 @@ public:
   Vector3 GetPreviousPosition();
   BoundingBox GetBoundingBox();
   void SetPosition(Vector3 position);
+  bool IsDead();
 
 private:
   Size size;
   Vector3 position;
   EnemySprite sprite;
   float health;
+  bool dead;
   BoundingBox boundingBox;
   Vector3 forward;
   float speed;

@@ -4,6 +4,8 @@
 #include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <cctype>
+#include <type_traits>
 
 namespace Entities {
 Enemy::Enemy(Player *player) {
@@ -29,11 +31,12 @@ Enemy::Enemy(Player *player) {
 
   // Health init
   health = 150.0f;
+  dead = false;
 
   // Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed init
-  speed = 1.0f;
+  speed = 1.5f;
 }
 
 Enemy::~Enemy() { UnloadTexture(sprite.texture); }
@@ -54,6 +57,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 
   // Checking health
   if (health <= 0.0f) {
+    dead = true;
     sprite.tint = BLANK;
   }
 
@@ -71,13 +75,15 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 }
 
 void Enemy::Draw(Player *player) {
-  BeginMode3D(player->camera);
-  DrawBoundingBox(boundingBox, BLACK);
-  DrawBillboardRec(
-      player->camera, sprite.texture, sprite.source,
-      Vector3Add(position, (Vector3){0.0f, size.height / 2.0f, 0.0f}),
-      (Vector2){size.width * 2.0f, size.height}, sprite.tint);
-  EndMode3D();
+  if (!dead) {
+    BeginMode3D(player->camera);
+    DrawBoundingBox(boundingBox, BLACK);
+    DrawBillboardRec(
+        player->camera, sprite.texture, sprite.source,
+        Vector3Add(position, (Vector3){0.0f, size.height / 2.0f, 0.0f}),
+        (Vector2){size.width * 2.0f, size.height}, sprite.tint);
+    EndMode3D();
+  }
 }
 
 void Enemy::SavePosition() { previousPosition = position; }
@@ -89,4 +95,6 @@ BoundingBox Enemy::GetBoundingBox() { return boundingBox; }
 Vector3 Enemy::GetPosition() { return position; }
 
 void Enemy::SetPosition(Vector3 position) { this->position = position; }
+
+bool Enemy::IsDead() { return dead; }
 } // namespace Entities
