@@ -100,8 +100,7 @@ void Player::Update(World::TestMap *testMap) {
   // Jumping
   if (isJumping) {
     jumpVelocity += gravity * GetFrameTime();
-  }
-  else{
+  } else {
     jumpVelocity = gravity;
   }
 
@@ -139,8 +138,11 @@ void Player::Draw() {
   EndMode3D();
 }
 
-// returns camera position
-Vector3 Player::GetPosition() { return camera.position; }
+// returns center of bounding box position (NOT the camera position)
+Vector3 Player::GetPosition() {
+  return Vector3Subtract(camera.position,
+                         (Vector3){0.0f, size.height / 2.0f, 0.0f});
+}
 
 Ray Player::GetRay() {
   Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(
