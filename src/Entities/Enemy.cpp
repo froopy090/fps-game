@@ -5,7 +5,6 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <cctype>
-#include <type_traits>
 
 namespace Entities {
 Enemy::Enemy(Player *player) {
@@ -43,35 +42,41 @@ Enemy::~Enemy() { UnloadTexture(sprite.texture); }
 
 void Enemy::Event() {
   // TODO: add event function
+  if(!dead){
+
+  }
 }
 
 void Enemy::Update(Player *player, Pistol *pistol) {
-  // Save position before updating
-  this->SavePosition();
+  if (!dead) {
+    // Save position before updating
+    this->SavePosition();
 
-  // Checks collision between player hitscan ray and Enemy bounding box
-  if (Utility::HitscanIntersectsBox(player, boundingBox)) {
-    // Takes damage
-    health -= pistol->GetDamage();
+    // Checks collision between player hitscan ray and Enemy bounding box
+    if (Utility::HitscanIntersectsBox(player, boundingBox)) {
+      // Takes damage
+      health -= pistol->GetDamage();
+    }
+
+    // Checking health
+    if (health <= 0.0f) {
+      dead = true;
+      sprite.tint = BLANK;
+    }
+
+    // Move towards player
+    forward =
+        Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
+    position =
+        Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+
+    // Updating bounding box position
+    boundingBox.min = (Vector3){position.x - size.width / 2.0f, position.y,
+                                position.z - size.length / 2.0f};
+    boundingBox.max =
+        (Vector3){position.x + size.width / 2.0f, position.y + size.height,
+                  position.z + size.length / 2.0f};
   }
-
-  // Checking health
-  if (health <= 0.0f) {
-    dead = true;
-    sprite.tint = BLANK;
-  }
-
-  // Move towards player
-  forward = Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
-  position =
-      Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
-
-  // Updating bounding box position
-  boundingBox.min = (Vector3){position.x - size.width / 2.0f, position.y,
-                              position.z - size.length / 2.0f};
-  boundingBox.max =
-      (Vector3){position.x + size.width / 2.0f, position.y + size.height,
-                position.z + size.length / 2.0f};
 }
 
 void Enemy::Draw(Player *player) {
