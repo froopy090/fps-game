@@ -1,14 +1,14 @@
+#include "Entities/Enemy.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
-#include "Entities/Enemy.h"
 #include "Utility/CameraHUD.h"
 #include "World/TestMap.h"
 #include "globals.h"
 #include "raylib.h"
 #include "raymath.h"
+#include "resource_dir.h"
 #include <dirent.h>
 #include <memory>
-#include "resource_dir.h"
 
 #define MAX_COLUMNS 20
 
@@ -28,7 +28,7 @@ int main() {
   GameScreen currentScreen = LOGO;
 
   SearchAndSetResourceDir("resources");
-  
+
   // World
   auto testMap = std::make_unique<World::TestMap>();
 
@@ -102,9 +102,9 @@ int main() {
       // TODO: update game screen variables here
 
       testMap->Draw(player1.get());
+      enemy1->Draw(player1.get());
       player1->Draw();
       pistol->Draw(player1.get());
-      enemy1->Draw(player1.get());
 
       // Debug stuff
       cameraHUD->Draw(player1.get());

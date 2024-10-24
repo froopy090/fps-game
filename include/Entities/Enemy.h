@@ -1,17 +1,18 @@
 #pragma once
-#include "raylib.h"
 #include "Entities/Player.h"
+#include "raylib.h"
 
 namespace Entities {
 class Enemy {
-  struct Size {
-    float width;
-    float height;
-    float length;
+  struct EnemySprite {
+    Texture2D texture;
+    Rectangle source;
+    Color tint;
   };
 
 public:
   Enemy();
+  ~Enemy();
   void Event();
   void Update();
   void Draw(Player *player);
@@ -19,6 +20,7 @@ public:
 private:
   Size size;
   Vector3 position;
+  EnemySprite sprite;
   float health;
   BoundingBox boundingBox;
 };
