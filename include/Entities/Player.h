@@ -17,7 +17,6 @@ class Player {
 public:
   Camera3D camera;
   int cameraMode;
-  bool isShooting;
 
   Player();
   void Event();
@@ -28,10 +27,14 @@ public:
   BoundingBox GetBoundingBox();
   void SavePosition();
   Vector3 GetPreviousPosition();
+  void TakeDamage(float damage);
+  bool IsShooting();
+  float GetHealth();
 
 private:
   Size size;
   float health;
+  bool isShooting;
   Utility::Timer timer;
   BoundingBox boundingBox;
   Vector3 previousPosition;

@@ -36,10 +36,12 @@ Player::Player() {
   gravity = -10.0f;
   jumpVelocity = 0.0f;
   isJumping = false;
+
+  // Health init
+  health = 100.0f;
 }
 
 void Player::Event() {
-  // TODO input events
   if (IsKeyPressed(KEY_THREE)) {
     cameraMode = CAMERA_THIRD_PERSON;
     camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // reset roll
@@ -57,7 +59,6 @@ void Player::Event() {
   }
 
   // jumping
-  // TODO: add check with plane in the if statement to avoid spam jumping
   if (IsKeyPressed(KEY_SPACE) && !isJumping) {
     jumpVelocity = 4.0f;
     isJumping = true;
@@ -101,6 +102,7 @@ void Player::Update(World::TestMap *testMap) {
   if (isJumping) {
     jumpVelocity += gravity * GetFrameTime();
   } else {
+    // gravity is always in effect
     jumpVelocity = gravity;
   }
 
@@ -155,4 +157,14 @@ BoundingBox Player::GetBoundingBox() { return boundingBox; }
 void Player::SavePosition() { previousPosition = camera.position; }
 
 Vector3 Player::GetPreviousPosition() { return previousPosition; }
+
+void Player::TakeDamage(float damage) {
+  if (health > 0.0f) {
+    health -= damage * GetFrameTime();
+  }
+}
+
+float Player::GetHealth() { return health; }
+
+bool Player::IsShooting() { return isShooting; }
 } // namespace Entities
