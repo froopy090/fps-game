@@ -1,5 +1,6 @@
 #pragma once
 #include "Entities/Player.h"
+#include "Utility/Collision.h"
 #include "raylib.h"
 
 namespace Entities {
@@ -14,7 +15,7 @@ public:
   Enemy();
   ~Enemy();
   void Event();
-  void Update();
+  void Update(Player *player);
   void Draw(Player *player);
 
 private:
