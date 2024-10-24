@@ -10,6 +10,7 @@ set(SOURCES
     src/Entities/Enemy.cpp
     src/Utility/CameraHUD.cpp
     src/Utility/Timer.cpp
+    src/Utility/PlayerInfoHUD.cpp
     src/World/TestMap.cpp
 )
 
