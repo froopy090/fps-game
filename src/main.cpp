@@ -35,7 +35,7 @@ int main() {
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
-  auto enemy1 = std::make_unique<Entities::Enemy>();
+  auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
