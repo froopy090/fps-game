@@ -30,10 +30,7 @@ void CameraHUD::Draw(Entities::Player *player) {
   DrawText(TextFormat("- Up: (%06.3f, %06.3f, %03.6f)", player->camera.up.x,
                       player->camera.up.y, player->camera.up.z),
            710, 140, 15, BLACK);
-  DrawText(TextFormat("- P.Position: (%06.3f, %06.3f, %03.6f)",
-                      player->GetPosition().x, player->GetPosition().y,
-                      player->GetPosition().z),
-           710, 165, 14, BLACK);
+  
 
   // Crosshair
   DrawLineV((Vector2){screenWidth / 2.0f, screenHeight / 2.0f - 5},
