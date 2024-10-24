@@ -1,5 +1,6 @@
 #include "Entities/Enemy.h"
 #include "Entities/Player.h"
+#include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -34,12 +35,20 @@ void Enemy::Event() {
   // TODO: add event function
 }
 
-void Enemy::Update() {
-  // TODO: add update function
+void Enemy::Update(Player *player) {
+  // Checks collision between player hitscan ray and Enemy bounding box
+  if (Utility::HitscanIntersectsBox(player, boundingBox)) {
+    // Takes damage
+    health -= 30;
+  }
+
+  // Checking health
+  if (health <= 0.0f) {
+    sprite.tint = BLANK;
+  }
 }
 
 void Enemy::Draw(Player *player) {
-  // TODO: add draw function
   BeginMode3D(player->camera);
   DrawBoundingBox(boundingBox, BLACK);
   DrawBillboardRec(
