@@ -22,6 +22,7 @@ public:
   void Event();
   void Update();
   void Draw(Player *player);
+  float GetDamage();
 
 private:
   Texture2D texture;
@@ -30,5 +31,6 @@ private:
   Sprite idle;
   Sprite firing1;
   Sprite firing2;
+  float damage;
 };
 } // namespace Entities

@@ -1,4 +1,5 @@
 #pragma once
+#include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
 #include "raylib.h"
@@ -15,7 +16,7 @@ public:
   Enemy();
   ~Enemy();
   void Event();
-  void Update(Player *player);
+  void Update(Player *player, Pistol *pistol);
   void Draw(Player *player);
 
 private:

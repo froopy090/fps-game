@@ -72,7 +72,7 @@ int main() {
       // TODO: update game screen variables here
       pistol->Update();
       player1->Update(testMap.get());
-      enemy1->Update(player1.get());
+      enemy1->Update(player1.get(), pistol.get());
 
       testMap->Update(player1.get());
 

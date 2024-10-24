@@ -7,7 +7,6 @@ namespace Entities {
 Pistol::Pistol() {
   // Loading texture
   texture = LoadTexture("DOOM_Pistol_Cropped.png");
-  std::cout << "Loading texture with ID: " << texture.id << std::endl;
 
   state = IDLE;
   // Idle sprite
@@ -32,12 +31,12 @@ Pistol::Pistol() {
   firing2.origin = (Vector2){0.0f, 0.0f};
   firing2.rotation = 0.0f;
   firing2.tint = WHITE;
+
+  // Damage init
+  damage = 30.0f;
 }
 
-Pistol::~Pistol() {
-  std::cout << "Unloading texture with ID: " << texture.id << std::endl;
-  UnloadTexture(texture);
-}
+Pistol::~Pistol() { UnloadTexture(texture); }
 
 void Pistol::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -75,4 +74,5 @@ void Pistol::Draw(Player *player) {
   }
 }
 
+float Pistol::GetDamage() { return damage; }
 } // namespace Entities

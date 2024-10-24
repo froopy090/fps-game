@@ -1,5 +1,6 @@
 #include "Entities/Enemy.h"
 #include "Entities/Player.h"
+#include "Entities/Pistol.h"
 #include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
@@ -26,7 +27,7 @@ Enemy::Enemy() {
                               position.z + size.length / 2.0f};
 
   // Health init
-  health = 100.0f;
+  health = 150.0f;
 }
 
 Enemy::~Enemy() { UnloadTexture(sprite.texture); }
@@ -35,11 +36,11 @@ void Enemy::Event() {
   // TODO: add event function
 }
 
-void Enemy::Update(Player *player) {
+void Enemy::Update(Player *player, Pistol *pistol) {
   // Checks collision between player hitscan ray and Enemy bounding box
   if (Utility::HitscanIntersectsBox(player, boundingBox)) {
     // Takes damage
-    health -= 30;
+    health -= pistol->GetDamage();
   }
 
   // Checking health
