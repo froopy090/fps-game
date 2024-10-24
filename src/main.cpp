@@ -74,7 +74,7 @@ int main() {
       player1->Update(testMap.get());
       enemy1->Update(player1.get(), pistol.get());
 
-      testMap->Update(player1.get());
+      testMap->Update(player1.get(), enemy1.get());
 
       break;
     case ENDING:

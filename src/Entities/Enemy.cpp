@@ -4,7 +4,6 @@
 #include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <utility>
 
 namespace Entities {
 Enemy::Enemy(Player *player) {
@@ -20,6 +19,7 @@ Enemy::Enemy(Player *player) {
 
   // Position init
   position = (Vector3){0.0f, 0.0f, -4.0f};
+  previousPosition = position;
 
   // Bounding box init
   boundingBox.min = (Vector3){position.x - size.width / 2.0f, 0.0f,
@@ -43,6 +43,9 @@ void Enemy::Event() {
 }
 
 void Enemy::Update(Player *player, Pistol *pistol) {
+  // Save position before updating
+  this->SavePosition();
+
   // Checks collision between player hitscan ray and Enemy bounding box
   if (Utility::HitscanIntersectsBox(player, boundingBox)) {
     // Takes damage
@@ -58,6 +61,13 @@ void Enemy::Update(Player *player, Pistol *pistol) {
   forward = Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
   position =
       Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+
+  // Updating bounding box position
+  boundingBox.min = (Vector3){position.x - size.width / 2.0f, position.y,
+                              position.z - size.length / 2.0f};
+  boundingBox.max =
+      (Vector3){position.x + size.width / 2.0f, position.y + size.height,
+                position.z + size.length / 2.0f};
 }
 
 void Enemy::Draw(Player *player) {
@@ -69,4 +79,14 @@ void Enemy::Draw(Player *player) {
       (Vector2){size.width * 2.0f, size.height}, sprite.tint);
   EndMode3D();
 }
+
+void Enemy::SavePosition() { previousPosition = position; }
+
+Vector3 Enemy::GetPreviousPosition() { return previousPosition; }
+
+BoundingBox Enemy::GetBoundingBox() { return boundingBox; }
+
+Vector3 Enemy::GetPosition() { return position; }
+
+void Enemy::SetPosition(Vector3 position) { this->position = position; }
 } // namespace Entities

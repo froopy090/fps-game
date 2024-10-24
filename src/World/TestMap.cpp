@@ -1,8 +1,10 @@
 #include "World/TestMap.h"
+#include "Entities/Enemy.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <iterator>
 
 namespace World {
 TestMap::TestMap() {
@@ -60,7 +62,7 @@ TestMap::TestMap() {
       rightWall.position.z + rightWall.size.z / 2.0f};
 }
 
-void TestMap::Update(Entities::Player *player) {
+void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Checks collision between player hitscan ray and columns
   for (int i = 0; i < MAX_COLUMNS; i++) {
     if (Utility::HitscanIntersectsBox(player, boundingBox[i])) {
@@ -77,6 +79,13 @@ void TestMap::Update(Entities::Player *player) {
     }
   }
 
+  // Checks collision between enemy bounding box and columns
+  for (int i = 0; i < MAX_COLUMNS; i++) {
+    if (CheckCollisionBoxes(enemy->GetBoundingBox(), boundingBox[i])) {
+      enemy->SetPosition(enemy->GetPreviousPosition());
+    }
+  }
+
   // Checks collision between player and world map
   if (CheckCollisionBoxes(player->GetBoundingBox(), leftWall.boundingBox)) {
     player->camera.position = player->GetPreviousPosition();
@@ -86,6 +95,17 @@ void TestMap::Update(Entities::Player *player) {
   }
   if (CheckCollisionBoxes(player->GetBoundingBox(), rightWall.boundingBox)) {
     player->camera.position = player->GetPreviousPosition();
+  }
+
+  // Checks collision between enemy and world map
+  if (CheckCollisionBoxes(enemy->GetBoundingBox(), leftWall.boundingBox)) {
+    enemy->SetPosition(enemy->GetPreviousPosition());
+  }
+  if (CheckCollisionBoxes(enemy->GetBoundingBox(), backWall.boundingBox)) {
+    enemy->SetPosition(enemy->GetPreviousPosition());
+  }
+  if (CheckCollisionBoxes(enemy->GetBoundingBox(), rightWall.boundingBox)) {
+    enemy->SetPosition(enemy->GetPreviousPosition());
   }
 }
 

@@ -18,6 +18,11 @@ public:
   void Event();
   void Update(Player *player, Pistol *pistol);
   void Draw(Player *player);
+  void SavePosition();
+  Vector3 GetPosition();
+  Vector3 GetPreviousPosition();
+  BoundingBox GetBoundingBox();
+  void SetPosition(Vector3 position);
 
 private:
   Size size;
@@ -27,5 +32,6 @@ private:
   BoundingBox boundingBox;
   Vector3 forward;
   float speed;
+  Vector3 previousPosition;
 };
 } // namespace Entities

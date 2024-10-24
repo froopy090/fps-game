@@ -1,4 +1,5 @@
 #pragma once
+#include "Entities/Enemy.h"
 #include "Entities/Player.h"
 #include "raylib.h"
 
@@ -21,7 +22,7 @@ struct Wall {
 class TestMap {
 public:
   TestMap();
-  void Update(Entities::Player *player);
+  void Update(Entities::Player *player, Entities::Enemy *enemy);
   void Draw(Entities::Player *player);
   BoundingBox GetPlaneBoundingBox();
 
