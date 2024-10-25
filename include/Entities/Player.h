@@ -4,6 +4,7 @@
 
 namespace World {
 class TestMap;
+class Test002;
 }
 
 namespace Entities {
@@ -21,6 +22,7 @@ public:
   Player();
   void Event();
   void Update(World::TestMap *testMap);
+  void Update(World::Test002 *testMap);
   void Draw();
   Vector3 GetPosition();
   Ray GetRay();
