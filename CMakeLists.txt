@@ -12,6 +12,7 @@ set(SOURCES
     src/Utility/Timer.cpp
     src/Utility/PlayerInfoHUD.cpp
     src/World/TestMap.cpp
+    src/World/Test002.cpp
 )
 
 include_directories(include)
