@@ -13,12 +13,30 @@ struct Plane {
   BoundingBox boundingBox;
 };
 
-struct Wall {
+struct Cube {
   Vector3 position;
   Vector3 size;
   Color color;
   BoundingBox boundingBox;
 };
+
+inline BoundingBox InitCubeBoundingBox(Cube c) {
+  BoundingBox bb;
+  bb.min = (Vector3){c.position.x - c.size.x / 2.0f, 0.0f,
+                     c.position.z - c.size.z / 2.0f};
+  bb.max = (Vector3){c.position.x + c.size.x / 2.0f, c.size.y,
+                     c.position.z + c.size.z / 2.0f};
+  return bb;
+}
+
+inline BoundingBox InitPlaneBoundingBox(Plane p) {
+  BoundingBox bb;
+  bb.min =
+      (Vector3){-p.dimension.x / 2.0f, p.position.y, -p.dimension.y / 2.0f};
+  bb.max = (Vector3){p.dimension.x / 2.0f, p.position.y, p.dimension.y / 2.0f};
+  return bb;
+}
+
 class TestMap {
 public:
   TestMap();
@@ -33,8 +51,8 @@ private:
   Color tempColors[MAX_COLUMNS];
   BoundingBox boundingBox[MAX_COLUMNS];
   Plane plane;
-  Wall leftWall;
-  Wall backWall;
-  Wall rightWall;
+  Cube leftWall;
+  Cube backWall;
+  Cube rightWall;
 };
 } // namespace World

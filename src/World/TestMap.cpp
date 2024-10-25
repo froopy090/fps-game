@@ -26,40 +26,22 @@ TestMap::TestMap() {
   plane.position = Vector3Zero();
   plane.dimension = (Vector2){32.0f, 32.0f};
   plane.color = LIGHTGRAY;
-  plane.boundingBox.min =
-      (Vector3){-plane.dimension.x / 2.0f, 0.0f, -plane.dimension.y / 2.0f};
-  plane.boundingBox.max =
-      (Vector3){plane.dimension.x / 2.0f, 0.0f, plane.dimension.y / 2.0f};
+  plane.boundingBox = InitPlaneBoundingBox(plane);
 
   leftWall.position = (Vector3){16.0f, 2.5f, 0.0f};
   leftWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   leftWall.color = LIME;
-  leftWall.boundingBox.min =
-      (Vector3){leftWall.position.x - leftWall.size.x / 2.0f, 0.0f,
-                leftWall.position.z - leftWall.size.z / 2.0f};
-  leftWall.boundingBox.max =
-      (Vector3){leftWall.position.x + leftWall.size.x / 2.0f, leftWall.size.y,
-                leftWall.position.z + leftWall.size.z / 2.0f};
+  leftWall.boundingBox = InitCubeBoundingBox(leftWall);
 
   backWall.position = (Vector3){0.0f, 2.5f, 16.0f};
   backWall.size = (Vector3){32.0f, 5.0f, 1.0f};
   backWall.color = GOLD;
-  backWall.boundingBox.min =
-      (Vector3){backWall.position.x - backWall.size.x / 2.0f, 0.0f,
-                backWall.position.z - backWall.size.z / 2.0f};
-  backWall.boundingBox.max =
-      (Vector3){backWall.position.x + backWall.size.x / 2.0f, backWall.size.y,
-                backWall.position.z + backWall.size.z / 2.0f};
+  backWall.boundingBox = InitCubeBoundingBox(backWall);
 
   rightWall.position = (Vector3){-16.0f, 2.5f, 0.0f};
   rightWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   rightWall.color = BLUE;
-  rightWall.boundingBox.min =
-      (Vector3){rightWall.position.x - rightWall.size.x / 2.0f, 0.0f,
-                rightWall.position.z - rightWall.size.z / 2.0f};
-  rightWall.boundingBox.max = (Vector3){
-      rightWall.position.x + rightWall.size.x / 2.0f, rightWall.size.y,
-      rightWall.position.z + rightWall.size.z / 2.0f};
+  rightWall.boundingBox = InitCubeBoundingBox(rightWall);
 }
 
 void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
@@ -81,7 +63,8 @@ void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
 
   // Checks collision between enemy bounding box and columns
   for (int i = 0; i < MAX_COLUMNS; i++) {
-    if (!enemy->IsDead() && CheckCollisionBoxes(enemy->GetBoundingBox(), boundingBox[i])) {
+    if (!enemy->IsDead() &&
+        CheckCollisionBoxes(enemy->GetBoundingBox(), boundingBox[i])) {
       enemy->SetPosition(enemy->GetPreviousPosition());
     }
   }
@@ -98,7 +81,8 @@ void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
   }
 
   // Checks collision between enemy and world map
-  if (enemy->IsDead() && CheckCollisionBoxes(enemy->GetBoundingBox(), leftWall.boundingBox)) {
+  if (enemy->IsDead() &&
+      CheckCollisionBoxes(enemy->GetBoundingBox(), leftWall.boundingBox)) {
     enemy->SetPosition(enemy->GetPreviousPosition());
   }
   if (CheckCollisionBoxes(enemy->GetBoundingBox(), backWall.boundingBox)) {
@@ -110,7 +94,6 @@ void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
 }
 
 void TestMap::Draw(Entities::Player *player) {
-  // TODO add draw calls in here
   BeginMode3D(player->camera);
 
   DrawPlane(plane.position, plane.dimension, plane.color);
