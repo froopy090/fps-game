@@ -2,6 +2,7 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
+#include "iostream"
 #include "raylib.h"
 #include "raymath.h"
 #include <cctype>
@@ -21,6 +22,7 @@ Enemy::Enemy(Player *player) {
   // Position init
   position = (Vector3){0.0f, 0.0f, -4.0f};
   previousPosition = position;
+  upAxis = (Vector3){0.0f, 1.0f, 0.0f};
 
   // Bounding box init
   boundingBox.min = (Vector3){position.x - size.width / 2.0f, 0.0f,
@@ -38,7 +40,17 @@ Enemy::Enemy(Player *player) {
   // Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed init
-  speed = 1.5f;
+  speed = 2.0f;
+
+  // Feelers init
+  feelers.center = {Vector3Zero(), Vector3Zero()};
+  feelers.centerEndPoint = Vector3Zero();
+  feelers.right = {Vector3Zero(), Vector3Zero()};
+  feelers.rightEndPoint = Vector3Zero();
+  feelers.left = {Vector3Zero(), Vector3Zero()};
+  feelers.leftEndPoint = Vector3Zero();
+  feelers.viewDistance = 100.0f;
+  feelers.angle = 0.10f;
 }
 
 Enemy::~Enemy() { UnloadTexture(sprite.texture); }
@@ -54,6 +66,9 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     // Save position before updating
     this->SavePosition();
 
+    // Update timer
+    timer.Update();
+
     // Checks collision between player hitscan ray and Enemy bounding box
     if (Utility::HitscanIntersectsBox(player, boundingBox)) {
       // Takes damage
@@ -64,6 +79,13 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     if (health <= 0.0f) {
       dead = true;
       sprite.tint = BLANK;
+    }
+
+    // Checking if needs to slow down
+    if (!timer.Finished()) {
+      speed = 1.0f;
+    } else {
+      this->ResetSpeed();
     }
 
     // Move towards player
@@ -78,6 +100,30 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     boundingBox.max =
         (Vector3){position.x + size.width / 2.0f, position.y + size.height,
                   position.z + size.length / 2.0f};
+
+    // Updating Feelers
+    // Center
+    feelers.center.direction = forward;
+    feelers.center.position = this->GetPosition();
+    feelers.centerEndPoint = Vector3Add(
+        feelers.center.position,
+        Vector3Scale(feelers.center.direction, feelers.viewDistance));
+
+    // Right
+    feelers.right.direction =
+        Vector3RotateByAxisAngle(forward, upAxis, -feelers.angle);
+    feelers.right.position = this->GetPosition();
+    feelers.rightEndPoint =
+        Vector3Add(feelers.right.position,
+                   Vector3Scale(feelers.right.direction, feelers.viewDistance));
+
+    // Left
+    feelers.left.direction =
+        Vector3RotateByAxisAngle(forward, upAxis, feelers.angle);
+    feelers.left.position = this->GetPosition();
+    feelers.leftEndPoint =
+        Vector3Add(feelers.left.position,
+                   Vector3Scale(feelers.left.direction, feelers.viewDistance));
 
     // Checks collision between player and itself
     // also damages player
@@ -96,6 +142,10 @@ void Enemy::Draw(Player *player) {
         player->camera, sprite.texture, sprite.source,
         Vector3Add(position, (Vector3){0.0f, size.height / 2.0f, 0.0f}),
         (Vector2){size.width * 2.0f, size.height}, sprite.tint);
+    DrawRay(feelers.center, RED);
+    DrawRay(feelers.right, RED);
+    DrawRay(feelers.left, RED);
+    DrawCube(position, 0.5f, 0.5f, 0.5f, RED);
     EndMode3D();
   }
 }
@@ -106,9 +156,34 @@ Vector3 Enemy::GetPreviousPosition() { return previousPosition; }
 
 BoundingBox Enemy::GetBoundingBox() { return boundingBox; }
 
-Vector3 Enemy::GetPosition() { return position; }
+// returns true center of enemy
+Vector3 Enemy::GetPosition() {
+  return (Vector3){position.x, size.height / 2.0f, position.z};
+}
 
 void Enemy::SetPosition(Vector3 position) { this->position = position; }
 
 bool Enemy::IsDead() { return dead; }
+
+Feelers Enemy::GetFeelers() { return feelers; }
+
+void Enemy::MoveLeft() {
+  std::cout << "MOVING LEFT" << std::endl;
+  Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, 45.0f);
+  position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
+}
+
+void Enemy::MoveRight() {
+  std::cout << "MOVING RIGHT" << std::endl;
+  Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
+  position = Vector3Add(
+      position, Vector3Scale(newDir, speed * GetFrameTime()));
+}
+
+void Enemy::SlowDown() {
+  std::cout << "SLOWING DOWN" << std::endl;
+  timer.Start(1.0f);
+}
+
+void Enemy::ResetSpeed() { speed = 2.0f; }
 } // namespace Entities

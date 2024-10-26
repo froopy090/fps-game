@@ -8,11 +8,7 @@ Test002::Test002() {
   cube.position = (Vector3){10.0f, cube.size.y / 2.0f, 5.0f};
   cube.color = LIGHTGRAY;
   cube.boundingBox = InitCubeBoundingBox(cube);
-  /*cube.boundingBox.min = (Vector3){cube.position.x - cube.size.x / 2.0f, 0.0f,*/
-  /*                                 cube.position.z - cube.size.z / 2.0f};*/
-  /*cube.boundingBox.max =*/
-  /*    (Vector3){cube.position.x + cube.size.x / 2.0f, cube.size.y / 2.0f,*/
-  /*              cube.position.z + cube.size.z / 2.0f};*/
+
   // Plane init
   floor.position = Vector3Zero();
   floor.dimension = (Vector2){32.0f, 32.0f};
@@ -37,7 +33,6 @@ Test002::Test002() {
 }
 
 void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
-  // TODO: update map here
   // Checks collision between player hitscan ray and columns
   if (Utility::HitscanIntersectsBox(player, cube.boundingBox)) {
     cube.color = RAYWHITE;
@@ -48,6 +43,29 @@ void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Checks collision between player bounding box and columns
   if (CheckCollisionBoxes(player->GetBoundingBox(), cube.boundingBox)) {
     player->camera.position = player->GetPreviousPosition();
+  }
+
+  // Checks collision between enemy raycasts and columns
+  // move left if right ray is close to column
+  if (!enemy->IsDead() &&
+      Vector3Distance(cube.position, enemy->GetPosition()) <=
+          enemy->GetFeelers().viewDistance &&
+      GetRayCollisionBox(enemy->GetFeelers().right, cube.boundingBox).hit) {
+    enemy->MoveLeft();
+  }
+  // move right if left ray is close to column
+  if (!enemy->IsDead() &&
+      Vector3Distance(cube.position, enemy->GetPosition()) <=
+          enemy->GetFeelers().viewDistance &&
+      GetRayCollisionBox(enemy->GetFeelers().left, cube.boundingBox).hit) {
+    enemy->MoveRight();
+  }
+  // slow down if center ray is close to column
+  if (!enemy->IsDead() &&
+      Vector3Distance(cube.position, enemy->GetPosition()) <=
+          enemy->GetFeelers().viewDistance &&
+      GetRayCollisionBox(enemy->GetFeelers().center, cube.boundingBox).hit) {
+    enemy->SlowDown();
   }
 
   // Checks collision between enemy bounding box and columns

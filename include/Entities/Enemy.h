@@ -1,4 +1,5 @@
 #pragma once
+#include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
@@ -6,13 +7,7 @@
 
 namespace Entities {
 class Enemy {
-  struct EnemySprite {
-    Texture2D texture;
-    Rectangle source;
-    Color tint;
-  };
-
-public:
+  public:
   Enemy(Player *player);
   ~Enemy();
   void Event();
@@ -24,10 +19,16 @@ public:
   BoundingBox GetBoundingBox();
   void SetPosition(Vector3 position);
   bool IsDead();
+  Feelers GetFeelers();
+  void MoveRight();
+  void MoveLeft();
+  void SlowDown();
+  void ResetSpeed();
 
 private:
   Size size;
   Vector3 position;
+  Vector3 upAxis;
   EnemySprite sprite;
   float health;
   float meleeDamage;
@@ -36,5 +37,7 @@ private:
   Vector3 forward;
   float speed;
   Vector3 previousPosition;
+  Feelers feelers;
+  Utility::Timer timer;
 };
 } // namespace Entities
