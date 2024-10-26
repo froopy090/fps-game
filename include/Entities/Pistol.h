@@ -1,20 +1,11 @@
 #pragma once
 #include "raylib.h"
 #include "Utility/Timer.h"
+#include "Entities/EntityDefinitions.h"
 #include "Entities/Player.h"
 
 
 namespace Entities {
-struct Sprite{
-  Rectangle source;
-  Rectangle destination;
-  Vector2 origin;
-  float rotation;
-  Color tint;
-} ;
-
-typedef enum State{IDLE, FIRING, RELOADING} State;
-
 class Pistol {
 public:
   Pistol();

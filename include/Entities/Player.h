@@ -1,4 +1,5 @@
 #pragma once
+#include "Entities/EntityDefinitions.h"
 #include "Utility/Timer.h"
 #include "raylib.h"
 
@@ -8,12 +9,6 @@ class Test002;
 }
 
 namespace Entities {
-struct Size {
-  float width;
-  float height;
-  float length;
-};
-
 class Player {
 public:
   Camera3D camera;
