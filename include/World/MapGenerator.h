@@ -1,7 +1,4 @@
 #pragma once
-#include "raymath.h"
-
-#define MAP_SIZE 32
 
 namespace World {
 class MapGenerator {
