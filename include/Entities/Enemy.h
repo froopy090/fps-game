@@ -2,7 +2,6 @@
 #include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
-#include "Utility/Collision.h"
 #include "raylib.h"
 
 namespace Entities {

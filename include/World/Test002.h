@@ -1,6 +1,8 @@
 #pragma once
-#include "World/TestMap.h"
 #include "raylib.h"
+#include "World/WorldDefinitions.h"
+#include "Entities/Player.h"
+#include "Entities/Enemy.h"
 
 namespace World {
 class Test002 {

@@ -1,4 +1,6 @@
 #include "World/Test002.h"
+#include "World/WorldDefinitions.h"
+#include "Utility/Collision.h"
 #include "raymath.h"
 
 namespace World {
@@ -7,29 +9,29 @@ Test002::Test002() {
   cube.size = (Vector3){2.0f, 1.0f, 2.0f};
   cube.position = (Vector3){10.0f, cube.size.y / 2.0f, 5.0f};
   cube.color = LIGHTGRAY;
-  cube.boundingBox = InitCubeBoundingBox(cube);
+  cube.boundingBox = Utility::InitCubeBoundingBox(cube);
 
   // Plane init
   floor.position = Vector3Zero();
   floor.dimension = (Vector2){32.0f, 32.0f};
   floor.color = DARKGRAY;
-  floor.boundingBox = InitPlaneBoundingBox(floor);
+  floor.boundingBox = Utility::InitPlaneBoundingBox(floor);
 
   // Walls init
   leftWall.position = (Vector3){16.0f, 2.5f, 0.0f};
   leftWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   leftWall.color = LIME;
-  leftWall.boundingBox = InitCubeBoundingBox(leftWall);
+  leftWall.boundingBox = Utility::InitCubeBoundingBox(leftWall);
 
   backWall.position = (Vector3){0.0f, 2.5f, 16.0f};
   backWall.size = (Vector3){32.0f, 5.0f, 1.0f};
   backWall.color = GOLD;
-  backWall.boundingBox = InitCubeBoundingBox(backWall);
+  backWall.boundingBox = Utility::InitCubeBoundingBox(backWall);
 
   rightWall.position = (Vector3){-16.0f, 2.5f, 0.0f};
   rightWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   rightWall.color = BLUE;
-  rightWall.boundingBox = InitCubeBoundingBox(rightWall);
+  rightWall.boundingBox = Utility::InitCubeBoundingBox(rightWall);
 }
 
 void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {

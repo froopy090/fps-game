@@ -26,22 +26,22 @@ TestMap::TestMap() {
   plane.position = Vector3Zero();
   plane.dimension = (Vector2){32.0f, 32.0f};
   plane.color = LIGHTGRAY;
-  plane.boundingBox = InitPlaneBoundingBox(plane);
+  plane.boundingBox = Utility::InitPlaneBoundingBox(plane);
 
   leftWall.position = (Vector3){16.0f, 2.5f, 0.0f};
   leftWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   leftWall.color = LIME;
-  leftWall.boundingBox = InitCubeBoundingBox(leftWall);
+  leftWall.boundingBox = Utility::InitCubeBoundingBox(leftWall);
 
   backWall.position = (Vector3){0.0f, 2.5f, 16.0f};
   backWall.size = (Vector3){32.0f, 5.0f, 1.0f};
   backWall.color = GOLD;
-  backWall.boundingBox = InitCubeBoundingBox(backWall);
+  backWall.boundingBox = Utility::InitCubeBoundingBox(backWall);
 
   rightWall.position = (Vector3){-16.0f, 2.5f, 0.0f};
   rightWall.size = (Vector3){1.0f, 5.0f, 32.0f};
   rightWall.color = BLUE;
-  rightWall.boundingBox = InitCubeBoundingBox(rightWall);
+  rightWall.boundingBox = Utility::InitCubeBoundingBox(rightWall);
 }
 
 void TestMap::Update(Entities::Player *player, Entities::Enemy *enemy) {
