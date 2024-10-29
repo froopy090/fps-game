@@ -12,6 +12,8 @@ set(SOURCES
     src/Utility/Timer.cpp
     src/Utility/PlayerInfoHUD.cpp
     src/World/Test002.cpp
+    src/World/Plane.cpp
+    src/World/Cube.cpp
 )
 
 include_directories(include)
