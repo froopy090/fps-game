@@ -4,7 +4,8 @@
 namespace World {
 constexpr int TILE_SIZE = 10;
 constexpr int WALL_HEIGHT = 10;
-constexpr int MAP_SIZE = 10;
+constexpr int MAP_SIZE = 5;
+constexpr int ROOM_SIZE = 10;
 
 struct Plane {
   Vector3 position;

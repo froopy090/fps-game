@@ -1,4 +1,5 @@
 #pragma once
+#include "World/WorldDefinitions.h"
 
 namespace World {
 class MapGenerator {
