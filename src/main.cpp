@@ -3,7 +3,6 @@
 #include "Entities/Player.h"
 #include "Utility/CameraHUD.h"
 #include "Utility/PlayerInfoHUD.h"
-#include "World/TestMap.h"
 #include "World/Test002.h"
 #include "globals.h"
 #include "raylib.h"
@@ -32,7 +31,6 @@ int main() {
   SearchAndSetResourceDir("resources");
 
   // World
-  //auto testMap = std::make_unique<World::TestMap>();
   auto test002 = std::make_unique<World::Test002>();
 
   // Loading Entities
@@ -78,7 +76,6 @@ int main() {
       player1->Update(test002.get());
       enemy1->Update(player1.get(), pistol.get());
 
-      //testMap->Update(player1.get(), enemy1.get());
       test002->Update(player1.get(), enemy1.get());
 
       break;
@@ -106,7 +103,6 @@ int main() {
     case GAMEPLAY:
       // TODO: update game screen variables here
 
-      //testMap->Draw(player1.get());
       test002->Draw(player1.get());
 
       enemy1->Draw(player1.get());

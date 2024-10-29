@@ -11,7 +11,6 @@ set(SOURCES
     src/Utility/CameraHUD.cpp
     src/Utility/Timer.cpp
     src/Utility/PlayerInfoHUD.cpp
-    src/World/TestMap.cpp
     src/World/Test002.cpp
 )
 
