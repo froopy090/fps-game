@@ -1,19 +1,39 @@
-#include "World/Wall.h"
+#include "World/Cube.h"
 #include "World/WorldDefinitions.h"
+#include "raylib.h"
 
 namespace World {
-Wall::Wall(Vector3 position) {
+Cube::Cube(Vector3 position) {
   // Init
   this->position = position;
-  dimensions = (Vector3){TILE_SIZE, WALL_HEIGHT, TILE_SIZE};
+  size = (Vector3){TILE_SIZE, WALL_HEIGHT, TILE_SIZE};
   color = DARKGRAY;
-  box.min = (Vector3){position.x - dimensions.x / 2.0f, 0.0f,
-                      position.z - dimensions.z / 2.0f};
-  box.max = (Vector3){position.x + dimensions.x / 2.0f, dimensions.y,
-                      position.z + dimensions.z / 2.0f};
+  box.min =
+      (Vector3){position.x - size.x / 2.0f, 0.0f, position.z - size.z / 2.0f};
+  box.max =
+      (Vector3){position.x + size.x / 2.0f, size.y, position.z + size.z / 2.0f};
 }
 
-void Wall::Draw(){
-    //TODO: add draw functions here
+void Cube::Draw() {
+  DrawCubeV(position, size, color);
+  DrawBoundingBox(box, BLACK);
 }
+
+// Getters
+Vector3 Cube::GetPosition() { return position; }
+
+Vector3 Cube::GetSize() { return size; }
+
+Color Cube::GetColor() { return color; }
+
+BoundingBox Cube::GetBoundingBox() { return box; }
+
+// Setters
+void Cube::SetPosition(Vector3 position) { this->position = position; }
+
+void Cube::SetSize(Vector3 size) { this->size = size; }
+
+void Cube::SetColor(Color color) { this->color = color; }
+
+void Cube::SetBoundingBox(BoundingBox box) { this->box = box; }
 } // namespace World

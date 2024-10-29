@@ -1,6 +1,8 @@
 #pragma once
 #include "raylib.h"
-#include "World/WorldDefinitions.h"
+//#include "World/WorldDefinitions.h"
+#include "World/Plane.h"
+#include "World/Cube.h"
 #include "Entities/Player.h"
 #include "Entities/Enemy.h"
 
@@ -14,9 +16,7 @@ public:
 
 private:
   Plane floor;
-  Cube leftWall;
-  Cube backWall;
-  Cube rightWall;
+  Cube leftWall, backWall, rightWall; 
   Cube cube;
 };
 } // namespace World
