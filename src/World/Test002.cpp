@@ -8,11 +8,10 @@
 
 namespace World {
 Test002::Test002()
-    : floor(Vector3Zero()),
-      leftWall((Vector3){TILE_SIZE, WALL_HEIGHT / 2.0f, 0.0f}),
-      backWall((Vector3){0.0f, WALL_HEIGHT / 2.0f, TILE_SIZE}),
-      rightWall((Vector3){-TILE_SIZE, WALL_HEIGHT / 2.0f, 0.0f}),
-      cube((Vector3){TILE_SIZE, WALL_HEIGHT / 2.0f, -TILE_SIZE}) {}
+    : floor(Vector3Zero()), leftWall((Vector3){TILE_SIZE, 0.0f, 0.0f}),
+      backWall((Vector3){0.0f, 0.0f, TILE_SIZE}),
+      rightWall((Vector3){-TILE_SIZE, 0.0f, 0.0f}),
+      cube((Vector3){TILE_SIZE, 0.0f, -TILE_SIZE}) {}
 
 void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Checks collision between player hitscan ray and columns

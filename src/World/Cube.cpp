@@ -1,11 +1,13 @@
 #include "World/Cube.h"
 #include "World/WorldDefinitions.h"
 #include "raylib.h"
+#include "raymath.h"
 
 namespace World {
 Cube::Cube(Vector3 position) {
   // Init
-  this->position = position;
+  this->position =
+      Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT / 2.0f, 0.0f});
   size = (Vector3){TILE_SIZE, WALL_HEIGHT, TILE_SIZE};
   color = DARKGRAY;
   box.min =

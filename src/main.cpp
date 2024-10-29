@@ -4,6 +4,7 @@
 #include "Utility/CameraHUD.h"
 #include "Utility/PlayerInfoHUD.h"
 #include "World/Test002.h"
+#include "World/Room001.h"
 #include "globals.h"
 #include "raylib.h"
 #include "raymath.h"
@@ -32,6 +33,7 @@ int main() {
 
   // World
   auto test002 = std::make_unique<World::Test002>();
+  auto room = std::make_unique<World::Room001>();
 
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
