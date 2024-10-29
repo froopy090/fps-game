@@ -42,8 +42,9 @@ Player::Player() {
 }
 
 void Player::Event() {
-  if (IsKeyPressed(KEY_THREE)) {
-    cameraMode = CAMERA_THIRD_PERSON;
+  // no clip for debugging
+  if (IsKeyPressed(KEY_ZERO)) {
+    cameraMode = CAMERA_FREE;
     camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // reset roll
   }
 
@@ -69,63 +70,63 @@ void Player::Update(World::Test002 *testMap) {
   // Save player position before updating
   this->SavePosition();
 
-  // Update hitscan timer
-  timer.Update();
-  if (timer.Finished()) {
-    isShooting = false;
-  }
-
   // Update Camera postion
-  UpdateCameraPro(
-      &camera,
-      (Vector3){
-          (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) *
-                  0.1f - // Move forward-backward
-              (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) * 0.1f,
-          (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) * 0.1f - // Move right-left
-              (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) * 0.1f,
-          0.0f // Move up-down
-      },
-      (Vector3){
-          GetMouseDelta().x * 0.05f, // Rotation: yaw
-          GetMouseDelta().y * 0.05f, // Rotation: pitch
-          0.0f                       // Rotation: roll
-      },
-      GetMouseWheelMove() * 2.0f); // Move to target (zoom)
+  UpdateCamera(&camera, cameraMode);
+  /*UpdateCameraPro(*/
+  /*    &camera,*/
+  /*    (Vector3){*/
+  /*        (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) **/
+  /*                0.1f - // Move forward-backward*/
+  /*            (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) * 0.1f,*/
+  /*        (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) * 0.1f - // Move
+   * right-left*/
+  /*            (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) * 0.1f,*/
+  /*        0.0f // Move up-down*/
+  /*    },*/
+  /*    (Vector3){*/
+  /*        GetMouseDelta().x * 0.05f, // Rotation: yaw*/
+  /*        GetMouseDelta().y * 0.05f, // Rotation: pitch*/
+  /*        0.0f                       // Rotation: roll*/
+  /*    },*/
+  /*    GetMouseWheelMove() * 2.0f); // Move to target (zoom)*/
 
-  // Update camera target to be a point directly in front of camera
-  Vector3 forward =
-      Vector3Normalize(Vector3Subtract(camera.target, camera.position));
-  camera.target = Vector3Add(camera.position, Vector3Scale(forward, 100.0f));
+  if (cameraMode != CAMERA_FREE) {
+    // Update hitscan timer
+    timer.Update();
+    if (timer.Finished()) {
+      isShooting = false;
+    }
 
-  // Jumping
-  if (isJumping) {
-    jumpVelocity += gravity * GetFrameTime();
-  } else {
-    // gravity is always in effect
-    jumpVelocity = gravity;
-  }
+    // Update camera target to be a point directly in front of camera
+    Vector3 forward =
+        Vector3Normalize(Vector3Subtract(camera.target, camera.position));
+    camera.target = Vector3Add(camera.position, Vector3Scale(forward, 100.0f));
 
-  camera.position.y += jumpVelocity * GetFrameTime();
+    // Jumping
+    if (isJumping) {
+      jumpVelocity += gravity * GetFrameTime();
+    } else {
+      // gravity is always in effect
+      jumpVelocity = gravity;
+    }
 
-  if (jumpVelocity < 0.0f &&
-      CheckCollisionBoxes(boundingBox, testMap->GetPlaneBoundingBox())){
-    camera.position.y = size.height;
-    isJumping = false;
-  }
+    camera.position.y += jumpVelocity * GetFrameTime();
 
-  // Update position
-  if (cameraMode == CAMERA_FIRST_PERSON) {
-    boundingBox.min = (Vector3){camera.position.x - size.width / 2.0f,
-                                camera.position.y - size.height,
-                                camera.position.z - size.length / 2.0f};
-    boundingBox.max =
-        (Vector3){camera.position.x + size.width / 2.0f, camera.position.y,
-                  camera.position.z + size.length / 2.0f};
-  }
+    if (jumpVelocity < 0.0f &&
+        CheckCollisionBoxes(boundingBox, testMap->GetPlaneBoundingBox())) {
+      camera.position.y = size.height;
+      isJumping = false;
+    }
 
-  if (cameraMode == CAMERA_THIRD_PERSON) {
-    // TODO: update variables for third person POV
+    // Update position
+    if (cameraMode == CAMERA_FIRST_PERSON) {
+      boundingBox.min = (Vector3){camera.position.x - size.width / 2.0f,
+                                  camera.position.y - size.height,
+                                  camera.position.z - size.length / 2.0f};
+      boundingBox.max =
+          (Vector3){camera.position.x + size.width / 2.0f, camera.position.y,
+                    camera.position.z + size.length / 2.0f};
+    }
   }
 }
 
