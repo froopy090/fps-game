@@ -2,7 +2,6 @@
 #include "Utility/Timer.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <iostream>
 
 namespace Entities {
 Player::Player() {
@@ -72,23 +71,6 @@ void Player::Update() {
 
   // Update Camera postion
   UpdateCamera(&camera, cameraMode);
-  /*UpdateCameraPro(*/
-  /*    &camera,*/
-  /*    (Vector3){*/
-  /*        (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) **/
-  /*                0.1f - // Move forward-backward*/
-  /*            (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) * 0.1f,*/
-  /*        (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) * 0.1f - // Move
-   * right-left*/
-  /*            (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) * 0.1f,*/
-  /*        0.0f // Move up-down*/
-  /*    },*/
-  /*    (Vector3){*/
-  /*        GetMouseDelta().x * 0.05f, // Rotation: yaw*/
-  /*        GetMouseDelta().y * 0.05f, // Rotation: pitch*/
-  /*        0.0f                       // Rotation: roll*/
-  /*    },*/
-  /*    GetMouseWheelMove() * 2.0f); // Move to target (zoom)*/
 
   if (cameraMode != CAMERA_FREE) {
     // Update hitscan timer
@@ -140,33 +122,28 @@ void Player::Draw() {
   EndMode3D();
 }
 
+// Getters
 // returns center of bounding box position (NOT the camera position)
 Vector3 Player::GetPosition() {
   return Vector3Subtract(camera.position,
                          (Vector3){0.0f, size.height / 2.0f, 0.0f});
 }
-
 Ray Player::GetRay() {
   Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(
                                          camera.target, camera.position))};
   return hitscanRay;
 }
-
 BoundingBox Player::GetBoundingBox() { return boundingBox; }
-
-void Player::SavePosition() { previousPosition = camera.position; }
-
 Vector3 Player::GetPreviousPosition() { return previousPosition; }
+float Player::GetHealth() { return health; }
+bool Player::IsShooting() { return isShooting; }
 
+// Setters
+void Player::SavePosition() { previousPosition = camera.position; }
 void Player::TakeDamage(float damage) {
   if (health > 0.0f) {
     health -= damage * GetFrameTime();
   }
 }
-
-float Player::GetHealth() { return health; }
-
-bool Player::IsShooting() { return isShooting; }
-
 void Player::SetPlaneCollision(bool b) { planeCollision = b; }
 } // namespace Entities
