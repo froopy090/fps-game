@@ -1,6 +1,5 @@
 #include "Entities/Player.h"
 #include "Utility/Timer.h"
-#include "World/Test002.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <iostream>
@@ -36,6 +35,7 @@ Player::Player() {
   gravity = -10.0f;
   jumpVelocity = 0.0f;
   isJumping = false;
+  planeCollision = false;
 
   // Health init
   health = 100.0f;
@@ -66,7 +66,7 @@ void Player::Event() {
   }
 }
 
-void Player::Update(World::Test002 *testMap) {
+void Player::Update() {
   // Save player position before updating
   this->SavePosition();
 
@@ -112,8 +112,7 @@ void Player::Update(World::Test002 *testMap) {
 
     camera.position.y += jumpVelocity * GetFrameTime();
 
-    if (jumpVelocity < 0.0f &&
-        CheckCollisionBoxes(boundingBox, testMap->GetPlaneBoundingBox())) {
+    if (jumpVelocity < 0.0f && planeCollision) {
       camera.position.y = size.height;
       isJumping = false;
     }
@@ -168,4 +167,6 @@ void Player::TakeDamage(float damage) {
 float Player::GetHealth() { return health; }
 
 bool Player::IsShooting() { return isShooting; }
+
+void Player::SetPlaneCollision(bool b) { planeCollision = b; }
 } // namespace Entities

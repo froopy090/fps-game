@@ -16,8 +16,7 @@ public:
 
   Player();
   void Event();
-  void Update(World::TestMap *testMap);
-  void Update(World::Test002 *testMap);
+  void Update();
   void Draw();
   Vector3 GetPosition();
   Ray GetRay();
@@ -27,6 +26,7 @@ public:
   void TakeDamage(float damage);
   bool IsShooting();
   float GetHealth();
+  void SetPlaneCollision(bool b);
 
 private:
   Size size;
@@ -38,5 +38,6 @@ private:
   float gravity;
   float jumpVelocity;
   bool isJumping;
+  bool planeCollision;
 };
 } // namespace Entities
