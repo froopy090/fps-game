@@ -1,13 +1,19 @@
 #pragma once
-#include "Entities/Player.h"
 #include "raylib.h"
 
 namespace Utility {
-inline bool HitscanIntersectsBox(Entities::Player *player, BoundingBox box) {
-  if (player->IsShooting() && GetRayCollisionBox(player->GetRay(), box).hit) {
+template <typename Shooter, typename Target>
+inline bool HitscanIntersectsBox(const Shooter &shooter, const Target &target) {
+  if (shooter->IsShooting() &&
+      GetRayCollisionBox(shooter->GetRay(), target->GetBoundingBox()).hit) {
     return true;
   } else {
     return false;
   }
+}
+
+template <typename Entity, typename Object>
+inline bool EntityCollisionObject(const Entity &entity, const Object &object) {
+  return CheckCollisionBoxes(entity->GetBoundingBox(), object->GetBoundingBox());
 }
 } // namespace Utility
