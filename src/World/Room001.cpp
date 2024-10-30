@@ -1,4 +1,6 @@
 #include "World/Room001.h"
+#include "Entities/Player.h"
+#include "Utility/Collision.h"
 
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {{1, 1, 1, 1, 1},
@@ -23,6 +25,23 @@ Room001::Room001() {
       } else if (roomMatrix[i][j] == 1) {
         walls.emplace_back(position);
       }
+    }
+  }
+}
+
+void Room001::Update(Entities::Player *player) {
+  // Checks collision between plane and Player
+  for (Plane &floor : floors) {
+    if (Utility::EntityCollisionObject(player, &floor)) {
+      player->SetPlaneCollision(true);
+      break;
+    }
+  }
+
+  // Checks collision between cubes and Player
+  for (Cube &wall : walls) {
+    if (Utility::EntityCollisionObject(player, &wall)) {
+      player->camera.position = player->GetPreviousPosition();
     }
   }
 }

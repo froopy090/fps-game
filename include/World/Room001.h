@@ -1,4 +1,5 @@
 #pragma once
+#include "Entities/Player.h"
 #include "World/Cube.h"
 #include "World/Plane.h"
 #include "World/WorldDefinitions.h"
@@ -8,6 +9,7 @@ namespace World {
 class Room001 {
 public:
   Room001();
+  void Update(Entities::Player *player);
   void Draw();
 
 private:
