@@ -12,7 +12,7 @@ Player::Player() {
 
   // Camera init
   camera = {0};
-  camera.position = (Vector3){0.0f, size.height, 4.0f};
+  camera.position = (Vector3){0.0f, size.height, 7.0f};
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
   camera.fovy = 90.0f;
@@ -89,7 +89,7 @@ void Player::Update() {
       jumpVelocity += gravity * GetFrameTime();
     } else {
       // gravity is always in effect
-      jumpVelocity = gravity;
+      jumpVelocity = gravity; // clearly how physics work
     }
 
     camera.position.y += jumpVelocity * GetFrameTime();

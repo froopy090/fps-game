@@ -1,11 +1,12 @@
 #include "World/Room001.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
+#include <iostream>
 
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {{1, 1, 1, 1, 1},
                                                        {1, 0, 0, 0, 0},
-                                                       {1, 0, 1, 0, 1},
+                                                       {1, 0, 0, 0, 1},
                                                        {1, 0, 0, 0, 1},
                                                        {1, 1, 1, 1, 1}};
 Room001::Room001() {
@@ -30,6 +31,8 @@ Room001::Room001() {
 }
 
 void Room001::Update(Entities::Player *player) {
+  // Reset
+  player->SetPlaneCollision(false);
   // Checks collision between plane and Player
   for (Plane &floor : floors) {
     if (Utility::EntityCollisionObject(player, &floor)) {
@@ -47,7 +50,6 @@ void Room001::Update(Entities::Player *player) {
 }
 
 void Room001::Draw() {
-  // TODO: draw functions here
   for (Plane &floor : floors) {
     floor.Draw();
   }

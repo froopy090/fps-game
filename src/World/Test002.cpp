@@ -22,8 +22,7 @@ void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
   }
 
   // Checks collision between player and plane
-  player->SetPlaneCollision(
-      CheckPlaneCollisionPlayer(player->GetBoundingBox()));
+  player->SetPlaneCollision(Utility::EntityCollisionObject(player, &floor));
 
   // Checks collision between player bounding box and columns
   if (CheckCollisionBoxes(player->GetBoundingBox(), cube.GetBoundingBox())) {
