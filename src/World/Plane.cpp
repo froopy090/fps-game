@@ -8,8 +8,10 @@ Plane::Plane(Vector3 position) {
   this->position = position;
   size = (Vector2){TILE_SIZE, TILE_SIZE};
   color = GRAY;
-  box.min = (Vector3){-size.x / 2.0f, position.y, -size.y / 2.0f};
-  box.max = (Vector3){size.x / 2.0f, position.y, size.y / 2.0f};
+  box.min = (Vector3){position.x - size.x / 2.0f, position.y,
+                      position.z - size.y / 2.0f};
+  box.max = (Vector3){position.x + size.x / 2.0f, position.y,
+                      position.z + size.y / 2.0f};
 }
 
 void Plane::Draw() {
