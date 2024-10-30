@@ -75,7 +75,7 @@ int main() {
     case GAMEPLAY:
       // TODO: update game screen variables here
       pistol->Update();
-      player1->Update(test002.get());
+      player1->Update();
       enemy1->Update(player1.get(), pistol.get());
 
       test002->Update(player1.get(), enemy1.get());
