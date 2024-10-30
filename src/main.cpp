@@ -3,8 +3,8 @@
 #include "Entities/Player.h"
 #include "Utility/CameraHUD.h"
 #include "Utility/PlayerInfoHUD.h"
-#include "World/Test002.h"
 #include "World/Room001.h"
+#include "World/Test002.h"
 #include "globals.h"
 #include "raylib.h"
 #include "raymath.h"
@@ -33,7 +33,7 @@ int main() {
 
   // World
   auto test002 = std::make_unique<World::Test002>();
-  auto room = std::make_unique<World::Room001>();
+  //auto room = std::make_unique<World::Room001>();
 
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
@@ -79,6 +79,7 @@ int main() {
       enemy1->Update(player1.get(), pistol.get());
 
       test002->Update(player1.get(), enemy1.get());
+      //room->Update(player1.get());
 
       break;
     case ENDING:
@@ -105,7 +106,10 @@ int main() {
     case GAMEPLAY:
       // TODO: update game screen variables here
 
+      BeginMode3D(player1->camera);
       test002->Draw(player1.get());
+      //room->Draw();
+      EndMode3D();
 
       enemy1->Draw(player1.get());
       player1->Draw();

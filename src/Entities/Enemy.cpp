@@ -70,7 +70,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     timer.Update();
 
     // Checks collision between player hitscan ray and Enemy bounding box
-    if (Utility::HitscanIntersectsBox(player, boundingBox)) {
+    if (Utility::HitscanIntersectsBox(player, this)) {
       // Takes damage
       health -= pistol->GetDamage();
     }

@@ -15,7 +15,7 @@ Test002::Test002()
 
 void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Checks collision between player hitscan ray and columns
-  if (Utility::HitscanIntersectsBox(player, cube.GetBoundingBox())) {
+  if (Utility::HitscanIntersectsBox(player, &cube)) {
     cube.SetColor(RAYWHITE);
   } else {
     cube.SetColor(LIGHTGRAY);
