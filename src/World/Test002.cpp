@@ -21,6 +21,10 @@ void Test002::Update(Entities::Player *player, Entities::Enemy *enemy) {
     cube.SetColor(LIGHTGRAY);
   }
 
+  // Checks collision between player and plane
+  player->SetPlaneCollision(
+      CheckPlaneCollisionPlayer(player->GetBoundingBox()));
+
   // Checks collision between player bounding box and columns
   if (CheckCollisionBoxes(player->GetBoundingBox(), cube.GetBoundingBox())) {
     player->camera.position = player->GetPreviousPosition();
@@ -99,4 +103,8 @@ void Test002::Draw(Entities::Player *player) {
 }
 
 BoundingBox Test002::GetPlaneBoundingBox() { return floor.GetBoundingBox(); }
+
+bool Test002::CheckPlaneCollisionPlayer(BoundingBox playerBox) {
+  return CheckCollisionBoxes(playerBox, floor.GetBoundingBox());
+}
 } // namespace World

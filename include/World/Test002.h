@@ -13,6 +13,7 @@ public:
   void Update(Entities::Player *player, Entities::Enemy *enemy);
   void Draw(Entities::Player *player);
   BoundingBox GetPlaneBoundingBox();
+  bool CheckPlaneCollisionPlayer(BoundingBox playerBox);
 
 private:
   Plane floor;
