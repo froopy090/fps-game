@@ -1,6 +1,7 @@
 #pragma once
 #include "Entities/Player.h"
 #include "World/Cube.h"
+#include "World/LargeColumn.h"
 #include "World/Plane.h"
 #include "World/WorldDefinitions.h"
 #include "vector"
@@ -18,5 +19,6 @@ private:
   // static const int heightMatrix[ROOM_SIZE][ROOM_SIZE];
   std::vector<Plane> floors;
   std::vector<Cube> walls;
+  std::vector<LargeColumn> columns;
 };
 } // namespace World

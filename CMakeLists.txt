@@ -14,6 +14,7 @@ set(SOURCES
     src/World/Test002.cpp
     src/World/Room001.cpp
     src/World/Plane.cpp
+    src/World/LargeColumn.cpp
     src/World/Cube.cpp
 )
 

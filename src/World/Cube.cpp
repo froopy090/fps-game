@@ -4,6 +4,15 @@
 #include "raymath.h"
 
 namespace World {
+Cube::Cube() {
+  // default constructor
+  position = Vector3Zero();
+  size = Vector3Zero();
+  color = BLACK;
+  box.min = Vector3Zero();
+  box.max = Vector3Zero();
+}
+
 Cube::Cube(Vector3 position) {
   // Init
   this->position =

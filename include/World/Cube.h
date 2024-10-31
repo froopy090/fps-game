@@ -4,6 +4,7 @@
 namespace World {
 class Cube {
 public:
+  Cube();
   Cube(Vector3 position);
   void Draw();
 
@@ -19,7 +20,7 @@ public:
   void SetColor(Color color);
   void SetBoundingBox(BoundingBox box);
 
-private:
+protected:
   Vector3 position;
   Vector3 size;
   Color color;
