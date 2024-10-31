@@ -1,5 +1,5 @@
 #pragma once
-#include "Cube.h"
+#include "World/BaseObjects.h"
 #include "raylib.h"
 
 namespace World {

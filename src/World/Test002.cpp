@@ -1,8 +1,7 @@
 #include "World/Test002.h"
 #include "Utility/Collision.h"
-#include "World/Cube.h"
-#include "World/Plane.h"
 #include "World/WorldDefinitions.h"
+#include "World/BaseObjects.h"
 #include "raylib.h"
 #include "raymath.h"
 

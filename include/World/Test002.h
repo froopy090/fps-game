@@ -1,8 +1,7 @@
 #pragma once
 #include "raylib.h"
 //#include "World/WorldDefinitions.h"
-#include "World/Plane.h"
-#include "World/Cube.h"
+#include "World/BaseObjects.h"
 #include "Entities/Player.h"
 #include "Entities/Enemy.h"
 

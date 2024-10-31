@@ -1,8 +1,7 @@
 #pragma once
 #include "Entities/Player.h"
-#include "World/Cube.h"
 #include "World/LargeColumn.h"
-#include "World/Plane.h"
+#include "World/BaseObjects.h"
 #include "World/WorldDefinitions.h"
 #include "vector"
 
