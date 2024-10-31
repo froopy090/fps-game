@@ -2,7 +2,7 @@
 #include "World/WorldDefinitions.h"
 #include "raymath.h"
 
-#define COLUMN_HEIGHT 100.0f
+#define COLUMN_HEIGHT 1000.0f
 
 namespace World {
 LargeColumn::LargeColumn(Vector3 position) {

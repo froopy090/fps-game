@@ -20,7 +20,7 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int fps = 60;
+  const int fps = 144;
 
   InitWindow(screenWidth, screenHeight, "fps");
   SetTargetFPS(fps);
@@ -117,7 +117,7 @@ int main() {
       // HUD
       cameraHUD->Draw(player1.get());
       playerInfoHUD->Draw(player1.get());
-      DrawFPS(screenWidth - 10, screenHeight - 10);
+      DrawFPS(5,5);
 
       break;
     case ENDING:
