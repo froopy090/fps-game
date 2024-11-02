@@ -15,6 +15,7 @@ set(SOURCES
     src/World/Room001.cpp
     src/World/BaseObjects.cpp
     src/World/LargeColumn.cpp
+    src/World/Stairs.cpp
 )
 
 include_directories(include)
@@ -24,6 +25,9 @@ link_directories(lib)
 
 # Add the executable
 add_executable(fps-game ${SOURCES})
+
+# Add run command
+add_custom_target(run COMMAND fps-game)
 
 # Link the raylib library and the math library
 target_link_libraries(fps-game raylib m)
