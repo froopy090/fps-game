@@ -3,6 +3,7 @@
 #include "World/LargeColumn.h"
 #include "World/BaseObjects.h"
 #include "World/WorldDefinitions.h"
+#include "World/Stairs.h"
 #include "vector"
 
 namespace World {
@@ -19,5 +20,6 @@ private:
   std::vector<Plane> floors;
   std::vector<Cube> walls;
   std::vector<LargeColumn> columns;
+  std::vector<Stairs> stairs;
 };
 } // namespace World

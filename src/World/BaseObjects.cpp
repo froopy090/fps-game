@@ -3,6 +3,7 @@
 #include "raymath.h"
 
 namespace World {
+// Cube --------------------------------------
 Cube::Cube() {
   // default constructor
   position = Vector3Zero();
@@ -22,6 +23,17 @@ Cube::Cube(Vector3 position) {
       (Vector3){position.x - size.x / 2.0f, 0.0f, position.z - size.z / 2.0f};
   box.max =
       (Vector3){position.x + size.x / 2.0f, size.y, position.z + size.z / 2.0f};
+}
+
+Cube::Cube(Vector3 position, Vector3 size) {
+  // Init
+  this->size = size;
+  this->position = Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f});
+  color = DARKGRAY;
+  box.min = (Vector3){position.x - size.x / 2.0f, position.y,
+                      position.z - size.z / 2.0f};
+  box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
+                      position.z + size.z / 2.0f};
 }
 
 void Cube::Draw() {
@@ -46,7 +58,9 @@ void Cube::SetSize(Vector3 size) { this->size = size; }
 void Cube::SetColor(Color color) { this->color = color; }
 
 void Cube::SetBoundingBox(BoundingBox box) { this->box = box; }
-
+// End Cube ---------------------------------------------------------
+//
+// Plane ---------------------------------------------------------
 Plane::Plane(Vector3 position) {
   // Init
   this->position = position;
@@ -80,4 +94,5 @@ void Plane::SetSize(Vector2 size) { this->size = size; }
 void Plane::SetColor(Color color) { this->color = color; }
 
 void Plane::SetBoundingBox(BoundingBox box) { this->box = box; }
+// End Plane -----------------------------------------------------
 } // namespace World
