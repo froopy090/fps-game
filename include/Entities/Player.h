@@ -18,22 +18,26 @@ public:
   // Getters
   // returns center of bounding box, NOT camera position
   Vector3 GetPosition();
+  Vector3 GetSize();
   // returns hitscan ray
   Ray GetRay();
   BoundingBox GetBoundingBox();
   Vector3 GetPreviousPosition();
   bool IsShooting();
   float GetHealth();
+  bool GetStairFlag();
 
   // Setters
   // sets previousPosition to the current camera position
   void SavePosition();
   void TakeDamage(float damage);
   void SetPlaneCollision(bool b);
+  void SetStairFlag(bool b);
+  void Gravity(bool b);
 
 private:
   // Player info
-  Size size;
+  Vector3 size;
   float health;
 
   // Firing weapon
@@ -45,9 +49,13 @@ private:
   Vector3 previousPosition;
 
   // Jumping/gravity
+  bool gravityOn;
   float gravity;
   float jumpVelocity;
   bool isJumping;
   bool planeCollision;
+
+  //Stairs
+  bool isOnStair;
 };
 } // namespace Entities

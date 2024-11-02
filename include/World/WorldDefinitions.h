@@ -3,7 +3,7 @@
 namespace World {
 // Room Objects
 constexpr int TILE_SIZE = 5;
-constexpr int WALL_HEIGHT = 10;
+constexpr int WALL_HEIGHT = 3;
 
 // Rooms
 constexpr int ROOM_SIZE = 25;

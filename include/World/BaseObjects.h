@@ -6,6 +6,7 @@ class Cube {
 public:
   Cube();
   Cube(Vector3 position);
+  Cube(Vector3 position, Vector3 size);
   void Draw();
 
   // Getters
