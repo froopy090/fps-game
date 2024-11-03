@@ -3,6 +3,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
+#include <iostream>
+
 namespace Entities {
 Player::Player() {
   // Player size init
@@ -100,7 +102,7 @@ void Player::Update() {
     camera.position.y += jumpVelocity * GetFrameTime();
 
     if (jumpVelocity < 0.0f && planeCollision) {
-      camera.position.y = this->GetPreviousPosition().y;
+      camera.position.y = previousPosition.y;
       isJumping = false;
     }
 
@@ -113,6 +115,13 @@ void Player::Update() {
           (Vector3){camera.position.x + size.z / 2.0f, camera.position.y,
                     camera.position.z + size.x / 2.0f};
     }
+  }
+
+  // if player falls through map, reset position
+  if(GetBoundingBox().min.y <= -30)
+  {
+    std::cerr << "PLAYER FELL through map" << std::endl;
+    camera.position.y = size.y + 20;
   }
 }
 

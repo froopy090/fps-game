@@ -176,8 +176,7 @@ void Enemy::MoveLeft() {
 void Enemy::MoveRight() {
   std::cout << "MOVING RIGHT" << std::endl;
   Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
-  position = Vector3Add(
-      position, Vector3Scale(newDir, speed * GetFrameTime()));
+  position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
 }
 
 void Enemy::SlowDown() {
