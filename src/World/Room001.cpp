@@ -71,6 +71,7 @@ void Room001::Update(Entities::Player *player) {
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
       player->camera.position = player->GetPreviousPosition();
+      player->SetPlaneCollision(true);
     }
   }
 

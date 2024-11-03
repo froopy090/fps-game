@@ -20,7 +20,7 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int fps = 60;
+  const int fps = 144;
 
   InitWindow(screenWidth, screenHeight, "fps");
   SetTargetFPS(fps);
