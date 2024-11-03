@@ -60,20 +60,22 @@ Room001::Room001() {
   }
 }
 
-bool xAxisCollision(Entities::Player* playa, World::Cube& IceCube) {
-  return playa->GetBoundingBox().min.x < IceCube.GetBoundingBox().min.x || playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x;
+bool xAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
+  return playa->GetBoundingBox().min.x < IceCube.GetBoundingBox().min.x ||
+         playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x;
 }
 
-bool zAxisCollision(Entities::Player* playa, World::Cube& IceCube) {
-  return playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z || playa->GetBoundingBox().max.z > IceCube.GetBoundingBox().max.z;
+bool zAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
+  return playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z ||
+         playa->GetBoundingBox().max.z > IceCube.GetBoundingBox().max.z;
 }
 
-void lockAxis(Entities::Player* playa, World::Cube& IceCube){
+void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
   // check to see if cube is ahead of playa in x axis
-  if(xAxisCollision(playa, IceCube))
-  {
+  if (xAxisCollision(playa, IceCube)) {
     playa->camera.position.x = playa->GetPreviousPosition().x;
-  }  if(zAxisCollision(playa, IceCube)) {
+  }
+  if (zAxisCollision(playa, IceCube)) {
     playa->camera.position.z = playa->GetPreviousPosition().z;
   }
 }
@@ -95,9 +97,10 @@ void Room001::Update(Entities::Player *player) {
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
       // if player's bottom half is inside wall
-      if(player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&
-        player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {
-        player->camera.position.y = wall.GetBoundingBox().max.y + player->GetSize().y;
+      if (player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&
+          player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {
+        player->camera.position.y =
+            wall.GetBoundingBox().max.y + player->GetSize().y;
       } else { // else prevent them from phasing into wall
         lockAxis(player, wall);
         // player->camera.position = player->GetPreviousPosition();
@@ -114,7 +117,7 @@ void Room001::Update(Entities::Player *player) {
   }
 
   // only execute this at 60 fps (once every 60 frames)
-  if(frameCounter >= 60) {
+  if (frameCounter >= 60) {
     // Checks collision between stairs and player
     for (Stairs &stair : stairs) {
       std::vector<Cube> stairCubes = stair.GetCubeVector();
@@ -123,8 +126,8 @@ void Room001::Update(Entities::Player *player) {
         if (Utility::EntityCollisionObject(player, &stairCube)) {
           player->camera.position.y =
               stairCube.GetBoundingBox().max.y + player->GetSize().y;
+          player->SetPlaneCollision(true);
         }
-
       }
     }
   }
