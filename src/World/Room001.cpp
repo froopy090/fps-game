@@ -85,10 +85,10 @@ void Room001::Update(Entities::Player *player) {
   for (Stairs &stair : stairs) {
     std::vector<Cube> stairCubes = stair.GetCubeVector();
     for (Cube &stairCube : stairCubes) {
-      // if player is colliding and player is below the stair height
       if (Utility::EntityCollisionObject(player, &stairCube)) {
         player->camera.position.y =
             stairCube.GetBoundingBox().max.y + player->GetSize().y;
+        player->SetPlaneCollision(true);
       }
     }
   }
