@@ -53,7 +53,10 @@ Enemy::Enemy(Player *player) {
   feelers.angle = 0.10f;
 }
 
-Enemy::~Enemy() { UnloadTexture(sprite.texture); }
+Enemy::~Enemy() {
+  // This causes seg fault when closing the game
+  //  UnloadTexture(sprite.texture);
+}
 
 void Enemy::Event() {
   // TODO: add event function
