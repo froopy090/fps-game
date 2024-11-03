@@ -53,10 +53,7 @@ Enemy::Enemy(Player *player) {
   feelers.angle = 0.10f;
 }
 
-Enemy::~Enemy() {
-  // This causes seg fault when closing the game
-  //  UnloadTexture(sprite.texture);
-}
+Enemy::~Enemy() { UnloadTexture(sprite.texture); }
 
 void Enemy::Event() {
   // TODO: add event function
@@ -179,8 +176,7 @@ void Enemy::MoveLeft() {
 void Enemy::MoveRight() {
   std::cout << "MOVING RIGHT" << std::endl;
   Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
-  position = Vector3Add(
-      position, Vector3Scale(newDir, speed * GetFrameTime()));
+  position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
 }
 
 void Enemy::SlowDown() {

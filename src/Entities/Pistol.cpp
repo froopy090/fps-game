@@ -36,10 +36,7 @@ Pistol::Pistol() {
   damage = 30.0f;
 }
 
-Pistol::~Pistol() {
-  // This causes seg fault when closing the game
-  // UnloadTexture(texture);
-}
+Pistol::~Pistol() { UnloadTexture(texture); }
 
 void Pistol::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
