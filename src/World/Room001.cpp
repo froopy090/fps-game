@@ -31,6 +31,10 @@ const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
+
+// count frames to throttle execution of stairs collider to 60 fps
+int frameCounter = 0;
+
 Room001::Room001() {
   // Calculate center of matrix
   int center = ROOM_SIZE / 2;
@@ -57,6 +61,8 @@ Room001::Room001() {
 }
 
 void Room001::Update(Entities::Player *player) {
+  ++frameCounter;
+
   // Reset
   player->SetPlaneCollision(false);
   // Checks collision between plane and Player
@@ -82,14 +88,17 @@ void Room001::Update(Entities::Player *player) {
     }
   }
 
-  // Checks collision between stairs and player
-  for (Stairs &stair : stairs) {
-    std::vector<Cube> stairCubes = stair.GetCubeVector();
-    for (Cube &stairCube : stairCubes) {
-      // if player is colliding and player is below the stair height
-      if (Utility::EntityCollisionObject(player, &stairCube)) {
-        player->camera.position.y =
-            stairCube.GetBoundingBox().max.y + player->GetSize().y;
+  // only execute this at 60 fps (once every 60 frames)
+  if(frameCounter >= 60) {
+    // Checks collision between stairs and player
+    for (Stairs &stair : stairs) {
+      std::vector<Cube> stairCubes = stair.GetCubeVector();
+      for (Cube &stairCube : stairCubes) {
+        // if player is colliding and player is below the stair height
+        if (Utility::EntityCollisionObject(player, &stairCube)) {
+          player->camera.position.y =
+              stairCube.GetBoundingBox().max.y + player->GetSize().y;
+        }
       }
     }
   }
