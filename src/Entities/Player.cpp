@@ -114,6 +114,12 @@ void Player::Update() {
                     camera.position.z + size.x / 2.0f};
     }
   }
+
+  // if player falls through map, reset position
+  if(GetBoundingBox().min.y <= -30)
+  {
+    camera.position.y = size.y + 20;
+  }
 }
 
 void Player::Draw() {
