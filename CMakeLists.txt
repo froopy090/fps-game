@@ -3,7 +3,7 @@ project(fps-game)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
 set(SOURCES
     src/main.cpp
@@ -28,11 +28,17 @@ link_directories(lib)
 # Add the executable
 add_executable(fps-game ${SOURCES})
 
-# Add run command
-add_custom_target(run COMMAND fps-game)
-
-# Add GDB debug mode
-add_custom_target(debug COMMAND gdb fps-game)
-
 # Link the raylib library and the math library
 target_link_libraries(fps-game raylib m)
+
+# Add run command
+add_custom_target(run
+    COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release .
+    COMMAND fps-game)
+
+# Add GDB debug mode
+add_custom_target(debug
+    COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug .
+    COMMAND ${CMAKE_COMMAND} --build .
+    COMMAND gdb ./fps-game
+)
