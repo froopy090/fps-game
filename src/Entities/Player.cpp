@@ -3,6 +3,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
+#include <iostream>
+
 namespace Entities {
 Player::Player() {
   // Player size init
@@ -118,6 +120,7 @@ void Player::Update() {
   // if player falls through map, reset position
   if(GetBoundingBox().min.y <= -30)
   {
+    std::cerr << "PLAYER FELL through map" << std::endl;
     camera.position.y = size.y + 20;
   }
 }

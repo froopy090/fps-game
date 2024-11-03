@@ -76,7 +76,13 @@ void Room001::Update(Entities::Player *player) {
   // Checks collision between walls and Player
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
-      player->camera.position = player->GetPreviousPosition();
+      // if player's bottom half is inside wall
+      if(player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&
+        player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {
+        player->camera.position.y = wall.GetBoundingBox().max.y + player->GetSize().y;
+      } else { // else prevent them from phasing into wall
+        player->camera.position = player->GetPreviousPosition();
+      }
       player->SetPlaneCollision(true);
     }
   }
