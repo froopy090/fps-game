@@ -103,6 +103,7 @@ void Player::Update() {
 
     if (jumpVelocity < 0.0f && planeCollision) {
       camera.position.y = previousPosition.y;
+
       isJumping = false;
     }
 

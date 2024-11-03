@@ -124,6 +124,7 @@ void Room001::Update(Entities::Player *player) {
           player->camera.position.y =
               stairCube.GetBoundingBox().max.y + player->GetSize().y;
         }
+
       }
     }
   }
