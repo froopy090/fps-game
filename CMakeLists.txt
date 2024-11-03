@@ -29,5 +29,8 @@ add_executable(fps-game ${SOURCES})
 # Add run command
 add_custom_target(run COMMAND fps-game)
 
+# Add GDB debug mode
+add_custom_target(debug COMMAND gdb fps-game)
+
 # Link the raylib library and the math library
 target_link_libraries(fps-game raylib m)
