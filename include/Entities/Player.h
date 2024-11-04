@@ -51,7 +51,6 @@ private:
   Vector3 previousPosition;
 
   // Jumping/gravity
-  bool gravityOn;
   float gravity;
   float jumpVelocity;
   bool isJumping;

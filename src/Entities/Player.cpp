@@ -38,7 +38,6 @@ Player::Player() {
 
   // Gravity physics
   gravity = -10.0f;
-  gravityOn = true;
   jumpVelocity = 0.0f;
   isJumping = false;
   planeCollision = false;
@@ -105,7 +104,7 @@ void Player::Update() {
     // Jumping
     if (isJumping) {
       jumpVelocity += gravity * GetFrameTime();
-    } else if (gravityOn) {
+    } else {
       // gravity is always in effect
       jumpVelocity = gravity; // clearly how physics work
     }
@@ -141,7 +140,6 @@ void Player::Draw() {
   if (isShooting) {
     Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(
                                            camera.target, camera.position))};
-    DrawRay(hitscanRay, RED);
   }
   EndMode3D();
 }
@@ -176,6 +174,4 @@ void Player::TakeDamage(float damage) {
 void Player::SetPlaneCollision(bool b) { planeCollision = b; }
 
 void Player::SetStairFlag(bool b) { isOnStair = b; }
-
-void Player::Gravity(bool b) { gravityOn = b; }
 } // namespace Entities
