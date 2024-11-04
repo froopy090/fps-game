@@ -30,7 +30,7 @@ int main() {
   SearchAndSetResourceDir("resources");
 
   // World
-  //auto test002 = std::make_unique<World::Test002>();
+  // auto test002 = std::make_unique<World::Test002>();
   auto room = std::make_unique<World::Room001>();
 
   // Loading Entities
@@ -71,13 +71,11 @@ int main() {
       }
       break;
     case GAMEPLAY:
-      //test002->Update(player1.get(), enemy1.get());
-      room->Update(player1.get());
-
       pistol->Update();
       player1->Update();
       enemy1->Update(player1.get(), pistol.get());
 
+      room->Update(player1.get());
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -104,7 +102,7 @@ int main() {
       // TODO: update game screen variables here
 
       BeginMode3D(player1->camera);
-      //test002->Draw(player1.get());
+      // test002->Draw(player1.get());
       room->Draw();
       EndMode3D();
 
@@ -115,7 +113,7 @@ int main() {
       // HUD
       cameraHUD->Draw(player1.get());
       playerInfoHUD->Draw(player1.get());
-      DrawFPS(5,5);
+      DrawFPS(5, 5);
 
       break;
     case ENDING:
