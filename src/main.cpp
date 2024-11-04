@@ -4,10 +4,8 @@
 #include "Utility/CameraHUD.h"
 #include "Utility/PlayerInfoHUD.h"
 #include "World/Room001.h"
-#include "World/Test002.h"
 #include "globals.h"
 #include "raylib.h"
-#include "raymath.h"
 #include "resource_dir.h"
 #include <dirent.h>
 #include <memory>
@@ -20,7 +18,7 @@ typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } Gamescreen;
 int main() {
   // Initialization
   // ---------------------------------------------------------
-  const int fps = 60;
+  const int fps = 144;
 
   InitWindow(screenWidth, screenHeight, "fps");
   SetTargetFPS(fps);
