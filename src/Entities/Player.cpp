@@ -12,6 +12,10 @@ Player::Player() {
   size.y = 1.0f;
   size.z = 0.5f;
 
+  // init speed and sensitivity
+  speed = 0.05f;
+  mouseSensitivity = 0.5f;
+
   // Camera init
   camera = {0};
   camera.position = (Vector3){0.0f, size.y, 1.0f};
@@ -76,7 +80,14 @@ void Player::Update() {
   this->SavePosition();
 
   // Update Camera postion
-  UpdateCamera(&camera, cameraMode);
+  // UpdateCamera(&camera, cameraMode);
+  UpdateCameraPro(&camera,
+                  (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed,
+                            (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed,
+                            0.0f},
+                  (Vector3){GetMouseDelta().x * mouseSensitivity,
+                            GetMouseDelta().y * mouseSensitivity, 0.0f},
+                  0.0f);
 
   // only update the player if we're in first person POV
   if (cameraMode != CAMERA_FREE) {
@@ -118,8 +129,7 @@ void Player::Update() {
   }
 
   // if player falls through map, reset position
-  if(GetBoundingBox().min.y <= -30)
-  {
+  if (GetBoundingBox().min.y <= -30) {
     std::cerr << "PLAYER FELL through map" << std::endl;
     camera.position.y = size.y + 20;
   }

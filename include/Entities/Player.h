@@ -39,6 +39,8 @@ private:
   // Player info
   Vector3 size;
   float health;
+  float speed;
+  float mouseSensitivity;
 
   // Firing weapon
   bool isShooting;
