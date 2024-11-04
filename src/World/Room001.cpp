@@ -32,9 +32,6 @@ const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-// count frames to throttle execution of stairs collider to 60 fps
-int frameCounter = 0;
-
 Room001::Room001() {
   // Calculate center of matrix
   int center = ROOM_SIZE / 2;
@@ -81,8 +78,6 @@ void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
 }
 
 void Room001::Update(Entities::Player *player) {
-  ++frameCounter;
-
   // Reset
   player->SetPlaneCollision(false);
   // Checks collision between plane and Player
@@ -103,7 +98,6 @@ void Room001::Update(Entities::Player *player) {
             wall.GetBoundingBox().max.y + player->GetSize().y;
       } else { // else prevent them from phasing into wall
         lockAxis(player, wall);
-        // player->camera.position = player->GetPreviousPosition();
       }
       player->SetPlaneCollision(true);
     }
@@ -117,17 +111,16 @@ void Room001::Update(Entities::Player *player) {
   }
 
   // only execute this at 60 fps (once every 60 frames)
-  if (frameCounter >= 60) {
-    // Checks collision between stairs and player
-    for (Stairs &stair : stairs) {
-      std::vector<Cube> stairCubes = stair.GetCubeVector();
-      for (Cube &stairCube : stairCubes) {
-        // if player is colliding and player is below the stair height
-        if (Utility::EntityCollisionObject(player, &stairCube)) {
-          player->camera.position.y =
-              stairCube.GetBoundingBox().max.y + player->GetSize().y;
-          player->SetPlaneCollision(true);
-        }
+  // Checks collision between stairs and player
+  for (Stairs &stair : stairs) {
+    std::vector<Cube> stairCubes = stair.GetCubeVector();
+    for (Cube &stairCube : stairCubes) {
+      // if player is colliding and player is below the stair height
+      if (Utility::EntityCollisionObject(player, &stairCube)) {
+        player->camera.position.y =
+            stairCube.GetBoundingBox().max.y + player->GetSize().y;
+        player->SavePosition();
+        player->SetPlaneCollision(true);
       }
     }
   }
