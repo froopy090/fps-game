@@ -79,14 +79,9 @@ void Player::Update() {
   this->SavePosition();
 
   // Update Camera postion
-  // UpdateCamera(&camera, cameraMode);
-  UpdateCameraPro(&camera,
-                  (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed,
-                            (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed,
-                            0.0f},
-                  (Vector3){GetMouseDelta().x * mouseSensitivity,
-                            GetMouseDelta().y * mouseSensitivity, 0.0f},
-                  0.0f);
+  if(cameraMode == CAMERA_FREE){
+    UpdateCamera(&camera, cameraMode);
+  }
 
   // only update the player if we're in first person POV
   if (cameraMode != CAMERA_FREE) {
@@ -116,15 +111,22 @@ void Player::Update() {
       isJumping = false;
     }
 
+    // Update Camera postion
+    UpdateCameraPro(&camera,
+                    (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed,
+                              (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed,
+                              0.0f},
+                    (Vector3){GetMouseDelta().x * mouseSensitivity,
+                              GetMouseDelta().y * mouseSensitivity, 0.0f},
+                    0.0f);
+
     // Update position
-    if (cameraMode == CAMERA_FIRST_PERSON) {
-      boundingBox.min = (Vector3){camera.position.x - size.z / 2.0f,
-                                  camera.position.y - size.y,
-                                  camera.position.z - size.x / 2.0f};
-      boundingBox.max =
-          (Vector3){camera.position.x + size.z / 2.0f, camera.position.y,
-                    camera.position.z + size.x / 2.0f};
-    }
+    boundingBox.min =
+        (Vector3){camera.position.x - size.z / 2.0f, camera.position.y - size.y,
+                  camera.position.z - size.x / 2.0f};
+    boundingBox.max =
+        (Vector3){camera.position.x + size.z / 2.0f, camera.position.y,
+                  camera.position.z + size.x / 2.0f};
   }
 
   // if player falls through map, reset position
