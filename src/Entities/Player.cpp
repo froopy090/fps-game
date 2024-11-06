@@ -14,7 +14,7 @@ Player::Player() {
 
   // init speed and sensitivity
   speed = 0.05f;
-  mouseSensitivity = 0.5f;
+  mouseSensitivity = 0.3f;
 
   // Camera init
   camera = {0};
