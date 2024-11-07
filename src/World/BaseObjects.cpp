@@ -19,10 +19,10 @@ Cube::Cube(Vector3 position) {
       Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT / 2.0f, 0.0f});
   size = (Vector3){TILE_SIZE, WALL_HEIGHT, TILE_SIZE};
   color = DARKGRAY;
-  box.min = (Vector3){position.x - size.x / 2.0f - 0.02f, 0.0f,
-                      position.z - size.z / 2.0f - 0.02f};
-  box.max = (Vector3){position.x + size.x / 2.0f + 0.02f, size.y,
-                      position.z + size.z / 2.0f + 0.02f};
+  box.min =
+      (Vector3){position.x - size.x / 2.0f, 0.0f, position.z - size.z / 2.0f};
+  box.max =
+      (Vector3){position.x + size.x / 2.0f, size.y, position.z + size.z / 2.0f};
 }
 
 Cube::Cube(Vector3 position, Vector3 size) {
