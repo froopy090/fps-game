@@ -85,68 +85,93 @@ void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
     if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z < 0.0f) {
       std::cout << "Case 1" << std::endl;
       // bottom right corner
-      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x) {
+      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x &&
+          playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z) {
         std::cout << "bottom right" << std::endl;
         lockXAxis(playa);
         return;
       }
       // top left corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
+          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x) {
         std::cout << "top left" << std::endl;
         lockZAxis(playa);
         return;
       }
+      // if nothing happens, we just lock both axiis
+      // this means I am walking stright into the corner
+      /*lockXAxis(playa);*/
+      /*lockZAxis(playa);*/
     }
 
     // case 2, xVel < 0, zVel > 0
     if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z > 0.0f) {
       std::cout << "Case 2" << std::endl;
       // bottom right corner
-      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x) {
+      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x &&
+          playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z) {
         std::cout << "bottom right" << std::endl;
         lockZAxis(playa);
         return;
       }
       // top left corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
+          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x) {
         std::cout << "top left" << std::endl;
         lockXAxis(playa);
         return;
       }
+      // if nothing happens, we just lock both axiis
+      // this means I am walking straight into the corner
+      /*lockXAxis(playa);*/
+      /*lockZAxis(playa);*/
     }
 
     // case 3, xVel < 0, zVel < 0
     if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z < 0.0f) {
       std::cout << "Case 3" << std::endl;
       // top right corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
+          playa->GetBoundingBox().max.x < IceCube.GetBoundingBox().max.x &&
+          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().min.x) {
         std::cout << "top right" << std::endl;
         lockZAxis(playa);
         return;
       }
       // bottom left corner
-      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x) {
+      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x &&
+          playa->GetBoundingBox().max.z < IceCube.GetBoundingBox().max.z) {
         std::cout << "bottom left" << std::endl;
         lockXAxis(playa);
         return;
       }
+      // if nothing happens, we just lock both axiis
+      // this means I am walking stright into the corner
+      /*lockXAxis(playa);*/
+      /*lockZAxis(playa);*/
     }
 
     // case 4, xVel > 0, zVel > 0
     if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z > 0.0f) {
       std::cout << "Case 4" << std::endl;
       // top right corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
+          playa->GetBoundingBox().max.x < IceCube.GetBoundingBox().max.x) {
         std::cout << "top right" << std::endl;
         lockXAxis(playa);
         return;
       }
       // bottom left corner
-      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x) {
+      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x &&
+          playa->GetBoundingBox().max.z < IceCube.GetBoundingBox().max.z) {
         std::cout << "bottom left" << std::endl;
         lockZAxis(playa);
         return;
       }
+      // if nothing happens, we just lock both axiis
+      // this means I am walking straight into the corner
+      /*lockXAxis(playa);*/
+      /*lockZAxis(playa);*/
     }
     // return; // dr carbon, absolute legend
   } else if (xAxisCollision(playa, IceCube)) {
@@ -171,14 +196,20 @@ void Room001::Update(Entities::Player *player) {
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
       // if player's bottom half is inside wall
-      if (player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&
-          player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {
+      /*if (player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&*/
+      /*    player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {*/
+      /*  player->SetPlaneCollision(true);*/
+      /*  player->camera.position.y =*/
+      /*      wall.GetBoundingBox().max.y + player->GetSize().y;*/
+      /*} */
+      // if player is on top of box
+      if (player->GetBoundingBox().max.y >= wall.GetBoundingBox().max.y) {
         player->camera.position.y =
             wall.GetBoundingBox().max.y + player->GetSize().y;
+        player->SetPlaneCollision(true);
       } else { // else prevent them from phasing into wall
         lockAxis(player, wall);
       }
-      player->SetPlaneCollision(true);
     }
   }
 
@@ -189,7 +220,6 @@ void Room001::Update(Entities::Player *player) {
     }
   }
 
-  // only execute this at 60 fps (once every 60 frames)
   // Checks collision between stairs and player
   for (Stairs &stair : stairs) {
     std::vector<Cube> stairCubes = stair.GetCubeVector();
@@ -198,7 +228,6 @@ void Room001::Update(Entities::Player *player) {
       if (Utility::EntityCollisionObject(player, &stairCube)) {
         player->camera.position.y =
             stairCube.GetBoundingBox().max.y + player->GetSize().y;
-        player->SavePosition();
         player->SetPlaneCollision(true);
       }
     }
