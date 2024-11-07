@@ -113,13 +113,16 @@ void Player::Update() {
     }
 
     // Update Camera postion
-    velocity =
-        (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed, jumpVelocity,
-                  (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed};
-    UpdateCameraPro(&camera, (Vector3){velocity.x, velocity.z, 0.0f},
+    UpdateCameraPro(&camera,
+                    (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed,
+                              (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed,
+                              0.0f},
                     (Vector3){GetMouseDelta().x * mouseSensitivity,
                               GetMouseDelta().y * mouseSensitivity, 0.0f},
                     0.0f);
+
+    // Velocity vector update
+    velocity = Vector3Subtract(camera.position, previousPosition);
 
     // Update position
     boundingBox.min =
