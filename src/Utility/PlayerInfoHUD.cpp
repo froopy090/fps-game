@@ -8,10 +8,15 @@ void PlayerInfoHUD::Draw(Entities::Player *player) {
   DrawRectangleLines(100, 5, 350, 170, BLUE);
 
   DrawText("Player Info:", 110, 15, 14, BLACK);
-  DrawText(TextFormat("-Health: (%06.3f)", player->GetHealth()), 110, 35, 14, BLACK);
+  DrawText(TextFormat("-Health: (%06.3f)", player->GetHealth()), 110, 35, 14,
+           BLACK);
   DrawText(TextFormat("- P.Position: (%06.3f, %06.3f, %03.6f)",
                       player->GetPosition().x, player->GetPosition().y,
                       player->GetPosition().z),
            110, 55, 14, BLACK);
+  DrawText(TextFormat("-Velocity: (%06.3f, %06.3f, %03.6f)",
+                      player->GetVelocity().x, player->GetVelocity().y,
+                      player->GetVelocity().z),
+           110, 75, 14, BLACK);
 }
 } // namespace Utility
