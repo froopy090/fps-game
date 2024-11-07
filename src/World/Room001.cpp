@@ -1,7 +1,9 @@
 #include "World/Room001.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
+#include "raymath.h"
 #include <iostream>
+#include <math.h>
 
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
@@ -13,13 +15,13 @@ const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -68,11 +70,18 @@ bool zAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
 }
 
 void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
-  // check to see if cube is ahead of playa in x axis
-  if (xAxisCollision(playa, IceCube)) {
+  // this is the exception, where player is in the corner
+  // if we have collision on BOTH axiis
+  if (xAxisCollision(playa, IceCube) && zAxisCollision(playa, IceCube)) {
+    if (abs(playa->GetVelocity().x) > 0.0f) {
+      playa->camera.position.x = playa->GetPreviousPosition().x;
+    } else if (abs(playa->GetVelocity().z) > 0.0f) {
+      playa->camera.position.z = playa->GetPreviousPosition().z;
+    }
+    // return; // dr carbon, absolute legend
+  } else if (xAxisCollision(playa, IceCube)) {
     playa->camera.position.x = playa->GetPreviousPosition().x;
-  }
-  if (zAxisCollision(playa, IceCube)) {
+  } else if (zAxisCollision(playa, IceCube)) {
     playa->camera.position.z = playa->GetPreviousPosition().z;
   }
 }
