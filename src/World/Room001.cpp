@@ -16,9 +16,9 @@ const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -69,14 +69,84 @@ bool zAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
          playa->GetBoundingBox().max.z > IceCube.GetBoundingBox().max.z;
 }
 
+void lockXAxis(Entities::Player *player) {
+  player->camera.position.x = player->GetPreviousPosition().x;
+}
+
+void lockZAxis(Entities::Player *player) {
+  player->camera.position.z = player->GetPreviousPosition().z;
+}
+
 void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
   // this is the exception, where player is in the corner
   // if we have collision on BOTH axiis
   if (xAxisCollision(playa, IceCube) && zAxisCollision(playa, IceCube)) {
-    if (abs(playa->GetVelocity().x) > 0.0f) {
-      playa->camera.position.x = playa->GetPreviousPosition().x;
-    } else if (abs(playa->GetVelocity().z) > 0.0f) {
-      playa->camera.position.z = playa->GetPreviousPosition().z;
+    // case 1, xVel > 0, zVel < 0
+    if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z < 0.0f) {
+      std::cout << "Case 1" << std::endl;
+      // bottom right corner
+      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x) {
+        std::cout << "bottom right" << std::endl;
+        lockXAxis(playa);
+        return;
+      }
+      // top left corner
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+        std::cout << "top left" << std::endl;
+        lockZAxis(playa);
+        return;
+      }
+    }
+
+    // case 2, xVel < 0, zVel > 0
+    if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z > 0.0f) {
+      std::cout << "Case 2" << std::endl;
+      // bottom right corner
+      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x) {
+        std::cout << "bottom right" << std::endl;
+        lockZAxis(playa);
+        return;
+      }
+      // top left corner
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+        std::cout << "top left" << std::endl;
+        lockXAxis(playa);
+        return;
+      }
+    }
+
+    // case 3, xVel < 0, zVel < 0
+    if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z < 0.0f) {
+      std::cout << "Case 3" << std::endl;
+      // top right corner
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+        std::cout << "top right" << std::endl;
+        lockZAxis(playa);
+        return;
+      }
+      // bottom left corner
+      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x) {
+        std::cout << "bottom left" << std::endl;
+        lockXAxis(playa);
+        return;
+      }
+    }
+
+    // case 4, xVel > 0, zVel > 0
+    if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z > 0.0f) {
+      std::cout << "Case 4" << std::endl;
+      // top right corner
+      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z) {
+        std::cout << "top right" << std::endl;
+        lockXAxis(playa);
+        return;
+      }
+      // bottom left corner
+      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x) {
+        std::cout << "bottom left" << std::endl;
+        lockZAxis(playa);
+        return;
+      }
     }
     // return; // dr carbon, absolute legend
   } else if (xAxisCollision(playa, IceCube)) {
