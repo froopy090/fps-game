@@ -14,6 +14,7 @@ Player::Player() {
 
   // init speed and sensitivity
   speed = 0.05f;
+  velocity = Vector3Zero();
   mouseSensitivity = 0.3f;
 
   // Camera init
@@ -79,7 +80,7 @@ void Player::Update() {
   this->SavePosition();
 
   // Update Camera postion
-  if(cameraMode == CAMERA_FREE){
+  if (cameraMode == CAMERA_FREE) {
     UpdateCamera(&camera, cameraMode);
   }
 
@@ -112,10 +113,10 @@ void Player::Update() {
     }
 
     // Update Camera postion
-    UpdateCameraPro(&camera,
-                    (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed,
-                              (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed,
-                              0.0f},
+    velocity =
+        (Vector3){(IsKeyDown(KEY_W) - IsKeyDown(KEY_S)) * speed, jumpVelocity,
+                  (IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed};
+    UpdateCameraPro(&camera, (Vector3){velocity.x, velocity.z, 0.0f},
                     (Vector3){GetMouseDelta().x * mouseSensitivity,
                               GetMouseDelta().y * mouseSensitivity, 0.0f},
                     0.0f);
@@ -154,6 +155,8 @@ Vector3 Player::GetPosition() {
 
 Vector3 Player::GetSize() { return size; }
 
+Vector3 Player::GetVelocity() { return velocity; }
+
 Ray Player::GetRay() {
   Ray hitscanRay = {camera.position, Vector3Normalize(Vector3Subtract(
                                          camera.target, camera.position))};
@@ -176,4 +179,6 @@ void Player::TakeDamage(float damage) {
 void Player::SetPlaneCollision(bool b) { planeCollision = b; }
 
 void Player::SetStairFlag(bool b) { isOnStair = b; }
+
+void Player::SetVelocity(Vector3 velocity) { this->velocity = velocity; }
 } // namespace Entities

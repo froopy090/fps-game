@@ -26,6 +26,7 @@ public:
   bool IsShooting();
   float GetHealth();
   bool GetStairFlag();
+  Vector3 GetVelocity();
 
   // Setters
   // sets previousPosition to the current camera position
@@ -34,10 +35,12 @@ public:
   void SetPlaneCollision(bool b);
   void SetStairFlag(bool b);
   void Gravity(bool b);
+  void SetVelocity(Vector3 velocity);
 
 private:
   // Player info
   Vector3 size;
+  Vector3 velocity;
   float health;
   float speed;
   float mouseSensitivity;
@@ -56,7 +59,7 @@ private:
   bool isJumping;
   bool planeCollision;
 
-  //Stairs
+  // Stairs
   bool isOnStair;
 };
 } // namespace Entities
