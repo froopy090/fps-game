@@ -75,9 +75,7 @@ void Room001::Update(Entities::Player *player) {
 
   // Checks collision between walls and Player
   for (LargeColumn &column : columns) {
-    if (Utility::EntityCollisionObject(player, &column)) {
-      player->camera.position = player->GetPreviousPosition();
-    }
+    Utility::collide(player, column);
   }
 
   // only execute this at 60 fps (once every 60 frames)
