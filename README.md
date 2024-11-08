@@ -10,7 +10,7 @@ To compile the project, follow these steps:
     mkdir build
     cd build
     cmake ..
-    make
+    make run
     ./fps-game
 ```
 
@@ -25,3 +25,4 @@ To compile the project, follow these steps:
 - [Elia](https://github.com/Thenewchicken55)
     - README.md
     - CMakeLists.txt
+    - Some random stuff
