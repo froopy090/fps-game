@@ -1,5 +1,6 @@
 #include "Entities/Player.h"
 #include "Utility/Timer.h"
+#include "Utility/Collision.h"
 #include "raylib.h"
 #include "raymath.h"
 

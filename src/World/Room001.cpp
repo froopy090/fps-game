@@ -57,26 +57,6 @@ Room001::Room001() {
   }
 }
 
-bool xAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
-  return playa->GetBoundingBox().min.x < IceCube.GetBoundingBox().min.x ||
-         playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x;
-}
-
-bool zAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
-  return playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z ||
-         playa->GetBoundingBox().max.z > IceCube.GetBoundingBox().max.z;
-}
-
-void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
-  // check to see if cube is ahead of playa in x axis
-  if (xAxisCollision(playa, IceCube)) {
-    playa->camera.position.x = playa->GetPreviousPosition().x;
-  }
-  if (zAxisCollision(playa, IceCube)) {
-    playa->camera.position.z = playa->GetPreviousPosition().z;
-  }
-}
-
 void Room001::Update(Entities::Player *player) {
   // Reset
   player->SetPlaneCollision(false);
@@ -90,17 +70,7 @@ void Room001::Update(Entities::Player *player) {
 
   // Checks collision between walls and Player
   for (Cube &wall : walls) {
-    if (Utility::EntityCollisionObject(player, &wall)) {
-      // if player's bottom half is inside wall
-      if (player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&
-          player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {
-        player->camera.position.y =
-            wall.GetBoundingBox().max.y + player->GetSize().y;
-      } else { // else prevent them from phasing into wall
-        lockAxis(player, wall);
-      }
-      player->SetPlaneCollision(true);
-    }
+    Utility::collide(player, wall);
   }
 
   // Checks collision between walls and Player
