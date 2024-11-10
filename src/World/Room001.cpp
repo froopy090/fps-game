@@ -233,13 +233,6 @@ void Room001::Update(Entities::Player *player) {
   // Checks collision between walls and Player
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
-      // if player's bottom half is inside wall
-      /*if (player->GetBoundingBox().min.y < wall.GetBoundingBox().max.y &&*/
-      /*    player->GetBoundingBox().max.y > wall.GetBoundingBox().max.y) {*/
-      /*  player->SetPlaneCollision(true);*/
-      /*  player->camera.position.y =*/
-      /*      wall.GetBoundingBox().max.y + player->GetSize().y;*/
-      /*} */
       // if player is on top of box
       if (player->GetBoundingBox().max.y >= wall.GetBoundingBox().max.y) {
         player->camera.position.y =
@@ -260,6 +253,17 @@ void Room001::Update(Entities::Player *player) {
 
   // Checks collision between stairs and player
   for (Stairs &stair : stairs) {
+    Cube stairWall = stair.GetStairWall();
+    if (Utility::EntityCollisionObject(player, &stairWall)) {
+      // if player is on top of wall
+      if (player->GetBoundingBox().max.y >= stairWall.GetBoundingBox().max.y) {
+        player->camera.position.y =
+            stairWall.GetBoundingBox().max.y + player->GetSize().y;
+        player->SetPlaneCollision(true);
+      } else {
+        lockAxis(player, stairWall);
+      }
+    }
     std::vector<Cube> stairCubes = stair.GetCubeVector();
     for (Cube &stairCube : stairCubes) {
       // if player is colliding and player is below the stair height
