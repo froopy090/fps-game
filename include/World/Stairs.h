@@ -13,6 +13,7 @@ public:
   // Getters
   int GetStairCount();
   Vector3 GetStairSize();
+  Cube GetStairWall();
   std::vector<Cube> GetCubeVector();
 
   // Setters
@@ -22,6 +23,7 @@ public:
 private:
   int stairCount;
   Vector3 stairSize;
+  Cube stairWall;
   std::vector<Cube> stairs;
 };
 } // namespace World
