@@ -30,10 +30,7 @@ Cube::Cube(Vector3 position, Vector3 size) {
   this->size = size;
   this->position = Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f});
   color = DARKGRAY;
-  box.min = (Vector3){position.x - size.x / 2.0f, position.y,
-                      position.z - size.z / 2.0f};
-  box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
-                      position.z + size.z / 2.0f};
+  this->SetBoundingBox();
 }
 
 void Cube::Draw() {
@@ -51,13 +48,27 @@ Color Cube::GetColor() { return color; }
 BoundingBox Cube::GetBoundingBox() { return box; }
 
 // Setters
-void Cube::SetPosition(Vector3 position) { this->position = position; }
+void Cube::SetPosition(Vector3 position) {
+  this->position = position;
+  // update the bounding box position
+  this->SetBoundingBox();
+}
 
-void Cube::SetSize(Vector3 size) { this->size = size; }
+void Cube::SetSize(Vector3 size) {
+  this->size = size;
+  // update the boudning box size
+  this->SetBoundingBox();
+}
 
 void Cube::SetColor(Color color) { this->color = color; }
 
-void Cube::SetBoundingBox(BoundingBox box) { this->box = box; }
+// Helper Functions
+void Cube::SetBoundingBox() {
+  box.min = (Vector3){position.x - size.x / 2.0f, position.y - size.y / 2.0f,
+                      position.z - size.z / 2.0f};
+  box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y / 2.0f,
+                      position.z + size.z / 2.0f};
+}
 // End Cube ---------------------------------------------------------
 //
 // Plane ---------------------------------------------------------

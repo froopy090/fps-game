@@ -19,7 +19,9 @@ public:
   void SetPosition(Vector3 position);
   void SetSize(Vector3 size);
   void SetColor(Color color);
-  void SetBoundingBox(BoundingBox box);
+
+  // Helper Functions
+  void SetBoundingBox();
 
 protected:
   Vector3 position;
