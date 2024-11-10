@@ -211,9 +211,9 @@ void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
     }
     // return; // dr carbon, absolute legend
   } else if (xAxisCollision(playa, IceCube)) {
-    playa->camera.position.x = playa->GetPreviousPosition().x;
+    lockXAxis(playa);
   } else if (zAxisCollision(playa, IceCube)) {
-    playa->camera.position.z = playa->GetPreviousPosition().z;
+    lockZAxis(playa);
   } else {
     std::cout << "all collision checks failed" << std::endl;
   }
