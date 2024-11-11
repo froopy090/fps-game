@@ -7,3 +7,5 @@ compile_commands.json.bak
 /include/raylib.h
 /include/raymath.h
 /include/rlgl.h
+/include/Test002.h
+/src/World/Test002.cpp
