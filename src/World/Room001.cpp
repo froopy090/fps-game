@@ -59,166 +59,6 @@ Room001::Room001() {
   }
 }
 
-bool xAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
-  return playa->GetBoundingBox().min.x < IceCube.GetBoundingBox().min.x ||
-         playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x;
-}
-
-bool zAxisCollision(Entities::Player *playa, World::Cube &IceCube) {
-  return playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z ||
-         playa->GetBoundingBox().max.z > IceCube.GetBoundingBox().max.z;
-}
-
-void lockXAxis(Entities::Player *player) {
-  player->camera.position.x = player->GetPreviousPosition().x;
-}
-
-void lockZAxis(Entities::Player *player) {
-  player->camera.position.z = player->GetPreviousPosition().z;
-}
-
-void lockAxis(Entities::Player *playa, World::Cube &IceCube) {
-  // this is the exception, where player is in the corner
-  // if we have collision on BOTH axiis
-  if (xAxisCollision(playa, IceCube) && zAxisCollision(playa, IceCube)) {
-    // case 1, xVel > 0, zVel < 0
-    if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z < 0.0f) {
-      std::cout << "Case 1" << std::endl;
-      // bottom right corner
-      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x &&
-          playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z) {
-        std::cout << "bottom right" << std::endl;
-        lockXAxis(playa);
-        return;
-      }
-      // top left corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
-          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x) {
-        std::cout << "top left" << std::endl;
-        lockZAxis(playa);
-        return;
-      }
-      // check to see if we went inside of the corner
-      // if we did, lock both axiis
-      if (playa->GetBoundingBox().min.x + playa->GetSize().x >
-              IceCube.GetBoundingBox().max.x - IceCube.GetSize().x + 0.1f &&
-          playa->GetBoundingBox().min.z <
-              IceCube.GetBoundingBox().max.z - 0.1f &&
-          playa->GetBoundingBox().min.x + playa->GetSize().x <
-              IceCube.GetBoundingBox().max.x - IceCube.GetSize().x + 0.5f &&
-          playa->GetBoundingBox().min.z >
-              IceCube.GetBoundingBox().max.z - 0.5f) {
-        lockXAxis(playa);
-        lockZAxis(playa);
-      }
-    }
-
-    // case 2, xVel < 0, zVel > 0
-    if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z > 0.0f) {
-      std::cout << "Case 2" << std::endl;
-      // bottom right corner
-      if (playa->GetBoundingBox().min.x <= IceCube.GetBoundingBox().min.x &&
-          playa->GetBoundingBox().min.z < IceCube.GetBoundingBox().min.z) {
-        std::cout << "bottom right" << std::endl;
-        lockZAxis(playa);
-        return;
-      }
-      // top left corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
-          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().max.x) {
-        std::cout << "top left" << std::endl;
-        lockXAxis(playa);
-        return;
-      }
-      // check to see if we went inside of the corner
-      // if we did, lock both axiis
-      if (playa->GetBoundingBox().max.x - playa->GetSize().x <
-              IceCube.GetBoundingBox().min.x + IceCube.GetSize().x - 0.1f &&
-          playa->GetBoundingBox().max.z >
-              IceCube.GetBoundingBox().min.z + 0.1f &&
-          playa->GetBoundingBox().max.x - playa->GetSize().x >
-              IceCube.GetBoundingBox().min.x + IceCube.GetSize().x - 0.5f &&
-          playa->GetBoundingBox().max.z <
-              IceCube.GetBoundingBox().min.z + 0.5f) {
-        lockXAxis(playa);
-        lockZAxis(playa);
-      }
-    }
-
-    // case 3, xVel < 0, zVel < 0
-    if (playa->GetVelocity().x < 0.0f && playa->GetVelocity().z < 0.0f) {
-      std::cout << "Case 3" << std::endl;
-      // top right corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
-          playa->GetBoundingBox().max.x < IceCube.GetBoundingBox().max.x &&
-          playa->GetBoundingBox().max.x > IceCube.GetBoundingBox().min.x) {
-        std::cout << "top right" << std::endl;
-        lockZAxis(playa);
-        return;
-      }
-      // bottom left corner
-      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x &&
-          playa->GetBoundingBox().max.z < IceCube.GetBoundingBox().max.z) {
-        std::cout << "bottom left" << std::endl;
-        lockXAxis(playa);
-        return;
-      }
-      // check to see if we went inside of the corner
-      // if we did, lock both axiis
-      if (playa->GetBoundingBox().min.x <
-              IceCube.GetBoundingBox().max.x - 0.1f &&
-          playa->GetBoundingBox().min.z <
-              IceCube.GetBoundingBox().max.z - 0.1f &&
-          playa->GetBoundingBox().min.x >
-              IceCube.GetBoundingBox().max.x - 0.5f &&
-          playa->GetBoundingBox().min.z >
-              IceCube.GetBoundingBox().max.z - 0.5f) {
-        lockXAxis(playa);
-        lockZAxis(playa);
-      }
-    }
-
-    // case 4, xVel > 0, zVel > 0
-    if (playa->GetVelocity().x > 0.0f && playa->GetVelocity().z > 0.0f) {
-      std::cout << "Case 4" << std::endl;
-      // top right corner
-      if (playa->GetBoundingBox().max.z >= IceCube.GetBoundingBox().max.z &&
-          playa->GetBoundingBox().max.x < IceCube.GetBoundingBox().max.x) {
-        std::cout << "top right" << std::endl;
-        lockXAxis(playa);
-        return;
-      }
-      // bottom left corner
-      if (playa->GetBoundingBox().max.x >= IceCube.GetBoundingBox().max.x &&
-          playa->GetBoundingBox().max.z < IceCube.GetBoundingBox().max.z) {
-        std::cout << "bottom left" << std::endl;
-        lockZAxis(playa);
-        return;
-      }
-      // check to see if we went inside of the corner
-      // if we did, lock both axiis
-      if (playa->GetBoundingBox().max.x >
-              IceCube.GetBoundingBox().min.x + 0.1f &&
-          playa->GetBoundingBox().max.z >
-              IceCube.GetBoundingBox().min.z + 0.1f &&
-          playa->GetBoundingBox().max.x <
-              IceCube.GetBoundingBox().min.x + 0.5f &&
-          playa->GetBoundingBox().max.z <
-              IceCube.GetBoundingBox().min.z + 0.5f) {
-        lockXAxis(playa);
-        lockZAxis(playa);
-      }
-    }
-    // return; // dr carbon, absolute legend
-  } else if (xAxisCollision(playa, IceCube)) {
-    lockXAxis(playa);
-  } else if (zAxisCollision(playa, IceCube)) {
-    lockZAxis(playa);
-  } else {
-    std::cout << "all collision checks failed" << std::endl;
-  }
-}
-
 void Room001::Update(Entities::Player *player) {
   // Reset
   player->SetPlaneCollision(false);
@@ -233,21 +73,14 @@ void Room001::Update(Entities::Player *player) {
   // Checks collision between walls and Player
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
-      // if player is on top of box
-      if (player->GetBoundingBox().max.y >= wall.GetBoundingBox().max.y) {
-        player->camera.position.y =
-            wall.GetBoundingBox().max.y + player->GetSize().y;
-        player->SetPlaneCollision(true);
-      } else { // else prevent them from phasing into wall
-        lockAxis(player, wall);
-      }
+      Utility::LockPlayerAxis(player, &wall);
     }
   }
 
-  // Checks collision between walls and Player
+  // Checks collision between large columns and Player
   for (LargeColumn &column : columns) {
     if (Utility::EntityCollisionObject(player, &column)) {
-      player->camera.position = player->GetPreviousPosition();
+      Utility::LockPlayerAxis(player, &column);
     }
   }
 
@@ -255,14 +88,7 @@ void Room001::Update(Entities::Player *player) {
   for (Stairs &stair : stairs) {
     Cube stairWall = stair.GetStairWall();
     if (Utility::EntityCollisionObject(player, &stairWall)) {
-      // if player is on top of wall
-      if (player->GetBoundingBox().max.y >= stairWall.GetBoundingBox().max.y) {
-        player->camera.position.y =
-            stairWall.GetBoundingBox().max.y + player->GetSize().y;
-        player->SetPlaneCollision(true);
-      } else {
-        lockAxis(player, stairWall);
-      }
+      Utility::LockPlayerAxis(player, &stairWall);
     }
     std::vector<Cube> stairCubes = stair.GetCubeVector();
     for (Cube &stairCube : stairCubes) {
