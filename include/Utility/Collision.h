@@ -27,6 +27,11 @@ inline bool XAxisCollision(const Entity &entity, const Object &IceCube) {
 }
 
 template <typename Entity, typename Object>
+inline bool YAxisCollision(const Entity &entity, const Object &IceCube) {
+  return entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().max.y;
+}
+
+template <typename Entity, typename Object>
 inline bool ZAxisCollision(const Entity &entity, const Object &IceCube) {
   return entity->GetBoundingBox().min.z < IceCube->GetBoundingBox().min.z ||
          entity->GetBoundingBox().max.z > IceCube->GetBoundingBox().max.z;
@@ -55,7 +60,7 @@ template <typename Entity, typename Object>
 inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
   // Y axis movement
   // if player is on top of box
-  if (entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().max.y) {
+  if (YAxisCollision(entity, IceCube)) {
     LockYAxis(entity, IceCube);
     return;
   }
