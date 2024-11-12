@@ -41,7 +41,7 @@ Player::Player() {
   gravity = -10.0f;
   jumpVelocity = 0.0f;
   isJumping = false;
-  planeCollision = false;
+  planeCollision = true;
 
   // Health init
   health = 100.0f;
