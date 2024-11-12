@@ -8,6 +8,7 @@
 #include <cctype>
 
 namespace Entities {
+// Main Methods -----------------------------------------------------------
 Enemy::Enemy(Player *player) {
   // Dimensions init
   size.width = 0.5f;
@@ -149,9 +150,10 @@ void Enemy::Draw(Player *player) {
     EndMode3D();
   }
 }
-
-void Enemy::SavePosition() { previousPosition = position; }
-
+// End Main Methods
+// -------------------------------------------------------------
+//
+// Getters ------------------------------------------------------
 Vector3 Enemy::GetPreviousPosition() { return previousPosition; }
 
 BoundingBox Enemy::GetBoundingBox() { return boundingBox; }
@@ -161,11 +163,17 @@ Vector3 Enemy::GetPosition() {
   return (Vector3){position.x, size.height / 2.0f, position.z};
 }
 
-void Enemy::SetPosition(Vector3 position) { this->position = position; }
-
 bool Enemy::IsDead() { return dead; }
 
 Feelers Enemy::GetFeelers() { return feelers; }
+// End Getters --------------------------------------------------
+//
+// Setters ------------------------------------------------------
+void Enemy::SetPosition(Vector3 position) { this->position = position; }
+// End Setters ----------------------------------------------------
+//
+// Helper Methods -------------------------------------------------
+void Enemy::SavePosition() { previousPosition = position; }
 
 void Enemy::MoveLeft() {
   std::cout << "MOVING LEFT" << std::endl;
@@ -185,4 +193,5 @@ void Enemy::SlowDown() {
 }
 
 void Enemy::ResetSpeed() { speed = 2.0f; }
+// End Helper Methods --------------------------------------------------
 } // namespace Entities
