@@ -6,37 +6,51 @@
 
 namespace Entities {
 class Enemy {
-  public:
+public:
+  // Main methods
   Enemy(Player *player);
   ~Enemy();
   void Event();
   void Update(Player *player, Pistol *pistol);
   void Draw(Player *player);
-  void SavePosition();
+
+  // Getters
   Vector3 GetPosition();
   Vector3 GetPreviousPosition();
   BoundingBox GetBoundingBox();
-  void SetPosition(Vector3 position);
   bool IsDead();
   Feelers GetFeelers();
+
+  // Setters
+  void SetPosition(Vector3 position);
+
+  //  Helper functions
+  void SavePosition();
   void MoveRight();
   void MoveLeft();
   void SlowDown();
   void ResetSpeed();
 
 private:
+  // Enemy Info
   Size size;
   Vector3 position;
   Vector3 upAxis;
-  EnemySprite sprite;
   float health;
-  float meleeDamage;
   bool dead;
+  float meleeDamage;
+  EnemySprite sprite;
+
+  // Collision
   BoundingBox boundingBox;
-  Vector3 forward;
-  float speed;
   Vector3 previousPosition;
   Feelers feelers;
+
+  // Movement
+  Vector3 forward;
+  float speed;
+
+  // Utility
   Utility::Timer timer;
 };
 } // namespace Entities
