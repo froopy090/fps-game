@@ -11,9 +11,9 @@ namespace Entities {
 // Main Methods -----------------------------------------------------------
 Enemy::Enemy(Player *player) {
   // Dimensions init
-  size.width = 0.5f;
-  size.height = 1.5f;
-  size.length = 0.5f;
+  size.x = 0.5f;
+  size.y = 1.5f;
+  size.z = 0.5f;
 
   // Sprite init
   sprite.texture = LoadTexture("DOOM_Enemy.png");
@@ -26,10 +26,10 @@ Enemy::Enemy(Player *player) {
   upAxis = (Vector3){0.0f, 1.0f, 0.0f};
 
   // Bounding box init
-  boundingBox.min = (Vector3){position.x - size.width / 2.0f, 0.0f,
-                              position.z - size.length / 2.0f};
-  boundingBox.max = (Vector3){position.x + size.width / 2.0f, size.height,
-                              position.z + size.length / 2.0f};
+  boundingBox.min =
+      (Vector3){position.x - size.x / 2.0f, 0.0f, position.z - size.z / 2.0f};
+  boundingBox.max =
+      (Vector3){position.x + size.x / 2.0f, size.y, position.z + size.z / 2.0f};
 
   // Health init
   health = 150.0f;
@@ -40,8 +40,9 @@ Enemy::Enemy(Player *player) {
 
   // Forward-facing direction init (unit vector)
   forward = Vector3Zero();
-  // Speed init
+  // Speed and velocity init
   speed = 2.0f;
+  velocity = Vector3Zero();
 
   // Feelers init
   feelers.center = {Vector3Zero(), Vector3Zero()};
@@ -52,6 +53,10 @@ Enemy::Enemy(Player *player) {
   feelers.leftEndPoint = Vector3Zero();
   feelers.viewDistance = 100.0f;
   feelers.angle = 0.10f;
+
+  // gravity and plane collision init
+  planeCollision = true;
+  gravity = -10.0f;
 }
 
 Enemy::~Enemy() { UnloadTexture(sprite.texture); }
@@ -95,12 +100,20 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     position =
         Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
 
+    // gravity being applied
+    position.y += gravity * GetFrameTime();
+    if(planeCollision){
+        position.y = previousPosition.y;
+    }
+
+    // velocity Update
+    velocity = Vector3Subtract(position, previousPosition);
+
     // Updating bounding box position
-    boundingBox.min = (Vector3){position.x - size.width / 2.0f, position.y,
-                                position.z - size.length / 2.0f};
-    boundingBox.max =
-        (Vector3){position.x + size.width / 2.0f, position.y + size.height,
-                  position.z + size.length / 2.0f};
+    boundingBox.min = (Vector3){position.x - size.x / 2.0f, position.y,
+                                position.z - size.z / 2.0f};
+    boundingBox.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
+                                position.z + size.z / 2.0f};
 
     // Updating Feelers
     // Center
@@ -139,10 +152,9 @@ void Enemy::Draw(Player *player) {
   if (!dead) {
     BeginMode3D(player->camera);
     DrawBoundingBox(boundingBox, BLACK);
-    DrawBillboardRec(
-        player->camera, sprite.texture, sprite.source,
-        Vector3Add(position, (Vector3){0.0f, size.height / 2.0f, 0.0f}),
-        (Vector2){size.width * 2.0f, size.height}, sprite.tint);
+    DrawBillboardRec(player->camera, sprite.texture, sprite.source,
+                     Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f}),
+                     (Vector2){size.x * 2.0f, size.y}, sprite.tint);
     DrawRay(feelers.center, RED);
     DrawRay(feelers.right, RED);
     DrawRay(feelers.left, RED);
@@ -160,19 +172,25 @@ BoundingBox Enemy::GetBoundingBox() { return boundingBox; }
 
 // returns true center of enemy
 Vector3 Enemy::GetPosition() {
-  return (Vector3){position.x, size.height / 2.0f, position.z};
+  return (Vector3){position.x, size.y / 2.0f, position.z};
 }
 
 bool Enemy::IsDead() { return dead; }
 
 Feelers Enemy::GetFeelers() { return feelers; }
+
+Vector3 Enemy::GetSize() { return size; }
+
+Vector3 Enemy::GetVelocity() { return velocity; }
 // End Getters --------------------------------------------------
 //
 // Setters ------------------------------------------------------
 void Enemy::SetPosition(Vector3 position) { this->position = position; }
 void Enemy::SetXPosition(float x) { this->position.x = x; }
-void Enemy::SetYPosition(float y) { this->position.x = y; }
-void Enemy::SetZPosition(float z) { this->position.x = z; }
+void Enemy::SetYPosition(float y) { this->position.y = y - size.y; }
+void Enemy::SetZPosition(float z) { this->position.z = z; }
+
+void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------

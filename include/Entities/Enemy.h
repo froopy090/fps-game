@@ -17,6 +17,8 @@ public:
   // Getters
   Vector3 GetPosition();
   Vector3 GetPreviousPosition();
+  Vector3 GetSize();
+  Vector3 GetVelocity();
   BoundingBox GetBoundingBox();
   bool IsDead();
   Feelers GetFeelers();
@@ -26,6 +28,7 @@ public:
   void SetXPosition(float x);
   void SetYPosition(float y);
   void SetZPosition(float z);
+  void SetPlaneCollision(bool b);
 
   //  Helper functions
   void SavePosition();
@@ -36,7 +39,7 @@ public:
 
 private:
   // Enemy Info
-  Size size;
+  Vector3 size;
   Vector3 position;
   Vector3 upAxis;
   float health;
@@ -48,10 +51,13 @@ private:
   BoundingBox boundingBox;
   Vector3 previousPosition;
   Feelers feelers;
+  bool planeCollision;
 
   // Movement
   Vector3 forward;
+  Vector3 velocity;
   float speed;
+  float gravity;
 
   // Utility
   Utility::Timer timer;
