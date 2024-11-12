@@ -172,7 +172,12 @@ bool Player::IsShooting() { return isShooting; }
 bool Player::GetStairFlag() { return isOnStair; }
 
 // Setters
+// sets the previous position to the current camera position
 void Player::SavePosition() { previousPosition = camera.position; }
+
+void Player::SetXPosition(float x) { camera.position.x = x; }
+void Player::SetYPosition(float y) { camera.position.y = y; }
+void Player::SetZPosition(float z) { camera.position.z = z; }
 
 void Player::TakeDamage(float damage) {
   if (health > 0.0f) {

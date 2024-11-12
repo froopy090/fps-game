@@ -23,6 +23,9 @@ public:
 
   // Setters
   void SetPosition(Vector3 position);
+  void SetXPosition(float x);
+  void SetYPosition(float y);
+  void SetZPosition(float z);
 
   //  Helper functions
   void SavePosition();

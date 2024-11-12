@@ -31,6 +31,9 @@ public:
   // Setters
   // sets previousPosition to the current camera position
   void SavePosition();
+  void SetXPosition(float x);
+  void SetYPosition(float y);
+  void SetZPosition(float z);
   void TakeDamage(float damage);
   void SetPlaneCollision(bool b);
   void SetStairFlag(bool b);

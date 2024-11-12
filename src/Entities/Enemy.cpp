@@ -170,6 +170,9 @@ Feelers Enemy::GetFeelers() { return feelers; }
 //
 // Setters ------------------------------------------------------
 void Enemy::SetPosition(Vector3 position) { this->position = position; }
+void Enemy::SetXPosition(float x) { this->position.x = x; }
+void Enemy::SetYPosition(float y) { this->position.x = y; }
+void Enemy::SetZPosition(float z) { this->position.x = z; }
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------
