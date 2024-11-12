@@ -10,13 +10,13 @@ To compile the project, follow these steps:
     mkdir build
     cd build
     cmake ..
-    make
+    make run
     ./fps-game
 ```
 
 ## Dependencies
 - raylib library (to build raylib follow [these](https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux) instructions)
-    - ensure libraylib.so, raylib.so.5.5.0, and raylib.so.550 is available in the lib directory
+    - ensure libraylib.so, raylib.so.5.5.0, and raylib.so.550 is available in the lib directory (if you don't have a lib directory, make it)
     - ensure raylib.h, raymath.h, and rlgl.h are in the include directory
 
 ## Acknowledgement
@@ -25,3 +25,4 @@ To compile the project, follow these steps:
 - [Elia](https://github.com/Thenewchicken55)
     - README.md
     - CMakeLists.txt
+    - Some random stuff
