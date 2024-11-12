@@ -73,14 +73,14 @@ void Room001::Update(Entities::Player *player) {
   // Checks collision between walls and Player
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
-      Utility::LockPlayerAxis(player, &wall);
+      Utility::LockEntityAxis(player, &wall);
     }
   }
 
   // Checks collision between large columns and Player
   for (LargeColumn &column : columns) {
     if (Utility::EntityCollisionObject(player, &column)) {
-      Utility::LockPlayerAxis(player, &column);
+      Utility::LockEntityAxis(player, &column);
     }
   }
 
@@ -88,7 +88,7 @@ void Room001::Update(Entities::Player *player) {
   for (Stairs &stair : stairs) {
     Cube stairWall = stair.GetStairWall();
     if (Utility::EntityCollisionObject(player, &stairWall)) {
-      Utility::LockPlayerAxis(player, &stairWall);
+      Utility::LockEntityAxis(player, &stairWall);
     }
     std::vector<Cube> stairCubes = stair.GetCubeVector();
     for (Cube &stairCube : stairCubes) {
