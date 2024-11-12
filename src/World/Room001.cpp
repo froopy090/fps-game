@@ -65,7 +65,7 @@ void Room001::Update(Entities::Player *player) {
   // Checks collision between plane and Player
   for (Plane &floor : floors) {
     if (Utility::EntityCollisionObject(player, &floor)) {
-      player->SetPlaneCollision(true);
+      Utility::LockEntityAxis(player, &floor);
       break;
     }
   }
@@ -81,6 +81,7 @@ void Room001::Update(Entities::Player *player) {
   for (LargeColumn &column : columns) {
     if (Utility::EntityCollisionObject(player, &column)) {
       Utility::LockEntityAxis(player, &column);
+      break;
     }
   }
 
