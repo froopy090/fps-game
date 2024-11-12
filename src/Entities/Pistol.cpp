@@ -1,4 +1,5 @@
 #include "Entities/Pistol.h"
+#include "Entities/EntityDefinitions.h"
 #include "Entities/Player.h"
 #include "globals.h"
 #include "iostream"
@@ -8,7 +9,7 @@ Pistol::Pistol() {
   // Loading texture
   texture = LoadTexture("DOOM_Pistol_Cropped.png");
 
-  state = IDLE;
+  state = WEAPON_IDLE;
   // Idle sprite
   idle.source = (Rectangle){10, 50, 110, 95};
   idle.destination = (Rectangle){200, screenHeight - 95 * 3, 110 * 3, 95 * 3};
@@ -40,7 +41,7 @@ Pistol::~Pistol() { UnloadTexture(texture); }
 
 void Pistol::Event() {
   if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-    state = FIRING;
+    state = WEAPON_FIRING;
     timer.Start(0.2f);
   }
 }
@@ -48,24 +49,24 @@ void Pistol::Event() {
 void Pistol::Update() {
   timer.Update();
   if (timer.Finished()) {
-    state = IDLE;
+    state = WEAPON_IDLE;
   }
 }
 
 void Pistol::Draw(Player *player) {
   if (player->cameraMode == CAMERA_FIRST_PERSON) {
     switch (state) {
-    case IDLE:
+    case WEAPON_IDLE:
       DrawTexturePro(texture, idle.source, idle.destination, idle.origin,
                      idle.rotation, idle.tint);
       break;
-    case FIRING:
+    case WEAPON_FIRING:
       DrawTexturePro(texture, firing1.source, firing1.destination,
                      firing1.origin, firing1.rotation, firing1.tint);
       DrawTexturePro(texture, firing2.source, firing2.destination,
                      firing2.origin, firing2.rotation, firing2.tint);
       break;
-    case RELOADING:
+    case WEAPON_RELOADING:
       // TODO: add draw texture function
       break;
     default:

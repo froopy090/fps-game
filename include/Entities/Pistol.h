@@ -17,7 +17,7 @@ public:
 
 private:
   Texture2D texture;
-  State state;
+  WeaponState state;
   Utility::Timer timer;
   Sprite idle;
   Sprite firing1;
