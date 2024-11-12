@@ -1,16 +1,17 @@
 #pragma once
+#include "Entities/Enemy.h"
 #include "Entities/Player.h"
-#include "World/LargeColumn.h"
 #include "World/BaseObjects.h"
-#include "World/WorldDefinitions.h"
+#include "World/LargeColumn.h"
 #include "World/Stairs.h"
+#include "World/WorldDefinitions.h"
 #include "vector"
 
 namespace World {
 class Room001 {
 public:
   Room001();
-  void Update(Entities::Player *player);
+  void Update(Entities::Player *player, Entities::Enemy *enemy);
   void Draw();
 
 private:

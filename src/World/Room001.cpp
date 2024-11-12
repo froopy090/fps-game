@@ -1,4 +1,5 @@
 #include "World/Room001.h"
+#include "Entities/Enemy.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
 #include "raymath.h"
@@ -59,21 +60,27 @@ Room001::Room001() {
   }
 }
 
-void Room001::Update(Entities::Player *player) {
+void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Reset
   player->SetPlaneCollision(false);
+  enemy->SetPlaneCollision(false);
   // Checks collision between plane and Player
   for (Plane &floor : floors) {
     if (Utility::EntityCollisionObject(player, &floor)) {
       Utility::LockEntityAxis(player, &floor);
-      break;
+    }
+    if (Utility::EntityCollisionObject(enemy, &floor)) {
+      Utility::LockEntityAxis(enemy, &floor);
     }
   }
 
-  // Checks collision between walls and Player
+  // Checks wall collision for player and enemy
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
       Utility::LockEntityAxis(player, &wall);
+    }
+    if (Utility::EntityCollisionObject(enemy, &wall)) {
+      Utility::LockEntityAxis(enemy, &wall);
     }
   }
 
@@ -81,7 +88,9 @@ void Room001::Update(Entities::Player *player) {
   for (LargeColumn &column : columns) {
     if (Utility::EntityCollisionObject(player, &column)) {
       Utility::LockEntityAxis(player, &column);
-      break;
+    }
+    if (Utility::EntityCollisionObject(enemy, &column)) {
+      Utility::LockEntityAxis(enemy, &column);
     }
   }
 
@@ -91,13 +100,16 @@ void Room001::Update(Entities::Player *player) {
     if (Utility::EntityCollisionObject(player, &stairWall)) {
       Utility::LockEntityAxis(player, &stairWall);
     }
+    if (Utility::EntityCollisionObject(enemy, &stairWall)) {
+      Utility::LockEntityAxis(enemy, &stairWall);
+    }
     std::vector<Cube> stairCubes = stair.GetCubeVector();
     for (Cube &stairCube : stairCubes) {
-      // if player is colliding and player is below the stair height
       if (Utility::EntityCollisionObject(player, &stairCube)) {
-        player->camera.position.y =
-            stairCube.GetBoundingBox().max.y + player->GetSize().y;
-        player->SetPlaneCollision(true);
+        Utility::LockEntityAxis(player, &stairCube);
+      }
+      if (Utility::EntityCollisionObject(enemy, &stairCube)) {
+        Utility::LockEntityAxis(enemy, &stairCube);
       }
     }
   }
