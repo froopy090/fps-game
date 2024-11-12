@@ -97,6 +97,7 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
               IceCube->GetBoundingBox().max.z - 0.5f) {
         LockXAxis(entity);
         LockZAxis(entity);
+        return;
       }
     }
 
@@ -129,6 +130,7 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
               IceCube->GetBoundingBox().min.z + 0.5f) {
         LockXAxis(entity);
         LockZAxis(entity);
+        return;
       }
     }
 
@@ -162,6 +164,7 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
               IceCube->GetBoundingBox().max.z - 0.5f) {
         LockXAxis(entity);
         LockZAxis(entity);
+        return;
       }
     }
 
@@ -194,6 +197,7 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
               IceCube->GetBoundingBox().min.z + 0.5f) {
         LockXAxis(entity);
         LockZAxis(entity);
+        return;
       }
     }
     // return; // dr carbon, absolute legend
