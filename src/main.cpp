@@ -75,7 +75,7 @@ int main() {
       player1->Update();
       enemy1->Update(player1.get(), pistol.get());
 
-      room->Update(player1.get());
+      room->Update(player1.get(), enemy1.get());
       break;
     case ENDING:
       // TODO: update ending variables here
