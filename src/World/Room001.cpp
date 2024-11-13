@@ -87,7 +87,7 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // this must be on a separate for loop, otherwise
   // it will interfere with other collisions
   for (Cube &wall : walls) {
-    if (Utility::CanSeeTarget(enemy, player, &wall)) {
+    if (!Utility::CanSeeTarget(enemy, player, &wall)) {
       enemy->SetChasePlayer(false); // enemy can't see player
       break;
     } else {
