@@ -105,6 +105,16 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
     }
   }
 
+  // check line of sight for columns
+  /*for (LargeColumn &column : columns) {*/
+  /*  if (Utility::CanSeeTarget(enemy, player, &column)) {*/
+  /*    enemy->SetChasePlayer(false); // enemy can't see player*/
+  /*    break;*/
+  /*  } else {*/
+  /*    enemy->SetChasePlayer(true); // enemy can see player*/
+  /*  }*/
+  /*}*/
+
   // Checks collision between stairs and entities
   for (Stairs &stair : stairs) {
     Cube stairWall = stair.GetStairWall();
@@ -124,6 +134,18 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
       }
     }
   }
+  // checks line of sight
+  // this doesn't check the stairs themselves
+  // checks the walls
+  /*for (Stairs &stair : stairs) {*/
+  /*  Cube stairWall = stair.GetStairWall();*/
+  /*  if (Utility::CanSeeTarget(enemy, player, &stairWall)) {*/
+  /*    enemy->SetChasePlayer(false); // enemy can't see player*/
+  /*    break;*/
+  /*  } else {*/
+  /*    enemy->SetChasePlayer(true); // enemy can see player*/
+  /*  }*/
+  /*}*/
 }
 
 void Room001::Draw() {
