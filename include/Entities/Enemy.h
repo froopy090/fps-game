@@ -21,7 +21,8 @@ public:
   Vector3 GetVelocity();
   BoundingBox GetBoundingBox();
   bool IsDead();
-  Feelers GetFeelers();
+  Ray GetRay();
+  bool ChasingPlayer();
 
   // Setters
   void SetPosition(Vector3 position);
@@ -29,6 +30,7 @@ public:
   void SetYPosition(float y);
   void SetZPosition(float z);
   void SetPlaneCollision(bool b);
+  void SetChasePlayer(bool b);
 
   //  Helper functions
   void SavePosition();
@@ -50,7 +52,7 @@ private:
   // Collision
   BoundingBox boundingBox;
   Vector3 previousPosition;
-  Feelers feelers;
+  Ray visionRay;
   bool planeCollision;
 
   // Movement
@@ -58,6 +60,7 @@ private:
   Vector3 velocity;
   float speed;
   float gravity;
+  bool chasePlayer;
 
   // Utility
   Utility::Timer timer;

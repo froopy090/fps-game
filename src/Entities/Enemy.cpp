@@ -38,21 +38,17 @@ Enemy::Enemy(Player *player) {
   // Damage init
   meleeDamage = 25.0f;
 
-  // Forward-facing direction init (unit vector)
+  // Movement attributes init
+  //  Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed and velocity init
   speed = 2.0f;
   velocity = Vector3Zero();
+  chasePlayer = false;
 
-  // Feelers init
-  feelers.center = {Vector3Zero(), Vector3Zero()};
-  feelers.centerEndPoint = Vector3Zero();
-  feelers.right = {Vector3Zero(), Vector3Zero()};
-  feelers.rightEndPoint = Vector3Zero();
-  feelers.left = {Vector3Zero(), Vector3Zero()};
-  feelers.leftEndPoint = Vector3Zero();
-  feelers.viewDistance = 100.0f;
-  feelers.angle = 0.10f;
+  // Vision ray init
+  visionRay.direction = Vector3Zero();
+  visionRay.position = Vector3Zero();
 
   // gravity and plane collision init
   planeCollision = true;
@@ -97,13 +93,20 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     // Move towards player
     forward =
         Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
-    position =
-        Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+    // if we can see player, chase it
+    // else, stop moving
+    // TODO: add random movement when not chasing player
+    if (chasePlayer) {
+      position =
+          Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+    } else {
+      position = previousPosition;
+    }
 
     // gravity being applied
     position.y += gravity * GetFrameTime();
-    if(planeCollision){
-        position.y = previousPosition.y;
+    if (planeCollision) {
+      position.y = previousPosition.y;
     }
 
     // velocity Update
@@ -115,29 +118,9 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     boundingBox.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
                                 position.z + size.z / 2.0f};
 
-    // Updating Feelers
-    // Center
-    feelers.center.direction = forward;
-    feelers.center.position = this->GetPosition();
-    feelers.centerEndPoint = Vector3Add(
-        feelers.center.position,
-        Vector3Scale(feelers.center.direction, feelers.viewDistance));
-
-    // Right
-    feelers.right.direction =
-        Vector3RotateByAxisAngle(forward, upAxis, -feelers.angle);
-    feelers.right.position = this->GetPosition();
-    feelers.rightEndPoint =
-        Vector3Add(feelers.right.position,
-                   Vector3Scale(feelers.right.direction, feelers.viewDistance));
-
-    // Left
-    feelers.left.direction =
-        Vector3RotateByAxisAngle(forward, upAxis, feelers.angle);
-    feelers.left.position = this->GetPosition();
-    feelers.leftEndPoint =
-        Vector3Add(feelers.left.position,
-                   Vector3Scale(feelers.left.direction, feelers.viewDistance));
+    // Vision ray Update
+    visionRay.direction = forward;
+    visionRay.position = position;
 
     // Checks collision between player and itself
     // also damages player
@@ -155,10 +138,8 @@ void Enemy::Draw(Player *player) {
     DrawBillboardRec(player->camera, sprite.texture, sprite.source,
                      Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f}),
                      (Vector2){size.x * 2.0f, size.y}, sprite.tint);
-    DrawRay(feelers.center, RED);
-    DrawRay(feelers.right, RED);
-    DrawRay(feelers.left, RED);
-    DrawCube(position, 0.5f, 0.5f, 0.5f, RED);
+    // draw vision ray for debug
+    DrawRay(visionRay, RED);
     EndMode3D();
   }
 }
@@ -177,11 +158,14 @@ Vector3 Enemy::GetPosition() {
 
 bool Enemy::IsDead() { return dead; }
 
-Feelers Enemy::GetFeelers() { return feelers; }
+Ray Enemy::GetRay() { return visionRay; }
+// Feelers Enemy::GetFeelers() { return feelers; }
 
 Vector3 Enemy::GetSize() { return size; }
 
 Vector3 Enemy::GetVelocity() { return velocity; }
+
+bool Enemy::ChasingPlayer() { return chasePlayer; }
 // End Getters --------------------------------------------------
 //
 // Setters ------------------------------------------------------
@@ -191,6 +175,10 @@ void Enemy::SetYPosition(float y) { this->position.y = y - size.y; }
 void Enemy::SetZPosition(float z) { this->position.z = z; }
 
 void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
+
+void Enemy::SetChasePlayer(bool b) {
+  this->chasePlayer = b;
+}
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------
