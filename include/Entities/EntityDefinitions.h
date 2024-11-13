@@ -8,17 +8,6 @@ struct EnemySprite {
   Color tint;
 };
 
-struct Feelers {
-  Ray right;
-  Vector3 rightEndPoint;
-  Ray center;
-  Vector3 centerEndPoint;
-  Ray left;
-  Vector3 leftEndPoint;
-  float viewDistance;
-  float angle;
-};
-
 struct Sprite {
   Rectangle source;
   Rectangle destination;
