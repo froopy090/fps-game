@@ -64,7 +64,7 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
   // Reset
   player->SetPlaneCollision(false);
   enemy->SetPlaneCollision(false);
-  // Checks collision between plane and Player
+  // Checks plane collision with entities
   for (Plane &floor : floors) {
     if (Utility::EntityCollisionObject(player, &floor)) {
       Utility::LockEntityAxis(player, &floor);
@@ -74,7 +74,7 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
     }
   }
 
-  // Checks wall collision for player and enemy
+  // Checks wall collision with entities
   for (Cube &wall : walls) {
     if (Utility::EntityCollisionObject(player, &wall)) {
       Utility::LockEntityAxis(player, &wall);
@@ -84,7 +84,18 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
     }
   }
 
-  // Checks collision between large columns and Player
+  // this must be on a separate for loop, otherwise
+  // it will interfere with other collisions
+  for (Cube &wall : walls) {
+    if (Utility::CanSeeTarget(enemy, player, &wall)) {
+      enemy->SetChasePlayer(false); // enemy can't see player
+      break;
+    } else {
+      enemy->SetChasePlayer(true); // enemy can see player
+    }
+  }
+
+  // Checks collision between large columns and entities
   for (LargeColumn &column : columns) {
     if (Utility::EntityCollisionObject(player, &column)) {
       Utility::LockEntityAxis(player, &column);
@@ -94,7 +105,7 @@ void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
     }
   }
 
-  // Checks collision between stairs and player
+  // Checks collision between stairs and entities
   for (Stairs &stair : stairs) {
     Cube stairWall = stair.GetStairWall();
     if (Utility::EntityCollisionObject(player, &stairWall)) {
