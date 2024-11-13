@@ -11,7 +11,6 @@ To compile the project, follow these steps:
     cd build
     cmake ..
     make run
-    ./fps-game
 ```
 
 ## Dependencies
