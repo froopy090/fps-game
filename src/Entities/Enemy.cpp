@@ -42,7 +42,7 @@ Enemy::Enemy(Player *player) {
   //  Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed and velocity init
-  speed = 2.0f;
+  speed = 5.0f;
   velocity = Vector3Zero();
   chasePlayer = false;
 
@@ -52,6 +52,7 @@ Enemy::Enemy(Player *player) {
 
   // gravity and plane collision init
   planeCollision = true;
+  hasCollided = false;
   gravity = -10.0f;
 }
 
@@ -166,6 +167,8 @@ Vector3 Enemy::GetSize() { return size; }
 Vector3 Enemy::GetVelocity() { return velocity; }
 
 bool Enemy::ChasingPlayer() { return chasePlayer; }
+
+bool Enemy::HasCollided() { return hasCollided; }
 // End Getters --------------------------------------------------
 //
 // Setters ------------------------------------------------------
@@ -176,9 +179,9 @@ void Enemy::SetZPosition(float z) { this->position.z = z; }
 
 void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
 
-void Enemy::SetChasePlayer(bool b) {
-  this->chasePlayer = b;
-}
+void Enemy::SetChasePlayer(bool b) { this->chasePlayer = b; }
+
+void Enemy::SetHasCollided(bool b) { this->hasCollided = b; }
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------

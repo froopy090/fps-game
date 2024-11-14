@@ -23,6 +23,7 @@ public:
   bool IsDead();
   Ray GetRay();
   bool ChasingPlayer();
+  bool HasCollided();
 
   // Setters
   void SetPosition(Vector3 position);
@@ -31,6 +32,7 @@ public:
   void SetZPosition(float z);
   void SetPlaneCollision(bool b);
   void SetChasePlayer(bool b);
+  void SetHasCollided(bool b);
 
   //  Helper functions
   void SavePosition();
@@ -54,6 +56,7 @@ private:
   Vector3 previousPosition;
   Ray visionRay;
   bool planeCollision;
+  bool hasCollided;
 
   // Movement
   Vector3 forward;
