@@ -31,7 +31,8 @@ public:
   void SetYPosition(float y);
   void SetZPosition(float z);
   void SetPlaneCollision(bool b);
-  void SetChasePlayer(bool b);
+  void SetChasePlayer();
+  void SetIdle();
   void SetHasCollided(bool b);
 
   //  Helper functions
@@ -47,7 +48,8 @@ private:
   Vector3 position;
   Vector3 upAxis;
   float health;
-  bool dead;
+  //bool dead;
+  EnemyState state;
   float meleeDamage;
   EnemySprite sprite;
 
@@ -63,7 +65,7 @@ private:
   Vector3 velocity;
   float speed;
   float gravity;
-  bool chasePlayer;
+  //bool chasePlayer;
 
   // Utility
   Utility::Timer timer;

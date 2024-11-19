@@ -1,4 +1,5 @@
 #include "Entities/Enemy.h"
+#include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/Collision.h"
@@ -31,9 +32,10 @@ Enemy::Enemy(Player *player) {
   boundingBox.max =
       (Vector3){position.x + size.x / 2.0f, size.y, position.z + size.z / 2.0f};
 
-  // Health init
+  // Health  and state init
   health = 150.0f;
-  dead = false;
+  // dead = false;
+  state = ENEMY_IDLE;
 
   // Damage init
   meleeDamage = 25.0f;
@@ -44,7 +46,7 @@ Enemy::Enemy(Player *player) {
   // Speed and velocity init
   speed = 5.0f;
   velocity = Vector3Zero();
-  chasePlayer = false;
+  // chasePlayer = false;
 
   // Vision ray init
   visionRay.direction = Vector3Zero();
@@ -60,12 +62,12 @@ Enemy::~Enemy() { UnloadTexture(sprite.texture); }
 
 void Enemy::Event() {
   // TODO: add event function
-  if (!dead) {
+  if (!(state == ENEMY_DEAD)) {
   }
 }
 
 void Enemy::Update(Player *player, Pistol *pistol) {
-  if (!dead) {
+  if (!(state == ENEMY_DEAD)) {
     // Save position before updating
     this->SavePosition();
 
@@ -80,7 +82,8 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 
     // Checking health
     if (health <= 0.0f) {
-      dead = true;
+      // dead = true;
+      state = ENEMY_DEAD;
       sprite.tint = BLANK;
     }
 
@@ -97,7 +100,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     // if we can see player, chase it
     // else, stop moving
     // TODO: add random movement when not chasing player
-    if (chasePlayer) {
+    if (state == ENEMY_CHASING) {
       position =
           Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
     } else {
@@ -133,7 +136,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 }
 
 void Enemy::Draw(Player *player) {
-  if (!dead) {
+  if (!(state == ENEMY_DEAD)) {
     BeginMode3D(player->camera);
     DrawBoundingBox(boundingBox, BLACK);
     DrawBillboardRec(player->camera, sprite.texture, sprite.source,
@@ -157,7 +160,7 @@ Vector3 Enemy::GetPosition() {
   return (Vector3){position.x, size.y / 2.0f, position.z};
 }
 
-bool Enemy::IsDead() { return dead; }
+bool Enemy::IsDead() { return state == ENEMY_DEAD; }
 
 Ray Enemy::GetRay() { return visionRay; }
 // Feelers Enemy::GetFeelers() { return feelers; }
@@ -166,7 +169,7 @@ Vector3 Enemy::GetSize() { return size; }
 
 Vector3 Enemy::GetVelocity() { return velocity; }
 
-bool Enemy::ChasingPlayer() { return chasePlayer; }
+bool Enemy::ChasingPlayer() { return state == ENEMY_CHASING; }
 
 bool Enemy::HasCollided() { return hasCollided; }
 // End Getters --------------------------------------------------
@@ -179,7 +182,9 @@ void Enemy::SetZPosition(float z) { this->position.z = z; }
 
 void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
 
-void Enemy::SetChasePlayer(bool b) { this->chasePlayer = b; }
+void Enemy::SetChasePlayer() { state = ENEMY_CHASING; }
+
+void Enemy::SetIdle() { state = ENEMY_IDLE; }
 
 void Enemy::SetHasCollided(bool b) { this->hasCollided = b; }
 // End Setters ----------------------------------------------------
