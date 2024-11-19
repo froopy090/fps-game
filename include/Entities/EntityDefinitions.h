@@ -31,8 +31,8 @@ typedef enum WeaponState {
 typedef enum EnemyState {
   ENEMY_IDLE,
   ENEMY_CHASING,
-  ENEMY_ATTACKING
+  ENEMY_ATTACKING,
+  ENEMY_DEAD
 } EnemyState;
-
 
 } // namespace Entities
