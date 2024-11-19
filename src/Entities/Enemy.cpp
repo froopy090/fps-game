@@ -44,7 +44,7 @@ Enemy::Enemy(Player *player) {
   //  Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed and velocity init
-  speed = 5.0f;
+  speed = 3.0f;
   velocity = Vector3Zero();
   // chasePlayer = false;
 
@@ -67,12 +67,10 @@ void Enemy::Event() {
 }
 
 void Enemy::Update(Player *player, Pistol *pistol) {
+  // only update enemy if it's dead
   if (!(state == ENEMY_DEAD)) {
     // Save position before updating
     this->SavePosition();
-
-    // Update timer
-    timer.Update();
 
     // Checks collision between player hitscan ray and Enemy bounding box
     if (Utility::HitscanIntersectsBox(player, this)) {
@@ -87,27 +85,36 @@ void Enemy::Update(Player *player, Pistol *pistol) {
       sprite.tint = BLANK;
     }
 
-    // Checking if needs to slow down
-    if (!timer.Finished()) {
-      speed = 1.0f;
-    } else {
-      this->ResetSpeed();
+    // Movement Update
+    // always keep the forward vector pointed towards player by default
+    forward =
+        Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
+    switch (state) {
+    case ENEMY_CHASING:
+      // move towards player
+      position =
+          Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+      break;
+    case ENEMY_IDLE:
+      position = previousPosition;
+      break;
     }
 
     // Move towards player
-    forward =
-        Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
-    // if we can see player, chase it
-    // else, stop moving
-    // TODO: add random movement when not chasing player
-    if (state == ENEMY_CHASING) {
-      position =
-          Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
-    } else {
-      position = previousPosition;
-    }
+    /*forward =*/
+    /*    Vector3Normalize(Vector3Subtract(player->GetPosition(), position));*/
+    /*// if we can see player, chase it*/
+    /*// else, stop moving*/
+    /*// TODO: add random movement when not chasing player*/
+    /*if (state == ENEMY_CHASING) {*/
+    /*  position =*/
+    /*      Vector3Add(position, Vector3Scale(forward, speed *
+     * GetFrameTime()));*/
+    /*} else {*/
+    /*  position = previousPosition;*/
+    /*}*/
 
-    // gravity being applied
+    // gravity being applied always, regardless of state
     position.y += gravity * GetFrameTime();
     if (planeCollision) {
       position.y = previousPosition.y;
@@ -163,7 +170,6 @@ Vector3 Enemy::GetPosition() {
 bool Enemy::IsDead() { return state == ENEMY_DEAD; }
 
 Ray Enemy::GetRay() { return visionRay; }
-// Feelers Enemy::GetFeelers() { return feelers; }
 
 Vector3 Enemy::GetSize() { return size; }
 
@@ -202,11 +208,6 @@ void Enemy::MoveRight() {
   std::cout << "MOVING RIGHT" << std::endl;
   Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
   position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
-}
-
-void Enemy::SlowDown() {
-  std::cout << "SLOWING DOWN" << std::endl;
-  timer.Start(1.0f);
 }
 
 void Enemy::ResetSpeed() { speed = 2.0f; }

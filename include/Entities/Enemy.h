@@ -2,6 +2,7 @@
 #include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
+#include "Utility/Timer.h"
 #include "raylib.h"
 
 namespace Entities {
@@ -39,7 +40,6 @@ public:
   void SavePosition();
   void MoveRight();
   void MoveLeft();
-  void SlowDown();
   void ResetSpeed();
 
 private:
@@ -48,7 +48,7 @@ private:
   Vector3 position;
   Vector3 upAxis;
   float health;
-  //bool dead;
+  // bool dead;
   EnemyState state;
   float meleeDamage;
   EnemySprite sprite;
@@ -65,9 +65,9 @@ private:
   Vector3 velocity;
   float speed;
   float gravity;
-  //bool chasePlayer;
+  // bool chasePlayer;
 
   // Utility
-  Utility::Timer timer;
+  Utility::Timer movementTimer;
 };
 } // namespace Entities
