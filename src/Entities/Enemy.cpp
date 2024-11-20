@@ -35,7 +35,7 @@ Enemy::Enemy(Player *player) {
   // Health  and state init
   health = 150.0f;
   // dead = false;
-  state = ENEMY_IDLE;
+  state = ENEMY_CHASING;
 
   // Damage init
   meleeDamage = 25.0f;
@@ -54,7 +54,7 @@ Enemy::Enemy(Player *player) {
 
   // gravity and plane collision init
   planeCollision = true;
-  hasCollided = false;
+  rayHasCollided = false;
   gravity = -10.0f;
 }
 
@@ -86,33 +86,53 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     }
 
     // Movement Update
+    float distanceFromPlayer =
+        Vector3Distance(position, player->camera.position);
     // always keep the forward vector pointed towards player by default
     forward =
         Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
     switch (state) {
     case ENEMY_CHASING:
-      // move towards player
+      //  move towards player
       position =
           Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       break;
     case ENEMY_IDLE:
-      position = previousPosition;
+      // if enemy is close enough, chase player
+      if (distanceFromPlayer < 5.0f) {
+        state = ENEMY_CHASING;
+      }
+
+      movementTimer.Update();
+      movementTimer.PrintTime();
+      //  if timer hasn't finished, keep chasing player
+      //  else stop moving
+      if (!movementTimer.Finished()) {
+        position =
+            Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
+      } else {
+        position = previousPosition;
+        // rayHasCollided = false;
+      }
+
+      //  TODO:
+      //  update timer
+      //  rotate the forward vector by a random value
+      //  start a timer
+      //  move in that direction until timer is out
+
+      /*// rotating forward vector*/
+      /*float randomAngle = GetRandomValue(-180, 180);*/
+      /*// Updating timer*/
+      /*movementTimer.Update();*/
+      /*// rotating forward vector*/
+      /*forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);*/
+      /*// moving in the new direction*/
+      /*position =*/
+      /*    Vector3Add(position, Vector3Scale(forward, speed *
+       * GetFrameTime()));*/
       break;
     }
-
-    // Move towards player
-    /*forward =*/
-    /*    Vector3Normalize(Vector3Subtract(player->GetPosition(), position));*/
-    /*// if we can see player, chase it*/
-    /*// else, stop moving*/
-    /*// TODO: add random movement when not chasing player*/
-    /*if (state == ENEMY_CHASING) {*/
-    /*  position =*/
-    /*      Vector3Add(position, Vector3Scale(forward, speed *
-     * GetFrameTime()));*/
-    /*} else {*/
-    /*  position = previousPosition;*/
-    /*}*/
 
     // gravity being applied always, regardless of state
     position.y += gravity * GetFrameTime();
@@ -167,20 +187,18 @@ Vector3 Enemy::GetPosition() {
   return (Vector3){position.x, size.y / 2.0f, position.z};
 }
 
-bool Enemy::IsDead() { return state == ENEMY_DEAD; }
-
 Ray Enemy::GetRay() { return visionRay; }
 
 Vector3 Enemy::GetSize() { return size; }
 
 Vector3 Enemy::GetVelocity() { return velocity; }
 
-bool Enemy::ChasingPlayer() { return state == ENEMY_CHASING; }
+bool Enemy::RayHasCollided() { return rayHasCollided; }
 
-bool Enemy::HasCollided() { return hasCollided; }
-// End Getters --------------------------------------------------
+EnemyState Enemy::GetState() { return state; }
+//  End Getters --------------------------------------------------
 //
-// Setters ------------------------------------------------------
+//  Setters ------------------------------------------------------
 void Enemy::SetPosition(Vector3 position) { this->position = position; }
 void Enemy::SetXPosition(float x) { this->position.x = x; }
 void Enemy::SetYPosition(float y) { this->position.y = y - size.y; }
@@ -188,11 +206,20 @@ void Enemy::SetZPosition(float z) { this->position.z = z; }
 
 void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
 
-void Enemy::SetChasePlayer() { state = ENEMY_CHASING; }
+void Enemy::SetChasePlayer() {
+  state = ENEMY_CHASING;
+  // movementTimer.Start(3.0f);
+}
 
-void Enemy::SetIdle() { state = ENEMY_IDLE; }
+void Enemy::SetIdle() {
+  if (!movementTimer.Active()) {
+    movementTimer.Start(5.0f);
+  }
+  // std::cout << "idle" << std::endl;
+  state = ENEMY_IDLE;
+}
 
-void Enemy::SetHasCollided(bool b) { this->hasCollided = b; }
+void Enemy::SetRayHasCollided(bool b) { this->rayHasCollided = b; }
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------

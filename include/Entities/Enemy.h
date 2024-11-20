@@ -21,10 +21,9 @@ public:
   Vector3 GetSize();
   Vector3 GetVelocity();
   BoundingBox GetBoundingBox();
-  bool IsDead();
   Ray GetRay();
-  bool ChasingPlayer();
-  bool HasCollided();
+  bool RayHasCollided();
+  EnemyState GetState();
 
   // Setters
   void SetPosition(Vector3 position);
@@ -34,7 +33,8 @@ public:
   void SetPlaneCollision(bool b);
   void SetChasePlayer();
   void SetIdle();
-  void SetHasCollided(bool b);
+  //void SetState(EnemyState state);
+  void SetRayHasCollided(bool b);
 
   //  Helper functions
   void SavePosition();
@@ -48,7 +48,6 @@ private:
   Vector3 position;
   Vector3 upAxis;
   float health;
-  // bool dead;
   EnemyState state;
   float meleeDamage;
   EnemySprite sprite;
@@ -58,7 +57,7 @@ private:
   Vector3 previousPosition;
   Ray visionRay;
   bool planeCollision;
-  bool hasCollided;
+  bool rayHasCollided;
 
   // Movement
   Vector3 forward;
