@@ -104,7 +104,6 @@ void Enemy::Update(Player *player, Pistol *pistol) {
       }
 
       movementTimer.Update();
-      movementTimer.PrintTime();
       //  if timer hasn't finished, keep chasing player
       //  else stop moving
       if (!movementTimer.Finished()) {
@@ -112,25 +111,12 @@ void Enemy::Update(Player *player, Pistol *pistol) {
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       } else {
         position = previousPosition;
-        // rayHasCollided = false;
+        // TODO: move around randomly until close enough to player
+        float randomAngle = GetRandomValue(-180, 180);
+        forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);
+        position =
+            Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       }
-
-      //  TODO:
-      //  update timer
-      //  rotate the forward vector by a random value
-      //  start a timer
-      //  move in that direction until timer is out
-
-      /*// rotating forward vector*/
-      /*float randomAngle = GetRandomValue(-180, 180);*/
-      /*// Updating timer*/
-      /*movementTimer.Update();*/
-      /*// rotating forward vector*/
-      /*forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);*/
-      /*// moving in the new direction*/
-      /*position =*/
-      /*    Vector3Add(position, Vector3Scale(forward, speed *
-       * GetFrameTime()));*/
       break;
     }
 
