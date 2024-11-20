@@ -29,7 +29,7 @@ typedef enum WeaponState {
 } WeaponState;
 
 typedef enum EnemyState {
-  ENEMY_IDLE,
+  ENEMY_IDLE = 0,
   ENEMY_CHASING,
   ENEMY_ATTACKING,
   ENEMY_DEAD
