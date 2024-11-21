@@ -6,6 +6,7 @@
 #include "iostream"
 #include "raylib.h"
 #include "raymath.h"
+#include <algorithm>
 #include <cctype>
 
 namespace Entities {
@@ -46,7 +47,7 @@ Enemy::Enemy(Player *player) {
   // Speed and velocity init
   speed = 3.0f;
   velocity = Vector3Zero();
-  // chasePlayer = false;
+  randomAngle = 0.0f;
 
   // Vision ray init
   visionRay.direction = Vector3Zero();
@@ -101,6 +102,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
       // if enemy is close enough, chase player
       if (distanceFromPlayer < 5.0f) {
         state = ENEMY_CHASING;
+        break;
       }
 
       movementTimer.Update();
@@ -110,9 +112,14 @@ void Enemy::Update(Player *player, Pistol *pistol) {
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       } else {
-        position = previousPosition;
-        // TODO: move around randomly until close enough to player
-        float randomAngle = GetRandomValue(-180, 180);
+        //position = previousPosition;
+        // generate a random angle to go in when the timer starts
+        // move in that direction until timer runs out
+        searchTimer.Update();
+        if (!searchTimer.Active()) {
+          searchTimer.Start(5.0f);
+          randomAngle = GetRandomValue(-180, 180);
+        }
         forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));

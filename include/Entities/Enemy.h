@@ -33,7 +33,7 @@ public:
   void SetPlaneCollision(bool b);
   void SetChasePlayer();
   void SetIdle();
-  //void SetState(EnemyState state);
+  // void SetState(EnemyState state);
   void SetRayHasCollided(bool b);
 
   //  Helper functions
@@ -64,9 +64,11 @@ private:
   Vector3 velocity;
   float speed;
   float gravity;
+  float randomAngle;
   // bool chasePlayer;
 
   // Utility
   Utility::Timer movementTimer;
+  Utility::Timer searchTimer;
 };
 } // namespace Entities
