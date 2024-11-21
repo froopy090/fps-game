@@ -76,18 +76,18 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
   if (XAxisCollision(entity, IceCube) && ZAxisCollision(entity, IceCube)) {
     // case 1, xVel > 0, zVel < 0
     if (entity->GetVelocity().x > 0.0f && entity->GetVelocity().z < 0.0f) {
-      std::cout << "Case 1" << std::endl;
+      //std::cout << "Case 1" << std::endl;
       // bottom right corner
       if (entity->GetBoundingBox().min.x <= IceCube->GetBoundingBox().min.x &&
           entity->GetBoundingBox().min.z < IceCube->GetBoundingBox().min.z) {
-        std::cout << "bottom right" << std::endl;
+        //std::cout << "bottom right" << std::endl;
         LockXAxis(entity);
         return;
       }
       // top left corner
       if (entity->GetBoundingBox().max.z >= IceCube->GetBoundingBox().max.z &&
           entity->GetBoundingBox().max.x > IceCube->GetBoundingBox().max.x) {
-        std::cout << "top left" << std::endl;
+        //std::cout << "top left" << std::endl;
         LockZAxis(entity);
         return;
       }
@@ -109,18 +109,18 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
 
     // case 2, xVel < 0, zVel > 0
     if (entity->GetVelocity().x < 0.0f && entity->GetVelocity().z > 0.0f) {
-      std::cout << "Case 2" << std::endl;
+      //std::cout << "Case 2" << std::endl;
       // bottom right corner
       if (entity->GetBoundingBox().min.x <= IceCube->GetBoundingBox().min.x &&
           entity->GetBoundingBox().min.z < IceCube->GetBoundingBox().min.z) {
-        std::cout << "bottom right" << std::endl;
+        //std::cout << "bottom right" << std::endl;
         LockZAxis(entity);
         return;
       }
       // top left corner
       if (entity->GetBoundingBox().max.z >= IceCube->GetBoundingBox().max.z &&
           entity->GetBoundingBox().max.x > IceCube->GetBoundingBox().max.x) {
-        std::cout << "top left" << std::endl;
+        //std::cout << "top left" << std::endl;
         LockXAxis(entity);
         return;
       }
@@ -142,19 +142,19 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
 
     // case 3, xVel < 0, zVel < 0
     if (entity->GetVelocity().x < 0.0f && entity->GetVelocity().z < 0.0f) {
-      std::cout << "Case 3" << std::endl;
+      //std::cout << "Case 3" << std::endl;
       // top right corner
       if (entity->GetBoundingBox().max.z >= IceCube->GetBoundingBox().max.z &&
           entity->GetBoundingBox().max.x < IceCube->GetBoundingBox().max.x &&
           entity->GetBoundingBox().max.x > IceCube->GetBoundingBox().min.x) {
-        std::cout << "top right" << std::endl;
+        //std::cout << "top right" << std::endl;
         LockZAxis(entity);
         return;
       }
       // bottom left corner
       if (entity->GetBoundingBox().max.x >= IceCube->GetBoundingBox().max.x &&
           entity->GetBoundingBox().max.z < IceCube->GetBoundingBox().max.z) {
-        std::cout << "bottom left" << std::endl;
+        //std::cout << "bottom left" << std::endl;
         LockXAxis(entity);
         return;
       }
@@ -176,18 +176,18 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
 
     // case 4, xVel > 0, zVel > 0
     if (entity->GetVelocity().x > 0.0f && entity->GetVelocity().z > 0.0f) {
-      std::cout << "Case 4" << std::endl;
+      //std::cout << "Case 4" << std::endl;
       // top right corner
       if (entity->GetBoundingBox().max.z >= IceCube->GetBoundingBox().max.z &&
           entity->GetBoundingBox().max.x < IceCube->GetBoundingBox().max.x) {
-        std::cout << "top right" << std::endl;
+        //std::cout << "top right" << std::endl;
         LockXAxis(entity);
         return;
       }
       // bottom left corner
       if (entity->GetBoundingBox().max.x >= IceCube->GetBoundingBox().max.x &&
           entity->GetBoundingBox().max.z < IceCube->GetBoundingBox().max.z) {
-        std::cout << "bottom left" << std::endl;
+        //std::cout << "bottom left" << std::endl;
         LockZAxis(entity);
         return;
       }
@@ -212,7 +212,7 @@ inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
   } else if (ZAxisCollision(entity, IceCube)) {
     LockZAxis(entity);
   } else {
-    std::cout << "all collision checks failed" << std::endl;
+    std::cerr << "all collision checks failed" << std::endl;
   }
 }
 } // namespace Utility
