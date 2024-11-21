@@ -36,7 +36,7 @@ int main() {
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
-  auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
+  //auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
@@ -50,7 +50,7 @@ int main() {
     // --------------------------------------------------------
     pistol->Event();
     player1->Event();
-    enemy1->Event();
+    //enemy1->Event();
 
     // --------------------------------------------------------
     // Update
@@ -73,7 +73,7 @@ int main() {
     case GAMEPLAY:
       pistol->Update();
       player1->Update();
-      enemy1->Update(player1.get(), pistol.get());
+      //enemy1->Update(player1.get(), pistol.get());
 
       room->Update(player1.get(), enemy1.get());
       break;
@@ -106,7 +106,7 @@ int main() {
       room->Draw();
       EndMode3D();
 
-      enemy1->Draw(player1.get());
+      //enemy1->Draw(player1.get());
       player1->Draw();
       pistol->Draw(player1.get());
 
