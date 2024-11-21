@@ -11,7 +11,7 @@
 
 namespace Entities {
 // Main Methods -----------------------------------------------------------
-Enemy::Enemy(Player *player) {
+Enemy::Enemy(Player *player, Vector3 position) {
   // Dimensions init
   size.x = 0.5f;
   size.y = 1.5f;
@@ -23,7 +23,8 @@ Enemy::Enemy(Player *player) {
   sprite.tint = WHITE;
 
   // Position init
-  position = (Vector3){0.0f, 0.0f, -4.0f};
+  // position = (Vector3){0.0f, 0.0f, -4.0f};
+  this->position = position;
   previousPosition = position;
   upAxis = (Vector3){0.0f, 1.0f, 0.0f};
 
@@ -112,9 +113,9 @@ void Enemy::Update(Player *player, Pistol *pistol) {
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       } else {
-        //position = previousPosition;
-        // generate a random angle to go in when the timer starts
-        // move in that direction until timer runs out
+        // position = previousPosition;
+        //  generate a random angle to go in when the timer starts
+        //  move in that direction until timer runs out
         searchTimer.Update();
         if (!searchTimer.Active()) {
           searchTimer.Start(5.0f);

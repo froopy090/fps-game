@@ -9,7 +9,7 @@ namespace Entities {
 class Enemy {
 public:
   // Main methods
-  Enemy(Player *player);
+  Enemy(Player *player, Vector3 position);
   ~Enemy();
   void Event();
   void Update(Player *player, Pistol *pistol);
