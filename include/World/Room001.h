@@ -14,6 +14,9 @@ public:
   void Update(Entities::Player *player, Entities::Enemy *enemy);
   void Draw();
 
+  // Returns a reference to the roomMatrix
+  const int (&GetRoomMatrix())[ROOM_SIZE][ROOM_SIZE];
+
 private:
   static const int roomMatrix[ROOM_SIZE][ROOM_SIZE];
   // TODO: implement the height map
