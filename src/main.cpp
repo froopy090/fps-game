@@ -29,18 +29,21 @@ int main() {
 
   SearchAndSetResourceDir("resources");
 
-  // World
-  // auto test002 = std::make_unique<World::Test002>();
-  auto room = std::make_unique<World::Room001>();
-
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
-  //auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
+  // auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
+  auto enemyManager =
+      std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
   auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
+
+  // World
+  // auto test002 = std::make_unique<World::Test002>();
+  auto room =
+      std::make_unique<World::Room001>(player1.get(), enemyManager.get());
 
   //--------------------------------------------------------
 
@@ -50,7 +53,8 @@ int main() {
     // --------------------------------------------------------
     pistol->Event();
     player1->Event();
-    //enemy1->Event();
+    // enemy1->Event();
+    enemyManager->Event();
 
     // --------------------------------------------------------
     // Update
@@ -73,9 +77,10 @@ int main() {
     case GAMEPLAY:
       pistol->Update();
       player1->Update();
-      //enemy1->Update(player1.get(), pistol.get());
+      // enemy1->Update(player1.get(), pistol.get());
+      // enemyManager->Update();
 
-      room->Update(player1.get(), enemy1.get());
+      room->Update();
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -106,7 +111,8 @@ int main() {
       room->Draw();
       EndMode3D();
 
-      //enemy1->Draw(player1.get());
+      // enemy1->Draw(player1.get());
+      enemyManager->Draw();
       player1->Draw();
       pistol->Draw(player1.get());
 
