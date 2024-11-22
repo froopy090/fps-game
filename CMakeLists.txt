@@ -17,6 +17,7 @@ set(SOURCES
     src/World/BaseObjects.cpp
     src/World/LargeColumn.cpp
     src/World/Stairs.cpp
+    src/Utility/EnemyManager.cpp
 )
 
 include_directories(include)
