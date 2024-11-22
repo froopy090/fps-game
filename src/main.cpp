@@ -78,7 +78,7 @@ int main() {
       pistol->Update();
       player1->Update();
       // enemy1->Update(player1.get(), pistol.get());
-      // enemyManager->Update();
+      enemyManager->Update();
 
       room->Update();
       break;
