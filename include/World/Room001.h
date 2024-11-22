@@ -1,6 +1,7 @@
 #pragma once
 #include "Entities/Enemy.h"
 #include "Entities/Player.h"
+#include "Utility/EnemyManager.h"
 #include "World/BaseObjects.h"
 #include "World/LargeColumn.h"
 #include "World/Stairs.h"
@@ -10,8 +11,8 @@
 namespace World {
 class Room001 {
 public:
-  Room001();
-  void Update(Entities::Player *player, Entities::Enemy *enemy);
+  Room001(Entities::Player *player, Utility::EnemyManager *enemyManager);
+  void Update();
   void Draw();
 
   // Returns a reference to the roomMatrix
@@ -25,5 +26,7 @@ private:
   std::vector<Cube> walls;
   std::vector<LargeColumn> columns;
   std::vector<Stairs> stairs;
+  Entities::Player *playerPtr;
+  Utility::EnemyManager *enemyManagerPtr;
 };
 } // namespace World

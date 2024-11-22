@@ -14,26 +14,33 @@
 // Helper Functions -------------------------------------------------------
 //
 // resets necessary player and enemy variables
-void Reset(Entities::Player *player, Entities::Enemy *enemy) {
+void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager) {
   // Reset
   player->SetPlaneCollision(false);
-  enemy->SetPlaneCollision(false);
+  // enemy->SetPlaneCollision(false);
+  for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+    enemy.SetPlaneCollision(false);
+  }
 }
 
 template <typename Object>
-void CheckCollisionObjects(Entities::Player *player, Entities::Enemy *enemy,
+void CheckCollisionObjects(Entities::Player *player,
+                           Utility::EnemyManager *enemyManager,
                            std::vector<Object> objects) {
   for (Object &obj : objects) {
     if (Utility::EntityCollisionObject(player, &obj)) {
       Utility::LockEntityAxis(player, &obj);
     }
-    if (Utility::EntityCollisionObject(enemy, &obj)) {
-      Utility::LockEntityAxis(enemy, &obj);
+    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+      if (Utility::EntityCollisionObject(&enemy, &obj)) {
+        Utility::LockEntityAxis(&enemy, &obj);
+      }
     }
   }
 }
 
-void CheckStairsCollision(Entities::Player *player, Entities::Enemy *enemy,
+void CheckStairsCollision(Entities::Player *player,
+                          Utility::EnemyManager *enemyManager,
                           std::vector<World::Stairs> stairs) {
   // Checks collision between stairs and entities
   for (World::Stairs &stair : stairs) {
@@ -41,16 +48,21 @@ void CheckStairsCollision(Entities::Player *player, Entities::Enemy *enemy,
     if (Utility::EntityCollisionObject(player, &stairWall)) {
       Utility::LockEntityAxis(player, &stairWall);
     }
-    if (Utility::EntityCollisionObject(enemy, &stairWall)) {
-      Utility::LockEntityAxis(enemy, &stairWall);
+    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+      if (Utility::EntityCollisionObject(&enemy, &stairWall)) {
+        Utility::LockEntityAxis(&enemy, &stairWall);
+      }
     }
+
     std::vector<World::Cube> stairCubes = stair.GetCubeVector();
     for (World::Cube &stairCube : stairCubes) {
       if (Utility::EntityCollisionObject(player, &stairCube)) {
         Utility::LockEntityAxis(player, &stairCube);
       }
-      if (Utility::EntityCollisionObject(enemy, &stairCube)) {
-        Utility::LockEntityAxis(enemy, &stairCube);
+      for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+        if (Utility::EntityCollisionObject(&enemy, &stairCube)) {
+          Utility::LockEntityAxis(&enemy, &stairCube);
+        }
       }
     }
   }
@@ -58,27 +70,33 @@ void CheckStairsCollision(Entities::Player *player, Entities::Enemy *enemy,
 
 // checks if enemy vision is blocked by an object
 template <typename Object>
-void CheckEnemyVision(Entities::Player *player, Entities::Enemy *enemy,
+void CheckEnemyVision(Entities::Player *player,
+                      Utility::EnemyManager *enemyManager,
                       std::vector<Object> &objects) {
   for (Object &obj : objects) {
     // finding one wall where the vision ray collides
-    if (!Utility::CanSeeTarget(enemy, player, &obj)) {
-      if (enemy->GetState() != Entities::ENEMY_IDLE) {
-        enemy->SetIdle();
-        break;
+    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+      if (!Utility::CanSeeTarget(&enemy, player, &obj)) {
+        if (enemy.GetState() != Entities::ENEMY_IDLE) {
+          enemy.SetIdle();
+          break;
+        }
       }
     }
   }
 }
 
-void CheckEnemyVisionStairs(Entities::Player *player, Entities::Enemy *enemy,
+void CheckEnemyVisionStairs(Entities::Player *player,
+                            Utility::EnemyManager *enemyManager,
                             std::vector<World::Stairs> &stairs) {
   for (World::Stairs &stair : stairs) {
     World::Cube stairWall = stair.GetStairWall();
-    if (!Utility::CanSeeTarget(enemy, player, &stairWall) &&
-        enemy->GetState() != Entities::ENEMY_IDLE) {
-      enemy->SetIdle();
-      break;
+    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
+      if (!Utility::CanSeeTarget(&enemy, player, &stairWall) &&
+          enemy.GetState() != Entities::ENEMY_IDLE) {
+        enemy.SetIdle();
+        break;
+      }
     }
   }
 }
@@ -113,11 +131,14 @@ const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
 };
 
-Room001::Room001() {
+Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager)
+    : playerPtr(player), enemyManagerPtr(enemyManager) {
   // Calculate center of matrix
   int center = ROOM_SIZE / 2;
 
-  // Populate floors and walls
+  float randomValue = 0.0f;
+
+  // Populate map and spawn enemies
   for (int i = 0; i < ROOM_SIZE; i++) {
     for (int j = 0; j < ROOM_SIZE; j++) {
       // calulating position of tile
@@ -125,10 +146,18 @@ Room001::Room001() {
       float z = (j - center) * (-TILE_SIZE);
       Vector3 position = {x, 0.0f, z};
 
+      // generating random value
+      randomValue = GetRandomValue(0, 1);
+
       if (roomMatrix[i][j] == 0) {
         floors.emplace_back(position);
+        if (randomValue <= 0.1f)
+          enemyManagerPtr->SpawnEnemy(position);
       } else if (roomMatrix[i][j] == 1) {
         walls.emplace_back(position);
+        if (randomValue <= 0.1f)
+          enemyManagerPtr->SpawnEnemy(
+              Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT, 0.0f}));
       } else if (roomMatrix[i][j] == 2) {
         columns.emplace_back(position);
       } else if (roomMatrix[i][j] == 3) {
@@ -138,19 +167,19 @@ Room001::Room001() {
   }
 }
 
-void Room001::Update(Entities::Player *player, Entities::Enemy *enemy) {
-  Reset(player, enemy);
+void Room001::Update() {
+  Reset(playerPtr, enemyManagerPtr);
 
   // Collision checks
-  CheckCollisionObjects(player, enemy, floors);
-  CheckCollisionObjects(player, enemy, walls);
-  CheckCollisionObjects(player, enemy, columns);
-  CheckStairsCollision(player, enemy, stairs);
+  CheckCollisionObjects(playerPtr, enemyManagerPtr, floors);
+  CheckCollisionObjects(playerPtr, enemyManagerPtr, walls);
+  CheckCollisionObjects(playerPtr, enemyManagerPtr, columns);
+  CheckStairsCollision(playerPtr, enemyManagerPtr, stairs);
 
   // Enemy vision checks
-  CheckEnemyVision(player, enemy, walls);
-  CheckEnemyVision(player, enemy, columns);
-  CheckEnemyVisionStairs(player, enemy, stairs);
+  CheckEnemyVision(playerPtr, enemyManagerPtr, walls);
+  CheckEnemyVision(playerPtr, enemyManagerPtr, columns);
+  CheckEnemyVisionStairs(playerPtr, enemyManagerPtr, stairs);
 }
 
 void Room001::Draw() {
