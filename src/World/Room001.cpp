@@ -18,8 +18,8 @@ void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager) {
   // Reset
   player->SetPlaneCollision(false);
   // enemy->SetPlaneCollision(false);
-  for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-    enemy.SetPlaneCollision(false);
+  for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+    enemy->SetPlaneCollision(false);
   }
 }
 
@@ -31,9 +31,9 @@ void CheckCollisionObjects(Entities::Player *player,
     if (Utility::EntityCollisionObject(player, &obj)) {
       Utility::LockEntityAxis(player, &obj);
     }
-    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-      if (Utility::EntityCollisionObject(&enemy, &obj)) {
-        Utility::LockEntityAxis(&enemy, &obj);
+    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+      if (Utility::EntityCollisionObject(enemy.get(), &obj)) {
+        Utility::LockEntityAxis(enemy.get(), &obj);
       }
     }
   }
@@ -48,9 +48,9 @@ void CheckStairsCollision(Entities::Player *player,
     if (Utility::EntityCollisionObject(player, &stairWall)) {
       Utility::LockEntityAxis(player, &stairWall);
     }
-    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-      if (Utility::EntityCollisionObject(&enemy, &stairWall)) {
-        Utility::LockEntityAxis(&enemy, &stairWall);
+    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+      if (Utility::EntityCollisionObject(enemy.get(), &stairWall)) {
+        Utility::LockEntityAxis(enemy.get(), &stairWall);
       }
     }
 
@@ -59,9 +59,9 @@ void CheckStairsCollision(Entities::Player *player,
       if (Utility::EntityCollisionObject(player, &stairCube)) {
         Utility::LockEntityAxis(player, &stairCube);
       }
-      for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-        if (Utility::EntityCollisionObject(&enemy, &stairCube)) {
-          Utility::LockEntityAxis(&enemy, &stairCube);
+      for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+        if (Utility::EntityCollisionObject(enemy.get(), &stairCube)) {
+          Utility::LockEntityAxis(enemy.get(), &stairCube);
         }
       }
     }
@@ -75,10 +75,10 @@ void CheckEnemyVision(Entities::Player *player,
                       std::vector<Object> &objects) {
   for (Object &obj : objects) {
     // finding one wall where the vision ray collides
-    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(&enemy, player, &obj)) {
-        if (enemy.GetState() != Entities::ENEMY_IDLE) {
-          enemy.SetIdle();
+    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+      if (!Utility::CanSeeTarget(enemy.get(), player, &obj)) {
+        if (enemy->GetState() != Entities::ENEMY_IDLE) {
+          enemy->SetIdle();
           break;
         }
       }
@@ -91,10 +91,10 @@ void CheckEnemyVisionStairs(Entities::Player *player,
                             std::vector<World::Stairs> &stairs) {
   for (World::Stairs &stair : stairs) {
     World::Cube stairWall = stair.GetStairWall();
-    for (Entities::Enemy &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(&enemy, player, &stairWall) &&
-          enemy.GetState() != Entities::ENEMY_IDLE) {
-        enemy.SetIdle();
+    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
+      if (!Utility::CanSeeTarget(enemy.get(), player, &stairWall) &&
+          enemy->GetState() != Entities::ENEMY_IDLE) {
+        enemy->SetIdle();
         break;
       }
     }
@@ -104,31 +104,31 @@ void CheckEnemyVisionStairs(Entities::Player *player,
 //
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
-    {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
     {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0},
     {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
     {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
-    {0, 0, 0, 0, 2, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 0, 2, 2, 0, 2, 2, 0, 0, 1, 0, 3, 0, 0, 0, 0},
-    {0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+    {1, 0, 0, 0, 2, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 2, 2, 0, 0, 1, 1, 1, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1, 1, 1, 1, 2, 2, 0, 2, 2, 0, 2, 2, 0, 0, 1, 0, 3, 0, 0, 0, 0},
+    {1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
     {1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 3, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0},
     {1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 2, 0, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
-    {0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+    {1, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 2, 0, 2, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+    {1, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 };
 
 Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager)
