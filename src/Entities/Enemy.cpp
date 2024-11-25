@@ -157,13 +157,12 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 }
 
 void Enemy::Draw(Player *player) {
-  if (!(state == ENEMY_DEAD)) {
+  if (state != ENEMY_DEAD) {
     BeginMode3D(player->camera);
     DrawBoundingBox(boundingBox, BLACK);
-    DrawBillboardRec(
-        player->camera, sprite.texture, sprite.source,
-        Vector3Add(position, (Vector3){0.0f, position.y + size.y / 2.0f, 0.0f}),
-        (Vector2){size.x * 2.0f, size.y}, sprite.tint);
+    DrawBillboardRec(player->camera, sprite.texture, sprite.source,
+                     Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f}),
+                     (Vector2){size.x * 2.0f, size.y}, sprite.tint);
     // draw vision ray for debug
     DrawRay(visionRay, RED);
     EndMode3D();
