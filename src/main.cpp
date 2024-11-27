@@ -33,7 +33,7 @@ int main() {
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
   auto enemyManager =
-      std::make_unique<Utility::EnemyManager>(1, player1.get(), pistol.get());
+      std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
@@ -105,7 +105,6 @@ int main() {
       enemyManager->Draw();
       player1->Draw();
       pistol->Draw(player1.get());
-
 
       // HUD
       cameraHUD->Draw(player1.get());
