@@ -69,8 +69,8 @@ void Enemy::Event() {
 }
 
 void Enemy::Update(Player *player, Pistol *pistol) {
-  // only update enemy if it's dead
-  if (!(state == ENEMY_DEAD)) {
+  //  only update enemy if it's not dead
+  if (state != ENEMY_DEAD) {
     // Save position before updating
     this->SavePosition();
 
@@ -82,9 +82,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
 
     // Checking health
     if (health <= 0.0f) {
-      // dead = true;
       state = ENEMY_DEAD;
-      sprite.tint = BLANK;
     }
 
     // Movement Update
@@ -130,6 +128,12 @@ void Enemy::Update(Player *player, Pistol *pistol) {
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       }
+      break;
+    case ENEMY_ATTACKING:
+      // TODO: add logic here
+      break;
+    case ENEMY_DEAD:
+      // dead, do nothing and break
       break;
     }
 
@@ -203,18 +207,19 @@ void Enemy::SetXPosition(float x) { this->position.x = x; }
 void Enemy::SetYPosition(float y) { this->position.y = y - size.y; }
 void Enemy::SetZPosition(float z) { this->position.z = z; }
 
-void Enemy::SetPlaneCollision(bool b) { this->planeCollision = b; }
+void Enemy::SetPlaneCollision(bool b) {
+  if (state != ENEMY_DEAD)
+    this->planeCollision = b;
+}
 
 void Enemy::SetChasePlayer() {
   state = ENEMY_CHASING;
-  // movementTimer.Start(3.0f);
 }
 
 void Enemy::SetIdle() {
   if (!movementTimer.Active()) {
     movementTimer.Start(5.0f);
   }
-  // std::cout << "idle" << std::endl;
   state = ENEMY_IDLE;
 }
 
