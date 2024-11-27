@@ -1,18 +1,24 @@
 #include "World/BaseObjects.h"
 #include "World/WorldDefinitions.h"
+#include "iostream"
 #include "raymath.h"
 #include "rlgl.h"
 
 namespace World {
 // Cube --------------------------------------
-Cube::Cube() {
+Texture2D Cube::texture = {0};
+
+    Cube::Cube() {
   // default constructor
   position = Vector3Zero();
   size = Vector3Zero();
   color = BLACK;
   box.min = Vector3Zero();
   box.max = Vector3Zero();
-  texture = LoadTexture("metal.png");
+
+  if (texture.id == 0) {
+    texture = LoadTexture("metal.png");
+  }
 }
 
 /*Cube::~Cube() { UnloadTexture(texture); }*/
@@ -28,7 +34,9 @@ Cube::Cube(Vector3 position) {
   box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
                       position.z + size.z / 2.0f};
 
-  texture = LoadTexture("metal.png");
+  if (texture.id == 0) {
+    texture = LoadTexture("metal.png");
+  }
 }
 
 Cube::Cube(Vector3 position, Vector3 size) {
@@ -37,7 +45,9 @@ Cube::Cube(Vector3 position, Vector3 size) {
   this->position = Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f});
   color = DARKGRAY;
   this->SetBoundingBox();
-  texture = LoadTexture("metal.png");
+  if (texture.id == 0) {
+    texture = LoadTexture("metal.png");
+  }
 }
 
 void Cube::Draw() {

@@ -5,6 +5,8 @@ namespace World {
 class Cube {
 public:
   Cube();
+  // TODO: add this destructor
+  // once room class is using unique pointers
   /*~Cube();*/
   Cube(Vector3 position);
   Cube(Vector3 position, Vector3 size);
@@ -32,7 +34,7 @@ protected:
   BoundingBox box;
 
 private:
-  Texture2D texture;
+  static Texture2D texture;
 };
 
 class Plane {
