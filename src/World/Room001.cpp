@@ -229,7 +229,8 @@ void CheckEnemyVision(Entities::Player *player,
   for (Object &obj : objects) {
     // finding one wall where the vision ray collides
     for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(enemy.get(), player, &obj)) {
+      if (!Utility::CanSeeTarget(enemy.get(), enemy->GetViewDistance(), player,
+                                 &obj)) {
         if (enemy->GetState() != Entities::ENEMY_IDLE &&
             enemy->GetState() != Entities::ENEMY_DEAD) {
           enemy->SetIdle();
@@ -246,7 +247,8 @@ void CheckEnemyVisionStairs(Entities::Player *player,
   for (World::Stairs &stair : stairs) {
     World::Cube stairWall = stair.GetStairWall();
     for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(enemy.get(), player, &stairWall) &&
+      if (!Utility::CanSeeTarget(enemy.get(), enemy->GetViewDistance(), player,
+                                 &stairWall) &&
           enemy->GetState() != Entities::ENEMY_IDLE &&
           enemy->GetState() != Entities::ENEMY_DEAD) {
         enemy->SetIdle();
