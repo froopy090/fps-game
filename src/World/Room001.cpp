@@ -147,7 +147,8 @@ void Room001::Draw() {
     floor.Draw();
   }
   for (Cube &wall : walls) {
-    wall.Draw();
+    //wall.Draw();
+    wall.DrawCubeTexture();
   }
   for (LargeColumn &column : columns) {
     column.Draw();
