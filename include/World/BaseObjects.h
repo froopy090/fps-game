@@ -5,9 +5,11 @@ namespace World {
 class Cube {
 public:
   Cube();
+  /*~Cube();*/
   Cube(Vector3 position);
   Cube(Vector3 position, Vector3 size);
   void Draw();
+  void DrawCubeTexture();
 
   // Getters
   Vector3 GetPosition();
@@ -28,6 +30,9 @@ protected:
   Vector3 size;
   Color color;
   BoundingBox box;
+
+private:
+  Texture2D texture;
 };
 
 class Plane {
