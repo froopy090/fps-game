@@ -12,12 +12,15 @@ inline bool HitscanIntersectsBox(const Shooter &shooter, const Target &target) {
 
 // checks to see if the entity can see the target
 template <typename Entity, typename Target, typename Object>
-inline bool CanSeeTarget(const Entity &entity, const Target &target,
-                         const Object &object) {
+inline bool CanSeeTarget(const Entity &entity, float viewDistance,
+                         const Target &target, const Object &object) {
+  float distanceToTarget =
+      Vector3Distance(target->GetPosition(), entity->GetPosition());
   return !(
       GetRayCollisionBox(entity->GetRay(), object->GetBoundingBox()).hit &&
       GetRayCollisionBox(entity->GetRay(), object->GetBoundingBox()).distance <=
-          Vector3Distance(target->GetPosition(), entity->GetPosition()));
+          distanceToTarget &&
+      distanceToTarget > viewDistance);
 }
 // End Ray collision functions -------------------------------------------------
 //
