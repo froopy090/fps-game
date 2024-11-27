@@ -53,10 +53,10 @@ Enemy::Enemy(Player *player, Vector3 position) {
   // Vision ray init
   visionRay.direction = Vector3Zero();
   visionRay.position = Vector3Zero();
+  viewDistance = 10.0f;
 
   // gravity and plane collision init
   planeCollision = true;
-  rayHasCollided = false;
   gravity = -10.0f;
 }
 
@@ -99,7 +99,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
       break;
     case ENEMY_IDLE:
       // if enemy is close enough, chase player
-      if (distanceFromPlayer < 5.0f) {
+      if (distanceFromPlayer < viewDistance) {
         state = ENEMY_CHASING;
         break;
       }
@@ -196,9 +196,9 @@ Vector3 Enemy::GetSize() { return size; }
 
 Vector3 Enemy::GetVelocity() { return velocity; }
 
-bool Enemy::RayHasCollided() { return rayHasCollided; }
-
 EnemyState Enemy::GetState() { return state; }
+
+float Enemy::GetViewDistance() { return viewDistance; }
 //  End Getters --------------------------------------------------
 //
 //  Setters ------------------------------------------------------
@@ -212,9 +212,7 @@ void Enemy::SetPlaneCollision(bool b) {
     this->planeCollision = b;
 }
 
-void Enemy::SetChasePlayer() {
-  state = ENEMY_CHASING;
-}
+void Enemy::SetChasePlayer() { state = ENEMY_CHASING; }
 
 void Enemy::SetIdle() {
   if (!movementTimer.Active()) {
@@ -222,8 +220,6 @@ void Enemy::SetIdle() {
   }
   state = ENEMY_IDLE;
 }
-
-void Enemy::SetRayHasCollided(bool b) { this->rayHasCollided = b; }
 // End Setters ----------------------------------------------------
 //
 // Helper Methods -------------------------------------------------
