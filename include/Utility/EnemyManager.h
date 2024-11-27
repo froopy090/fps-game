@@ -25,5 +25,8 @@ private:
   int numberOfEnemies;
   Entities::Player *player;
   Entities::Pistol *pistol;
+
+  // Helper Functions
+  void DespawnEnemy();
 };
 } // namespace Utility

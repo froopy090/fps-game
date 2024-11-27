@@ -2,6 +2,7 @@
 #include "Entities/Enemy.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
+#include "algorithm"
 
 namespace Utility {
 EnemyManager::EnemyManager(int numberOfEnemies, Entities::Player *player,
@@ -15,6 +16,7 @@ void EnemyManager::Event() {
 }
 
 void EnemyManager::Update() {
+  this->DespawnEnemy();
 
   for (std::unique_ptr<Entities::Enemy> &enemy : enemies) {
     enemy->Update(player, pistol);
@@ -36,4 +38,16 @@ std::vector<std::unique_ptr<Entities::Enemy>> *
 EnemyManager::GetEnemiesVector() {
   return &enemies;
 }
+
+// Helper functions
+// -------------------------------------------------------------
+void EnemyManager::DespawnEnemy() {
+  enemies.erase(
+      std::remove_if(enemies.begin(), enemies.end(),
+                     [](const std::unique_ptr<Entities::Enemy> &enemy) {
+                       return enemy->GetState() == Entities::ENEMY_DEAD;
+                     }),
+      enemies.end());
+};
+// End Helper functions --------------------------------------------------------
 } // namespace Utility
