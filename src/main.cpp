@@ -32,16 +32,14 @@ int main() {
   // Loading Entities
   auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
-  // auto enemy1 = std::make_unique<Entities::Enemy>(player1.get());
   auto enemyManager =
-      std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
+      std::make_unique<Utility::EnemyManager>(1, player1.get(), pistol.get());
 
   // Utility objects
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
   auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
 
   // World
-  // auto test002 = std::make_unique<World::Test002>();
   auto room =
       std::make_unique<World::Room001>(player1.get(), enemyManager.get());
 
@@ -53,7 +51,6 @@ int main() {
     // --------------------------------------------------------
     pistol->Event();
     player1->Event();
-    // enemy1->Event();
     enemyManager->Event();
 
     // --------------------------------------------------------
@@ -77,7 +74,6 @@ int main() {
     case GAMEPLAY:
       pistol->Update();
       player1->Update();
-      // enemy1->Update(player1.get(), pistol.get());
       enemyManager->Update();
 
       room->Update();
@@ -104,17 +100,12 @@ int main() {
       DrawText("Press ENTER to continue", 20, 200, 40, LIGHTGRAY);
       break;
     case GAMEPLAY:
-      // TODO: update game screen variables here
-
-      BeginMode3D(player1->camera);
-      // test002->Draw(player1.get());
       room->Draw();
-      EndMode3D();
 
-      // enemy1->Draw(player1.get());
       enemyManager->Draw();
       player1->Draw();
       pistol->Draw(player1.get());
+
 
       // HUD
       cameraHUD->Draw(player1.get());
