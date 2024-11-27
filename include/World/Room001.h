@@ -21,7 +21,7 @@ public:
 private:
   static const int roomMatrix[ROOM_SIZE][ROOM_SIZE];
   // TODO: implement the height map
-  // static const int heightMatrix[ROOM_SIZE][ROOM_SIZE];
+  static const int heightMatrix[ROOM_SIZE][ROOM_SIZE];
   std::vector<Plane> floors;
   std::vector<Cube> walls;
   std::vector<LargeColumn> columns;
