@@ -90,11 +90,11 @@ void Enemy::Update(Player *player, Pistol *pistol) {
     // Movement Update
     float distanceFromPlayer =
         Vector3Distance(position, player->camera.position);
-    // always keep the forward vector pointed towards player by default
-    forward =
-        Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
     switch (state) {
     case ENEMY_CHASING:
+      // forward points towards the player
+      forward =
+          Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
       //  move towards player
       position =
           Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
@@ -110,6 +110,8 @@ void Enemy::Update(Player *player, Pistol *pistol) {
       //  if timer hasn't finished, keep chasing player
       //  else stop moving
       if (!movementTimer.Finished()) {
+        forward =
+            Vector3Normalize(Vector3Subtract(player->GetPosition(), position));
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       } else {
@@ -119,9 +121,12 @@ void Enemy::Update(Player *player, Pistol *pistol) {
         searchTimer.Update();
         if (!searchTimer.Active()) {
           searchTimer.Start(5.0f);
+
+          // we only want to set the direction to go in when the timer starts
+          // not at each loop
           randomAngle = GetRandomValue(-180, 180);
+          forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);
         }
-        forward = Vector3RotateByAxisAngle(forward, upAxis, randomAngle);
         position =
             Vector3Add(position, Vector3Scale(forward, speed * GetFrameTime()));
       }
