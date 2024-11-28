@@ -10,23 +10,42 @@
 #include <cctype>
 
 namespace Entities {
+// Static member definitions
+// Enemy Info
+const Vector3 Enemy::size = (Vector3){0.5f, 1.5f, 0.5f};
+const Vector3 Enemy::upAxis = (Vector3){0.0f, 1.0f, 0.0f};
+const float Enemy::meleeDamage = 25.0f;
+//
+// Movement
+const float Enemy::speed = 3.0f;
+const float Enemy::gravity = -10.0f;
+const float Enemy::viewDistance = 10.0f;
+
+std::shared_ptr<EnemySprite> Enemy::sprite = nullptr;
+
 // Main Methods -----------------------------------------------------------
 Enemy::Enemy(Player *player, Vector3 position) {
   // Dimensions init
-  size.x = 0.5f;
-  size.y = 1.5f;
-  size.z = 0.5f;
+  /*size.x = 0.5f;*/
+  /*size.y = 1.5f;*/
+  /*size.z = 0.5f;*/
 
   // Sprite init
-  sprite.texture = LoadTexture("DOOM_Enemy.png");
-  sprite.source = (Rectangle){3, 1, 77, 90};
-  sprite.tint = WHITE;
+  /*sprite.texture = LoadTexture("DOOM_Enemy.png");*/
+  /*sprite.source = (Rectangle){3, 1, 77, 90};*/
+  /*sprite.tint = WHITE;*/
+  if (!sprite) {
+    sprite = std::make_shared<EnemySprite>();
+    sprite->texture = LoadTexture("DOOM_Enemy.png");
+    sprite->source = (Rectangle){3, 1, 77, 90};
+    sprite->tint = WHITE;
+  }
 
   // Position init
   // position = (Vector3){0.0f, 0.0f, -4.0f};
   this->position = position;
   previousPosition = position;
-  upAxis = (Vector3){0.0f, 1.0f, 0.0f};
+  // upAxis = (Vector3){0.0f, 1.0f, 0.0f};
 
   // Bounding box init
   boundingBox.min =
@@ -40,27 +59,29 @@ Enemy::Enemy(Player *player, Vector3 position) {
   state = ENEMY_CHASING;
 
   // Damage init
-  meleeDamage = 25.0f;
+  // meleeDamage = 25.0f;
 
   // Movement attributes init
   //  Forward-facing direction init (unit vector)
   forward = Vector3Zero();
   // Speed and velocity init
-  speed = 3.0f;
+  // speed = 3.0f;
   velocity = Vector3Zero();
   randomAngle = 0.0f;
 
   // Vision ray init
   visionRay.direction = Vector3Zero();
   visionRay.position = Vector3Zero();
-  viewDistance = 10.0f;
+  // viewDistance = 10.0f;
 
   // gravity and plane collision init
   planeCollision = true;
-  gravity = -10.0f;
+  // gravity = -10.0f;
 }
 
-Enemy::~Enemy() { UnloadTexture(sprite.texture); }
+Enemy::~Enemy() {
+  // UnloadTexture(sprite.texture);
+}
 
 void Enemy::Event() {
   // TODO: add event function
@@ -169,9 +190,9 @@ void Enemy::Draw(Player *player) {
   if (state != ENEMY_DEAD) {
     BeginMode3D(player->camera);
     DrawBoundingBox(boundingBox, BLACK);
-    DrawBillboardRec(player->camera, sprite.texture, sprite.source,
+    DrawBillboardRec(player->camera, sprite->texture, sprite->source,
                      Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f}),
-                     (Vector2){size.x * 2.0f, size.y}, sprite.tint);
+                     (Vector2){size.x * 2.0f, size.y}, sprite->tint);
     // draw vision ray for debug
     DrawRay(visionRay, RED);
     EndMode3D();
@@ -236,7 +257,5 @@ void Enemy::MoveRight() {
   Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
   position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
 }
-
-void Enemy::ResetSpeed() { speed = 2.0f; }
 // End Helper Methods --------------------------------------------------
 } // namespace Entities

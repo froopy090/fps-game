@@ -3,6 +3,7 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/Timer.h"
+#include "memory"
 #include "raylib.h"
 
 namespace Entities {
@@ -38,18 +39,16 @@ public:
   void SavePosition();
   void MoveRight();
   void MoveLeft();
-  void ResetSpeed();
 
 private:
   // Enemy Info
-  Vector3 size;
+  const static Vector3 size;
   Vector3 position;
-  Vector3 upAxis;
+  const static Vector3 upAxis;
   float health;
   EnemyState state;
-  float meleeDamage;
-  EnemySprite sprite;
-  float viewDistance;
+  const static float meleeDamage;
+  static std::shared_ptr<EnemySprite> sprite;
 
   // Collision
   BoundingBox boundingBox;
@@ -60,9 +59,10 @@ private:
   // Movement
   Vector3 forward;
   Vector3 velocity;
-  float speed;
-  float gravity;
+  const static float speed;
+  const static float gravity;
   float randomAngle;
+  const static float viewDistance;
 
   // Utility
   Utility::Timer movementTimer;
