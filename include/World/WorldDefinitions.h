@@ -1,4 +1,5 @@
 #pragma once
+#include "raylib.h"
 
 namespace World {
 // Room Objects
@@ -10,5 +11,10 @@ constexpr int ROOM_SIZE = 25;
 
 // World Map
 constexpr int MAP_SIZE = 5;
+
+struct WorldTexture {
+  Texture2D texture;
+  ~WorldTexture() { UnloadTexture(texture); }
+};
 
 } // namespace World
