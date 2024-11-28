@@ -6,6 +6,8 @@ struct EnemySprite {
   Texture2D texture;
   Rectangle source;
   Color tint;
+
+  ~EnemySprite() { UnloadTexture(texture); }
 };
 
 struct Sprite {
