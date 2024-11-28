@@ -8,7 +8,7 @@ namespace World {
 // Cube --------------------------------------
 Texture2D Cube::texture = {0};
 
-    Cube::Cube() {
+Cube::Cube() {
   // default constructor
   position = Vector3Zero();
   size = Vector3Zero();
