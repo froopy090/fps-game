@@ -6,7 +6,7 @@
 
 namespace World {
 // Cube --------------------------------------
-Texture2D Cube::texture = {0};
+std::shared_ptr<WorldTexture> Cube::texture = nullptr;
 
 Cube::Cube() {
   // default constructor
@@ -16,8 +16,9 @@ Cube::Cube() {
   box.min = Vector3Zero();
   box.max = Vector3Zero();
 
-  if (texture.id == 0) {
-    texture = LoadTexture("metal.png");
+  if (!texture) {
+    texture = std::make_shared<WorldTexture>();
+    texture->texture = LoadTexture("metal.png");
   }
 }
 
@@ -34,8 +35,9 @@ Cube::Cube(Vector3 position) {
   box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
                       position.z + size.z / 2.0f};
 
-  if (texture.id == 0) {
-    texture = LoadTexture("metal.png");
+  if (!texture) {
+    texture = std::make_shared<WorldTexture>();
+    texture->texture = LoadTexture("metal.png");
   }
 }
 
@@ -45,8 +47,10 @@ Cube::Cube(Vector3 position, Vector3 size) {
   this->position = Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f});
   color = DARKGRAY;
   this->SetBoundingBox();
-  if (texture.id == 0) {
-    texture = LoadTexture("metal.png");
+  
+  if (!texture) {
+    texture = std::make_shared<WorldTexture>();
+    texture->texture = LoadTexture("metal.png");
   }
 }
 
@@ -65,7 +69,7 @@ void Cube::DrawCubeTexture() {
   float length = size.z;
 
   // Set desired texture to be enabled while drawing following vertex data
-  rlSetTexture(texture.id);
+  rlSetTexture(texture->texture.id);
 
   // Vertex data transformation can be defined with the commented lines,
   // but in this example we calculate the transformed vertex data directly when

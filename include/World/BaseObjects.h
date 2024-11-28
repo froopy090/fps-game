@@ -1,5 +1,7 @@
 #pragma once
+#include "World/WorldDefinitions.h"
 #include "raylib.h"
+#include <memory>
 
 namespace World {
 class Cube {
@@ -34,7 +36,7 @@ protected:
   BoundingBox box;
 
 private:
-  static Texture2D texture;
+  static std::shared_ptr<WorldTexture> texture;
 };
 
 class Plane {
