@@ -49,7 +49,7 @@ private:
   float health;
   EnemyState state;
   const static float meleeDamage;
-  static std::shared_ptr<EnemySprite> sprite;
+  static std::unique_ptr<EnemySprite> sprite;
 
   // Other stuff
   Player *player;

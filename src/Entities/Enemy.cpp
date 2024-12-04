@@ -21,7 +21,7 @@ const float Enemy::speed = 3.0f;
 const float Enemy::gravity = -10.0f;
 const float Enemy::viewDistance = 10.0f;
 
-std::shared_ptr<EnemySprite> Enemy::sprite = nullptr;
+std::unique_ptr<EnemySprite> Enemy::sprite = nullptr;
 
 // Main Methods -----------------------------------------------------------
 Enemy::Enemy(Player *player, Pistol *pistol, Vector3 position)
@@ -36,7 +36,7 @@ Enemy::Enemy(Player *player, Pistol *pistol, Vector3 position)
   /*sprite.source = (Rectangle){3, 1, 77, 90};*/
   /*sprite.tint = WHITE;*/
   if (!sprite) {
-    sprite = std::make_shared<EnemySprite>();
+    sprite = std::make_unique<EnemySprite>();
     sprite->texture = LoadTexture("DOOM_Enemy.png");
     sprite->source = (Rectangle){3, 1, 77, 90};
     sprite->tint = WHITE;
