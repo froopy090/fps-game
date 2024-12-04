@@ -19,19 +19,19 @@ void EnemyManager::Update() {
   this->DespawnEnemy();
 
   for (std::unique_ptr<Entities::Enemy> &enemy : enemies) {
-    enemy->Update(player, pistol);
+    enemy->Update();
   }
 }
 
 void EnemyManager::Draw() {
   for (std::unique_ptr<Entities::Enemy> &enemy : enemies) {
-    enemy->Draw(player);
+    enemy->Draw();
   }
 }
 
 void EnemyManager::SpawnEnemy(Vector3 position) {
   if (enemies.size() < numberOfEnemies)
-    enemies.emplace_back(std::make_unique<Entities::Enemy>(player, position));
+    enemies.emplace_back(std::make_unique<Entities::Enemy>(player, pistol, position));
 }
 
 std::vector<std::unique_ptr<Entities::Enemy>> *

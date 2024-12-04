@@ -30,8 +30,8 @@ int main() {
   SearchAndSetResourceDir("resources");
 
   // Loading Entities
-  auto pistol = std::make_unique<Entities::Pistol>();
   auto player1 = std::make_unique<Entities::Player>();
+  auto pistol = std::make_unique<Entities::Pistol>(player1.get());
   auto enemyManager =
       std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
 
@@ -104,7 +104,7 @@ int main() {
 
       enemyManager->Draw();
       player1->Draw();
-      pistol->Draw(player1.get());
+      pistol->Draw();
 
       // HUD
       cameraHUD->Draw(player1.get());
