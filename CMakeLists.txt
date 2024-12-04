@@ -19,7 +19,7 @@ set(SOURCES
     src/World/BaseObjects.cpp
     src/World/LargeColumn.cpp
     src/World/Stairs.cpp
-    src/World/BridgesRoom.cpp
+    src/World/Room002.cpp
 )
 
 include_directories(include)
