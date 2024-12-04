@@ -246,17 +246,5 @@ void Enemy::SetIdle() {
 //
 // Helper Methods -------------------------------------------------
 void Enemy::SavePosition() { previousPosition = position; }
-
-void Enemy::MoveLeft() {
-  std::cout << "MOVING LEFT" << std::endl;
-  Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, 45.0f);
-  position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
-}
-
-void Enemy::MoveRight() {
-  std::cout << "MOVING RIGHT" << std::endl;
-  Vector3 newDir = Vector3RotateByAxisAngle(forward, upAxis, -45.0f);
-  position = Vector3Add(position, Vector3Scale(newDir, speed * GetFrameTime()));
-}
 // End Helper Methods --------------------------------------------------
 } // namespace Entities

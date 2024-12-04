@@ -38,8 +38,10 @@ public:
 
   //  Helper functions
   void SavePosition();
-  void MoveRight();
-  void MoveLeft();
+  static void CleanupSprite() {
+    if (sprite)
+      sprite.reset();
+  };
 
 private:
   // Enemy Info
