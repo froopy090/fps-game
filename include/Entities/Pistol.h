@@ -1,18 +1,18 @@
 #pragma once
-#include "raylib.h"
-#include "Utility/Timer.h"
 #include "Entities/EntityDefinitions.h"
 #include "Entities/Player.h"
-
+#include "GameObject.h"
+#include "Utility/Timer.h"
+#include "raylib.h"
 
 namespace Entities {
-class Pistol {
+class Pistol : public GameObject {
 public:
-  Pistol();
+  Pistol(Player *player);
   ~Pistol();
-  void Event();
-  void Update();
-  void Draw(Player *player);
+  void Event() override;
+  void Update() override;
+  void Draw() override;
   float GetDamage();
 
 private:
@@ -23,5 +23,6 @@ private:
   Sprite firing1;
   Sprite firing2;
   float damage;
+  Player *player;
 };
 } // namespace Entities

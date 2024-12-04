@@ -1,10 +1,11 @@
 #pragma once
+#include "GameObject.h"
 #include "World/WorldDefinitions.h"
 #include "raylib.h"
 #include <memory>
 
 namespace World {
-class Cube {
+class Cube : public GameObject {
 public:
   Cube();
   // TODO: add this destructor
@@ -12,7 +13,9 @@ public:
   /*~Cube();*/
   Cube(Vector3 position);
   Cube(Vector3 position, Vector3 size);
-  void Draw();
+  void Event() override;
+  void Update() override;
+  void Draw() override;
   void DrawCubeTexture();
 
   // Getters
@@ -39,10 +42,12 @@ private:
   static std::shared_ptr<WorldTexture> texture;
 };
 
-class Plane {
+class Plane : public GameObject {
 public:
   Plane(Vector3 position);
-  void Draw();
+  void Event() override;
+  void Update() override;
+  void Draw() override;
 
   // Getters
   Vector3 GetPosition();

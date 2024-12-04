@@ -1,19 +1,20 @@
 #pragma once
 #include "Entities/EntityDefinitions.h"
+#include "GameObject.h"
 #include "Utility/Timer.h"
 #include "raylib.h"
 
 namespace Entities {
-class Player {
+class Player : public GameObject {
 public:
   Camera3D camera;
   int cameraMode;
 
   // Main methods
   Player();
-  void Event();
-  void Update();
-  void Draw();
+  void Event() override;
+  void Update() override;
+  void Draw() override;
 
   // Getters
   // returns center of bounding box, NOT camera position

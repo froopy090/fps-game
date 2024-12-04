@@ -5,7 +5,7 @@
 #include "iostream"
 
 namespace Entities {
-Pistol::Pistol() {
+Pistol::Pistol(Player *player) : player(player) {
   // Loading texture
   texture = LoadTexture("DOOM_Pistol_Cropped.png");
 
@@ -53,7 +53,7 @@ void Pistol::Update() {
   }
 }
 
-void Pistol::Draw(Player *player) {
+void Pistol::Draw() {
   if (player->cameraMode == CAMERA_FIRST_PERSON) {
     switch (state) {
     case WEAPON_IDLE:

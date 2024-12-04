@@ -24,7 +24,8 @@ const float Enemy::viewDistance = 10.0f;
 std::shared_ptr<EnemySprite> Enemy::sprite = nullptr;
 
 // Main Methods -----------------------------------------------------------
-Enemy::Enemy(Player *player, Vector3 position) {
+Enemy::Enemy(Player *player, Pistol *pistol, Vector3 position)
+    : player(player), pistol(pistol) {
   // Dimensions init
   /*size.x = 0.5f;*/
   /*size.y = 1.5f;*/
@@ -89,7 +90,7 @@ void Enemy::Event() {
   }
 }
 
-void Enemy::Update(Player *player, Pistol *pistol) {
+void Enemy::Update() {
   //  only update enemy if it's not dead
   if (state != ENEMY_DEAD) {
     // Save position before updating
@@ -186,7 +187,7 @@ void Enemy::Update(Player *player, Pistol *pistol) {
   }
 }
 
-void Enemy::Draw(Player *player) {
+void Enemy::Draw() {
   if (state != ENEMY_DEAD) {
     BeginMode3D(player->camera);
     DrawBoundingBox(boundingBox, BLACK);

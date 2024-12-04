@@ -25,6 +25,10 @@ Stairs::Stairs(Vector3 position) : stairWall(position) {
    * / 2.0f});*/
 }
 
+void Stairs::Event() {}
+
+void Stairs::Update() {}
+
 void Stairs::Draw() {
   for (Cube &stair : stairs) {
     stair.Draw();

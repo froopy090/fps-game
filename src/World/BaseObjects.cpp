@@ -47,12 +47,16 @@ Cube::Cube(Vector3 position, Vector3 size) {
   this->position = Vector3Add(position, (Vector3){0.0f, size.y / 2.0f, 0.0f});
   color = DARKGRAY;
   this->SetBoundingBox();
-  
+
   if (!texture) {
     texture = std::make_shared<WorldTexture>();
     texture->texture = LoadTexture("metal.png");
   }
 }
+
+void Cube::Event() {}
+
+void Cube::Update() {}
 
 void Cube::Draw() {
   DrawCubeV(position, size, color);
@@ -217,6 +221,10 @@ Plane::Plane(Vector3 position) {
   box.max = (Vector3){position.x + size.x / 2.0f, position.y,
                       position.z + size.y / 2.0f};
 }
+
+void Plane::Event() {}
+
+void Plane::Update() {}
 
 void Plane::Draw() {
   DrawPlane(position, size, color);

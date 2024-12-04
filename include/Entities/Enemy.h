@@ -2,19 +2,20 @@
 #include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
+#include "GameObject.h"
 #include "Utility/Timer.h"
 #include "memory"
 #include "raylib.h"
 
 namespace Entities {
-class Enemy {
+class Enemy : public GameObject {
 public:
   // Main methods
-  Enemy(Player *player, Vector3 position);
+  Enemy(Player *player, Pistol *pistol, Vector3 position);
   ~Enemy();
-  void Event();
-  void Update(Player *player, Pistol *pistol);
-  void Draw(Player *player);
+  void Event() override;
+  void Update() override;
+  void Draw() override;
 
   // Getters
   Vector3 GetPosition();
@@ -49,6 +50,10 @@ private:
   EnemyState state;
   const static float meleeDamage;
   static std::shared_ptr<EnemySprite> sprite;
+
+  // Other stuff
+  Player *player;
+  Pistol *pistol;
 
   // Collision
   BoundingBox boundingBox;

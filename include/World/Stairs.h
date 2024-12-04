@@ -1,14 +1,17 @@
 #pragma once
+#include "GameObject.h"
 #include "World/BaseObjects.h"
 #include "raylib.h"
 #include <vector>
 
 namespace World {
-class Stairs {
+class Stairs : public GameObject {
 public:
   // Main methods
   Stairs(Vector3 position);
-  void Draw();
+  void Event() override;
+  void Update() override;
+  void Draw() override;
 
   // Getters
   int GetStairCount();
