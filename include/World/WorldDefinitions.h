@@ -1,5 +1,7 @@
 #pragma once
 #include "raylib.h"
+#include <functional>
+#include <unordered_map>
 
 namespace World {
 // Room Objects
@@ -16,5 +18,5 @@ struct WorldTexture {
   Texture2D texture;
   ~WorldTexture() { UnloadTexture(texture); }
 };
-
+// Maps ints to constructors for world objects
 } // namespace World

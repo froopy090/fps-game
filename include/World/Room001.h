@@ -1,5 +1,4 @@
 #pragma once
-#include "Entities/Enemy.h"
 #include "Entities/Player.h"
 #include "Utility/EnemyManager.h"
 #include "World/BaseObjects.h"

@@ -6,7 +6,10 @@ class MapGenerator {
 public:
   MapGenerator();
   // TODO: add public methods here
+  void Update();
+  void Draw();
+
 private:
-  int map[MAP_SIZE][MAP_SIZE];
+  static const int map[MAP_SIZE][MAP_SIZE];
 };
 } // namespace World
