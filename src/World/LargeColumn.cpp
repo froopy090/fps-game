@@ -2,9 +2,9 @@
 #include "World/WorldDefinitions.h"
 #include "raymath.h"
 
-#define COLUMN_HEIGHT 1000.0f
-
 namespace World {
+std::unique_ptr<WorldTexture> LargeColumn::texture = nullptr;
+
 LargeColumn::LargeColumn(Vector3 position) {
   // Init
   this->position =
@@ -15,5 +15,9 @@ LargeColumn::LargeColumn(Vector3 position) {
                       position.z - size.z / 2.0f};
   box.max = (Vector3){position.x + size.x / 2.0f, position.y + size.y,
                       position.z + size.z / 2.0f};
+  if (!texture) {
+    texture = std::make_unique<WorldTexture>();
+    texture->texture = LoadTexture("metal_dark.png");
+  }
 }
 } // namespace World
