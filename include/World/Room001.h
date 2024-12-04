@@ -27,5 +27,25 @@ private:
   std::vector<Stairs> stairs;
   Entities::Player *playerPtr;
   Utility::EnemyManager *enemyManagerPtr;
+
+  // Helper functions
+  void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager);
+
+  template <typename Object>
+  void CheckCollisionObjects(Entities::Player *player,
+                             Utility::EnemyManager *enemyManager,
+                             std::vector<Object> objects);
+  void CheckStairsCollision(Entities::Player *player,
+                            Utility::EnemyManager *enemyManager,
+                            std::vector<World::Stairs> stairs);
+
+  template <typename Object>
+  void CheckEnemyVision(Entities::Player *player,
+                        Utility::EnemyManager *enemyManager,
+                        std::vector<Object> &objects);
+
+  void CheckEnemyVisionStairs(Entities::Player *player,
+                              Utility::EnemyManager *enemyManager,
+                              std::vector<World::Stairs> &stairs);
 };
 } // namespace World

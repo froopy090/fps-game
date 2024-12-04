@@ -11,27 +11,6 @@
 #include <math.h>
 #include <vector>
 
-// Helper Functions ------------------------------------------------------
-void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager);
-
-template <typename Object>
-void CheckCollisionObjects(Entities::Player *player,
-                           Utility::EnemyManager *enemyManager,
-                           std::vector<Object> objects);
-void CheckStairsCollision(Entities::Player *player,
-                          Utility::EnemyManager *enemyManager,
-                          std::vector<World::Stairs> stairs);
-
-template <typename Object>
-void CheckEnemyVision(Entities::Player *player,
-                      Utility::EnemyManager *enemyManager,
-                      std::vector<Object> &objects);
-
-void CheckEnemyVisionStairs(Entities::Player *player,
-                            Utility::EnemyManager *enemyManager,
-                            std::vector<World::Stairs> &stairs);
-// End Helper functions ---------------------------------------------------
-//
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1},
@@ -147,7 +126,7 @@ void Room001::Draw() {
     floor.Draw();
   }
   for (Cube &wall : walls) {
-    //wall.Draw();
+    // wall.Draw();
     wall.DrawCubeTexture();
   }
   for (LargeColumn &column : columns) {
@@ -163,12 +142,12 @@ void Room001::Draw() {
 const int (&Room001::GetRoomMatrix())[ROOM_SIZE][ROOM_SIZE] {
   return roomMatrix;
 }
-} // namespace World
 
 // Helper Functions -------------------------------------------------------
 //
 // resets necessary player and enemy variables
-void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager) {
+void Room001::Reset(Entities::Player *player,
+                    Utility::EnemyManager *enemyManager) {
   // Reset
   player->SetPlaneCollision(false);
   // enemy->SetPlaneCollision(false);
@@ -178,9 +157,9 @@ void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager) {
 }
 
 template <typename Object>
-void CheckCollisionObjects(Entities::Player *player,
-                           Utility::EnemyManager *enemyManager,
-                           std::vector<Object> objects) {
+void Room001::CheckCollisionObjects(Entities::Player *player,
+                                    Utility::EnemyManager *enemyManager,
+                                    std::vector<Object> objects) {
   for (Object &obj : objects) {
     if (Utility::EntityCollisionObject(player, &obj)) {
       Utility::LockEntityAxis(player, &obj);
@@ -193,9 +172,9 @@ void CheckCollisionObjects(Entities::Player *player,
   }
 }
 
-void CheckStairsCollision(Entities::Player *player,
-                          Utility::EnemyManager *enemyManager,
-                          std::vector<World::Stairs> stairs) {
+void Room001::CheckStairsCollision(Entities::Player *player,
+                                   Utility::EnemyManager *enemyManager,
+                                   std::vector<World::Stairs> stairs) {
   // Checks collision between stairs and entities
   for (World::Stairs &stair : stairs) {
     World::Cube stairWall = stair.GetStairWall();
@@ -224,9 +203,9 @@ void CheckStairsCollision(Entities::Player *player,
 
 // checks if enemy vision is blocked by an object
 template <typename Object>
-void CheckEnemyVision(Entities::Player *player,
-                      Utility::EnemyManager *enemyManager,
-                      std::vector<Object> &objects) {
+void Room001::CheckEnemyVision(Entities::Player *player,
+                               Utility::EnemyManager *enemyManager,
+                               std::vector<Object> &objects) {
   for (Object &obj : objects) {
     // finding one wall where the vision ray collides
     for (auto &enemy : *enemyManager->GetEnemiesVector()) {
@@ -242,9 +221,9 @@ void CheckEnemyVision(Entities::Player *player,
   }
 }
 
-void CheckEnemyVisionStairs(Entities::Player *player,
-                            Utility::EnemyManager *enemyManager,
-                            std::vector<World::Stairs> &stairs) {
+void Room001::CheckEnemyVisionStairs(Entities::Player *player,
+                                     Utility::EnemyManager *enemyManager,
+                                     std::vector<World::Stairs> &stairs) {
   for (World::Stairs &stair : stairs) {
     World::Cube stairWall = stair.GetStairWall();
     for (auto &enemy : *enemyManager->GetEnemiesVector()) {
@@ -260,3 +239,4 @@ void CheckEnemyVisionStairs(Entities::Player *player,
 }
 // End Helper Functions --------------------------------------------------------
 //
+} // namespace World
