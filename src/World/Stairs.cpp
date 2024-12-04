@@ -16,13 +16,6 @@ Stairs::Stairs(Vector3 position) : stairWall(position) {
     position = Vector3Add(
         position, (Vector3){0.0f, (WALL_HEIGHT / (float)stairCount), 1.0f});
   }
-
-  /*float newWidth = stairWall.GetSize().z / 2.0f + 1.0f;*/
-  /*stairWall.SetSize((Vector3){stairWall.GetSize().x, WALL_HEIGHT,
-   * newWidth});*/
-  /*stairWall.SetPosition(*/
-  /*    (Vector3){position.x, position.y / 2.0f, position.z - newWidth
-   * / 2.0f});*/
 }
 
 void Stairs::Event() {}
@@ -31,9 +24,9 @@ void Stairs::Update() {}
 
 void Stairs::Draw() {
   for (Cube &stair : stairs) {
-    stair.Draw();
+    stair.DrawCubeTexture();
   }
-  stairWall.Draw();
+  stairWall.DrawCubeTexture();
 }
 
 // Getters

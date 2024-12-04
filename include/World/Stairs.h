@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "World/BaseObjects.h"
+#include "World/WorldDefinitions.h"
 #include "raylib.h"
 #include <vector>
 
