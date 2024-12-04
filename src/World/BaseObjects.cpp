@@ -211,6 +211,8 @@ void Cube::SetBoundingBox() {
 // End Cube ---------------------------------------------------------
 //
 // Plane ---------------------------------------------------------
+std::unique_ptr<WorldTexture> Plane::texture = nullptr;
+
 Plane::Plane(Vector3 position) {
   // Init
   this->position = position;
@@ -220,6 +222,10 @@ Plane::Plane(Vector3 position) {
                       position.z - size.y / 2.0f};
   box.max = (Vector3){position.x + size.x / 2.0f, position.y,
                       position.z + size.y / 2.0f};
+  if (!texture) {
+    texture = std::make_unique<WorldTexture>();
+    texture->texture = LoadTexture("concrete.png");
+  }
 }
 
 void Plane::Event() {}
@@ -229,6 +235,64 @@ void Plane::Update() {}
 void Plane::Draw() {
   DrawPlane(position, size, color);
   DrawBoundingBox(box, BLACK);
+}
+
+void Plane::DrawPlaneTexture() {
+  float x = position.x;
+  float y = position.y;
+  float z = position.z;
+
+  float width = size.x;
+  float length= size.y;
+  float height = position.y;
+
+  // Set desired texture to be enabled while drawing following vertex data
+  rlSetTexture(texture->texture.id);
+
+  // Vertex data transformation can be defined with the commented lines,
+  // but in this example we calculate the transformed vertex data directly when
+  // calling rlVertex3f()
+  // rlPushMatrix();
+  // NOTE: Transformation is applied in inverse order (scale -> rotate ->
+  // translate)
+  // rlTranslatef(2.0f, 0.0f, 0.0f);
+  // rlRotatef(45, 0, 1, 0);
+  // rlScalef(2.0f, 2.0f, 2.0f);
+
+  rlBegin(RL_QUADS);
+  rlColor4ub(color.r, color.g, color.b, color.a);
+  // Top Face
+  rlNormal3f(0.0f, 1.0f, 0.0f); // Normal Pointing Up
+  rlTexCoord2f(0.0f, 1.0f);
+  rlVertex3f(x - width / 2, y + height / 2,
+             z - length / 2); // Top Left Of The Texture and Quad
+  rlTexCoord2f(0.0f, 0.0f);
+  rlVertex3f(x - width / 2, y + height / 2,
+             z + length / 2); // Bottom Left Of The Texture and Quad
+  rlTexCoord2f(1.0f, 0.0f);
+  rlVertex3f(x + width / 2, y + height / 2,
+             z + length / 2); // Bottom Right Of The Texture and Quad
+  rlTexCoord2f(1.0f, 1.0f);
+  rlVertex3f(x + width / 2, y + height / 2,
+             z - length / 2); // Top Right Of The Texture and Quad
+  // Bottom Face
+  rlNormal3f(0.0f, -1.0f, 0.0f); // Normal Pointing Down
+  rlTexCoord2f(1.0f, 1.0f);
+  rlVertex3f(x - width / 2, y - height / 2,
+             z - length / 2); // Top Right Of The Texture and Quad
+  rlTexCoord2f(0.0f, 1.0f);
+  rlVertex3f(x + width / 2, y - height / 2,
+             z - length / 2); // Top Left Of The Texture and Quad
+  rlTexCoord2f(0.0f, 0.0f);
+  rlVertex3f(x + width / 2, y - height / 2,
+             z + length / 2); // Bottom Left Of The Texture and Quad
+  rlTexCoord2f(1.0f, 0.0f);
+  rlVertex3f(x - width / 2, y - height / 2,
+             z + length / 2); // Bottom Right Of The Texture and Quad
+  rlEnd();
+  // rlPopMatrix();
+
+  rlSetTexture(0);
 }
 
 // Getters

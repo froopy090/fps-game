@@ -45,6 +45,7 @@ public:
   void Event() override;
   void Update() override;
   void Draw() override;
+  void DrawPlaneTexture();
 
   // Getters
   Vector3 GetPosition();
@@ -62,5 +63,6 @@ private:
   Vector2 size;
   Color color;
   BoundingBox box;
+  static std::unique_ptr<WorldTexture> texture;
 };
 } // namespace World
