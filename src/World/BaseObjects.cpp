@@ -6,7 +6,7 @@
 
 namespace World {
 // Cube --------------------------------------
-std::shared_ptr<WorldTexture> Cube::texture = nullptr;
+std::unique_ptr<WorldTexture> Cube::texture = nullptr;
 
 Cube::Cube() {
   // default constructor
@@ -17,7 +17,7 @@ Cube::Cube() {
   box.max = Vector3Zero();
 
   if (!texture) {
-    texture = std::make_shared<WorldTexture>();
+    texture = std::make_unique<WorldTexture>();
     texture->texture = LoadTexture("metal.png");
   }
 }
@@ -36,7 +36,7 @@ Cube::Cube(Vector3 position) {
                       position.z + size.z / 2.0f};
 
   if (!texture) {
-    texture = std::make_shared<WorldTexture>();
+    texture = std::make_unique<WorldTexture>();
     texture->texture = LoadTexture("metal.png");
   }
 }
@@ -49,7 +49,7 @@ Cube::Cube(Vector3 position, Vector3 size) {
   this->SetBoundingBox();
 
   if (!texture) {
-    texture = std::make_shared<WorldTexture>();
+    texture = std::make_unique<WorldTexture>();
     texture->texture = LoadTexture("metal.png");
   }
 }

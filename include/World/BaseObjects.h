@@ -8,9 +8,6 @@ namespace World {
 class Cube : public GameObject {
 public:
   Cube();
-  // TODO: add this destructor
-  // once room class is using unique pointers
-  /*~Cube();*/
   Cube(Vector3 position);
   Cube(Vector3 position, Vector3 size);
   void Event() override;
@@ -39,7 +36,7 @@ protected:
   BoundingBox box;
 
 private:
-  static std::shared_ptr<WorldTexture> texture;
+  static std::unique_ptr<WorldTexture> texture;
 };
 
 class Plane : public GameObject {
