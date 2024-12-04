@@ -14,6 +14,7 @@ set(SOURCES
     src/Utility/Timer.cpp
     src/Utility/PlayerInfoHUD.cpp
     src/Utility/EnemyManager.cpp
+    src/Utility/WorldObjectManager.cpp
     src/World/Room001.cpp
     src/World/BaseObjects.cpp
     src/World/LargeColumn.cpp
