@@ -19,7 +19,7 @@ Player::Player() {
 
   // Camera init
   camera = {0};
-  camera.position = (Vector3){0.0f, size.y, 1.0f};
+  camera.position = (Vector3){0.0f, 20 + size.y, 1.0f};
   camera.target = Vector3Zero();           // camera looking at point
   camera.up = (Vector3){0.0f, 1.0f, 0.0f}; // camera up vector
   camera.fovy = 90.0f;
