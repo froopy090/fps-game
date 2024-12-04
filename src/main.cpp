@@ -3,6 +3,7 @@
 #include "Entities/Player.h"
 #include "Utility/CameraHUD.h"
 #include "Utility/PlayerInfoHUD.h"
+#include "Utility/WorldObjectManager.h"
 #include "World/Room001.h"
 #include "globals.h"
 #include "raylib.h"
@@ -32,16 +33,18 @@ int main() {
   // Loading Entities
   auto player1 = std::make_unique<Entities::Player>();
   auto pistol = std::make_unique<Entities::Pistol>(player1.get());
-  auto enemyManager =
-      std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
 
-  // Utility objects
+  // Utility objects and managers
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
   auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
+  auto enemyManager =
+      std::make_unique<Utility::EnemyManager>(5, player1.get(), pistol.get());
+  auto objectManager = std::make_unique<Utility::WorldObjectManager>(
+      player1.get(), enemyManager.get());
 
   // World
-  auto room =
-      std::make_unique<World::Room001>(player1.get(), enemyManager.get());
+  auto room = std::make_unique<World::Room001>(
+      player1.get(), enemyManager.get(), objectManager.get());
 
   //--------------------------------------------------------
 

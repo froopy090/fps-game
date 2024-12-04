@@ -1,15 +1,9 @@
 #include "World/Room001.h"
 #include "Entities/Enemy.h"
-#include "Entities/EntityDefinitions.h"
 #include "Entities/Player.h"
-#include "Utility/Collision.h"
-#include "World/BaseObjects.h"
-#include "World/Stairs.h"
 #include "raylib.h"
-#include "raymath.h"
 #include <iostream>
 #include <math.h>
-#include <vector>
 
 namespace World {
 const int Room001::roomMatrix[ROOM_SIZE][ROOM_SIZE] = {
@@ -75,8 +69,6 @@ Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager,
   // Calculate center of matrix
   int center = ROOM_SIZE / 2;
 
-  float randomValue = 0.0f;
-
   // Populate map and spawn enemies
   for (int i = 0; i < ROOM_SIZE; i++) {
     for (int j = 0; j < ROOM_SIZE; j++) {
@@ -86,62 +78,21 @@ Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager,
       float z = (j - center) * (-TILE_SIZE);
       Vector3 position = {x, y, z};
 
-      // generating random value
-      randomValue = GetRandomValue(0, 1);
-
+      // spawning in world objects (floors, walls, etc.) and enemies
       int objectID = roomMatrix[i][j];
       objectManager->AddObject(objectID, position);
-      /*if (roomMatrix[i][j] == 0) {*/
-      /*  floors.emplace_back(position);*/
-      /*  if (randomValue <= 0.1f)*/
-      /*    enemyManagerPtr->SpawnEnemy(position);*/
-      /*} else if (roomMatrix[i][j] == 1) {*/
-      /*  walls.emplace_back(position);*/
-      /*  if (randomValue <= 0.1f)*/
-      /*    enemyManagerPtr->SpawnEnemy(*/
-      /*        Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT, 0.0f}));*/
-      /*} else if (roomMatrix[i][j] == 2) {*/
-      /*  columns.emplace_back(position);*/
-      /*} else if (roomMatrix[i][j] == 3) {*/
-      /*  stairs.emplace_back(position);*/
-      /*}*/
+      if (objectID == 0)
+        enemyManagerPtr->SpawnEnemy(position);
     }
   }
 }
 
 void Room001::Update() {
   Reset(playerPtr, enemyManagerPtr);
-
-  // Collision checks
-  CheckCollisionObjects(playerPtr, enemyManagerPtr, floors);
-  CheckCollisionObjects(playerPtr, enemyManagerPtr, walls);
-  CheckCollisionObjects(playerPtr, enemyManagerPtr, columns);
-  CheckStairsCollision(playerPtr, enemyManagerPtr, stairs);
-
-  // Enemy vision checks
-  CheckEnemyVision(playerPtr, enemyManagerPtr, walls);
-  CheckEnemyVision(playerPtr, enemyManagerPtr, columns);
-  CheckEnemyVisionStairs(playerPtr, enemyManagerPtr, stairs);
+  objectManager->Update();
 }
 
-void Room001::Draw() {
-    objectManager->Draw();
-  /*BeginMode3D(playerPtr->camera);*/
-  /*for (Plane &floor : floors) {*/
-  /*  floor.Draw();*/
-  /*}*/
-  /*for (Cube &wall : walls) {*/
-  /*  // wall.Draw();*/
-  /*  wall.DrawCubeTexture();*/
-  /*}*/
-  /*for (LargeColumn &column : columns) {*/
-  /*  column.Draw();*/
-  /*}*/
-  /*for (Stairs &stair : stairs) {*/
-  /*  stair.Draw();*/
-  /*}*/
-  /*EndMode3D();*/
-}
+void Room001::Draw() { objectManager->Draw(); }
 
 // Returns reference to roomMatrix
 const int (&Room001::GetRoomMatrix())[ROOM_SIZE][ROOM_SIZE] {
@@ -158,88 +109,6 @@ void Room001::Reset(Entities::Player *player,
   // enemy->SetPlaneCollision(false);
   for (auto &enemy : *enemyManager->GetEnemiesVector()) {
     enemy->SetPlaneCollision(false);
-  }
-}
-
-template <typename Object>
-void Room001::CheckCollisionObjects(Entities::Player *player,
-                                    Utility::EnemyManager *enemyManager,
-                                    std::vector<Object> objects) {
-  for (Object &obj : objects) {
-    if (Utility::EntityCollisionObject(player, &obj)) {
-      Utility::LockEntityAxis(player, &obj);
-    }
-    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (Utility::EntityCollisionObject(enemy.get(), &obj)) {
-        Utility::LockEntityAxis(enemy.get(), &obj);
-      }
-    }
-  }
-}
-
-void Room001::CheckStairsCollision(Entities::Player *player,
-                                   Utility::EnemyManager *enemyManager,
-                                   std::vector<World::Stairs> stairs) {
-  // Checks collision between stairs and entities
-  for (World::Stairs &stair : stairs) {
-    World::Cube stairWall = stair.GetStairWall();
-    if (Utility::EntityCollisionObject(player, &stairWall)) {
-      Utility::LockEntityAxis(player, &stairWall);
-    }
-    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (Utility::EntityCollisionObject(enemy.get(), &stairWall)) {
-        Utility::LockEntityAxis(enemy.get(), &stairWall);
-      }
-    }
-
-    std::vector<World::Cube> stairCubes = stair.GetCubeVector();
-    for (World::Cube &stairCube : stairCubes) {
-      if (Utility::EntityCollisionObject(player, &stairCube)) {
-        Utility::LockEntityAxis(player, &stairCube);
-      }
-      for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-        if (Utility::EntityCollisionObject(enemy.get(), &stairCube)) {
-          Utility::LockEntityAxis(enemy.get(), &stairCube);
-        }
-      }
-    }
-  }
-}
-
-// checks if enemy vision is blocked by an object
-template <typename Object>
-void Room001::CheckEnemyVision(Entities::Player *player,
-                               Utility::EnemyManager *enemyManager,
-                               std::vector<Object> &objects) {
-  for (Object &obj : objects) {
-    // finding one wall where the vision ray collides
-    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(enemy.get(), enemy->GetViewDistance(), player,
-                                 &obj)) {
-        if (enemy->GetState() != Entities::ENEMY_IDLE &&
-            enemy->GetState() != Entities::ENEMY_DEAD) {
-          enemy->SetIdle();
-          break;
-        }
-      }
-    }
-  }
-}
-
-void Room001::CheckEnemyVisionStairs(Entities::Player *player,
-                                     Utility::EnemyManager *enemyManager,
-                                     std::vector<World::Stairs> &stairs) {
-  for (World::Stairs &stair : stairs) {
-    World::Cube stairWall = stair.GetStairWall();
-    for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-      if (!Utility::CanSeeTarget(enemy.get(), enemy->GetViewDistance(), player,
-                                 &stairWall) &&
-          enemy->GetState() != Entities::ENEMY_IDLE &&
-          enemy->GetState() != Entities::ENEMY_DEAD) {
-        enemy->SetIdle();
-        break;
-      }
-    }
   }
 }
 // End Helper Functions --------------------------------------------------------
