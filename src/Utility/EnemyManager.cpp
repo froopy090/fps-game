@@ -1,5 +1,6 @@
 #include "Utility/EnemyManager.h"
 #include "Entities/Enemy.h"
+#include "Entities/EntityDefinitions.h"
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "algorithm"
@@ -16,8 +17,10 @@ void EnemyManager::Event() {
 }
 
 void EnemyManager::Update() {
+  if (enemies.empty()) {
+    Entities::Enemy::CleanupSprite();
+  }
   this->DespawnEnemy();
-
   for (std::unique_ptr<Entities::Enemy> &enemy : enemies) {
     enemy->Update();
   }
@@ -31,7 +34,8 @@ void EnemyManager::Draw() {
 
 void EnemyManager::SpawnEnemy(Vector3 position) {
   if (enemies.size() < numberOfEnemies)
-    enemies.emplace_back(std::make_unique<Entities::Enemy>(player, pistol, position));
+    enemies.emplace_back(
+        std::make_unique<Entities::Enemy>(player, pistol, position));
 }
 
 std::vector<std::unique_ptr<Entities::Enemy>> *
