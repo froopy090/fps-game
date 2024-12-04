@@ -43,13 +43,13 @@ void WorldObjectManager::Update() {
 void WorldObjectManager::Draw() {
   BeginMode3D(player->camera);
   for (World::Plane &plane : planes) {
-    plane.Draw();
+    plane.DrawPlaneTexture();
   }
   for (World::Cube &cube : cubes) {
     cube.DrawCubeTexture();
   }
   for (World::LargeColumn &column : columns) {
-    column.Draw();
+    column.DrawCubeTexture();
   }
   for (World::Stairs &stair : stairs) {
     stair.Draw();
