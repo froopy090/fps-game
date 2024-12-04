@@ -10,6 +10,7 @@
 #include "resource_dir.h"
 #include <dirent.h>
 #include <memory>
+#include "World/Room002.h"
 
 #define MAX_COLUMNS 20
 
@@ -38,12 +39,12 @@ int main() {
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
   auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
   auto enemyManager =
-      std::make_unique<Utility::EnemyManager>(5, player1.get(), pistol.get());
+      std::make_unique<Utility::EnemyManager>(0, player1.get(), pistol.get());
   auto objectManager = std::make_unique<Utility::WorldObjectManager>(
       player1.get(), enemyManager.get());
 
   // World
-  auto room = std::make_unique<World::Room001>(
+  auto room = std::make_unique<World::Room002>(
       player1.get(), enemyManager.get(), objectManager.get());
 
   //--------------------------------------------------------
