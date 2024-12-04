@@ -13,11 +13,12 @@ set(SOURCES
     src/Utility/CameraHUD.cpp
     src/Utility/Timer.cpp
     src/Utility/PlayerInfoHUD.cpp
+    src/Utility/EnemyManager.cpp
     src/World/Room001.cpp
     src/World/BaseObjects.cpp
     src/World/LargeColumn.cpp
     src/World/Stairs.cpp
-    src/Utility/EnemyManager.cpp
+    src/World/BridgesRoom.cpp
 )
 
 include_directories(include)
