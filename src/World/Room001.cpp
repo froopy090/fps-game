@@ -68,8 +68,10 @@ const int Room001::heightMatrix[ROOM_SIZE][ROOM_SIZE] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 };
 
-Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager)
-    : playerPtr(player), enemyManagerPtr(enemyManager) {
+Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager,
+                 Utility::WorldObjectManager *objectManager)
+    : playerPtr(player), enemyManagerPtr(enemyManager),
+      objectManager(objectManager) {
   // Calculate center of matrix
   int center = ROOM_SIZE / 2;
 
@@ -87,20 +89,22 @@ Room001::Room001(Entities::Player *player, Utility::EnemyManager *enemyManager)
       // generating random value
       randomValue = GetRandomValue(0, 1);
 
-      if (roomMatrix[i][j] == 0) {
-        floors.emplace_back(position);
-        if (randomValue <= 0.1f)
-          enemyManagerPtr->SpawnEnemy(position);
-      } else if (roomMatrix[i][j] == 1) {
-        walls.emplace_back(position);
-        if (randomValue <= 0.1f)
-          enemyManagerPtr->SpawnEnemy(
-              Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT, 0.0f}));
-      } else if (roomMatrix[i][j] == 2) {
-        columns.emplace_back(position);
-      } else if (roomMatrix[i][j] == 3) {
-        stairs.emplace_back(position);
-      }
+      int objectID = roomMatrix[i][j];
+      objectManager->AddObject(objectID, position);
+      /*if (roomMatrix[i][j] == 0) {*/
+      /*  floors.emplace_back(position);*/
+      /*  if (randomValue <= 0.1f)*/
+      /*    enemyManagerPtr->SpawnEnemy(position);*/
+      /*} else if (roomMatrix[i][j] == 1) {*/
+      /*  walls.emplace_back(position);*/
+      /*  if (randomValue <= 0.1f)*/
+      /*    enemyManagerPtr->SpawnEnemy(*/
+      /*        Vector3Add(position, (Vector3){0.0f, WALL_HEIGHT, 0.0f}));*/
+      /*} else if (roomMatrix[i][j] == 2) {*/
+      /*  columns.emplace_back(position);*/
+      /*} else if (roomMatrix[i][j] == 3) {*/
+      /*  stairs.emplace_back(position);*/
+      /*}*/
     }
   }
 }
@@ -121,21 +125,22 @@ void Room001::Update() {
 }
 
 void Room001::Draw() {
-  BeginMode3D(playerPtr->camera);
-  for (Plane &floor : floors) {
-    floor.Draw();
-  }
-  for (Cube &wall : walls) {
-    // wall.Draw();
-    wall.DrawCubeTexture();
-  }
-  for (LargeColumn &column : columns) {
-    column.Draw();
-  }
-  for (Stairs &stair : stairs) {
-    stair.Draw();
-  }
-  EndMode3D();
+    objectManager->Draw();
+  /*BeginMode3D(playerPtr->camera);*/
+  /*for (Plane &floor : floors) {*/
+  /*  floor.Draw();*/
+  /*}*/
+  /*for (Cube &wall : walls) {*/
+  /*  // wall.Draw();*/
+  /*  wall.DrawCubeTexture();*/
+  /*}*/
+  /*for (LargeColumn &column : columns) {*/
+  /*  column.Draw();*/
+  /*}*/
+  /*for (Stairs &stair : stairs) {*/
+  /*  stair.Draw();*/
+  /*}*/
+  /*EndMode3D();*/
 }
 
 // Returns reference to roomMatrix
