@@ -39,7 +39,7 @@ int main() {
   auto cameraHUD = std::make_unique<Utility::CameraHUD>();
   auto playerInfoHUD = std::make_unique<Utility::PlayerInfoHUD>();
   auto enemyManager =
-      std::make_unique<Utility::EnemyManager>(0, player1.get(), pistol.get());
+      std::make_unique<Utility::EnemyManager>(20, player1.get(), pistol.get());
   auto objectManager = std::make_unique<Utility::WorldObjectManager>(
       player1.get(), enemyManager.get());
 
