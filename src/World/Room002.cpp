@@ -102,16 +102,7 @@ const int (&Room002::GetRoomMatrix())[ROOM_SIZE][ROOM_SIZE] {
 
 // Helper Functions -------------------------------------------------------
 //
-// resets necessary player and enemy variables
-void Room002::Reset(Entities::Player *player,
-                        Utility::EnemyManager *enemyManager) {
-  // Reset
-  player->SetPlaneCollision(false);
-  // enemy->SetPlaneCollision(false);
-  for (auto &enemy : *enemyManager->GetEnemiesVector()) {
-    enemy->SetPlaneCollision(false);
-  }
-}
+
 // End Helper Functions --------------------------------------------------------
 //
 } // namespace World

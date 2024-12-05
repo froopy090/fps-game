@@ -24,8 +24,5 @@ private:
   Utility::WorldObjectManager *objectManager;
   Entities::Player *playerPtr;
   Utility::EnemyManager *enemyManagerPtr;
-
-  // Helper functions
-  void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager);
 };
 } // namespace World
