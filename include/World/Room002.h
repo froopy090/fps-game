@@ -2,17 +2,18 @@
 #include "Entities/Player.h"
 #include "Utility/EnemyManager.h"
 #include "Utility/WorldObjectManager.h"
+#include "World/Room.h"
 #include "World/Stairs.h"
 #include "World/WorldDefinitions.h"
 #include "vector"
 
 namespace World {
-class Room002 {
+class Room002 : Room {
 public:
   Room002(Entities::Player *player, Utility::EnemyManager *enemyManager,
           Utility::WorldObjectManager *objectManager);
-  void Update();
-  void Draw();
+  void Update() override;
+  void Draw() override;
 
   // Returns a reference to the roomMatrix
   const int (&GetRoomMatrix())[ROOM_SIZE][ROOM_SIZE];
@@ -26,22 +27,5 @@ private:
 
   // Helper functions
   void Reset(Entities::Player *player, Utility::EnemyManager *enemyManager);
-
-  template <typename Object>
-  void CheckCollisionObjects(Entities::Player *player,
-                             Utility::EnemyManager *enemyManager,
-                             std::vector<Object> objects);
-  void CheckStairsCollision(Entities::Player *player,
-                            Utility::EnemyManager *enemyManager,
-                            std::vector<World::Stairs> stairs);
-
-  template <typename Object>
-  void CheckEnemyVision(Entities::Player *player,
-                        Utility::EnemyManager *enemyManager,
-                        std::vector<Object> &objects);
-
-  void CheckEnemyVisionStairs(Entities::Player *player,
-                              Utility::EnemyManager *enemyManager,
-                              std::vector<World::Stairs> &stairs);
 };
 } // namespace World
