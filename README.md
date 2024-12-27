@@ -2,6 +2,11 @@
 
 This is a simple FPS game project using `raylib`. Below are the instructions on how to compile and run the game.
 
+## Progress Video
+Check out the progress so far:
+[![Watch the video](https://img.youtube.com/vi/F_vNK2XNKvg/hqdefault.jpg)](https://www.youtube.com/watch?v=F_vNK2XNKvg)
+
+
 ## Compilation Instructions
 
 To compile the project, follow these steps:
