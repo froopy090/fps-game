@@ -2,15 +2,17 @@
 #include "Entities/Pistol.h"
 #include "Entities/Player.h"
 #include "Utility/CameraHUD.h"
+#include "Utility/Collision.h"
 #include "Utility/PlayerInfoHUD.h"
 #include "Utility/WorldObjectManager.h"
 #include "World/Room001.h"
+#include "World/Room002.h"
 #include "globals.h"
 #include "raylib.h"
+#include "raymath.h"
 #include "resource_dir.h"
 #include <dirent.h>
 #include <memory>
-#include "World/Room002.h"
 
 #define MAX_COLUMNS 20
 
@@ -47,6 +49,43 @@ int main() {
   auto room = std::make_unique<World::Room002>(
       player1.get(), enemyManager.get(), objectManager.get());
 
+  // TEST - Loading in 3D models
+  Model boxModel = LoadModel("box.obj");
+  Texture2D texture = LoadTexture("concrete.png");
+  boxModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+  Vector3 modelPosition = (Vector3){0.0f, 2.0f, 5.0f};
+  BoundingBox bounds = GetMeshBoundingBox(boxModel.meshes[0]);
+  bounds.max = Vector3Add(modelPosition, bounds.max);
+  bounds.min = Vector3Add(modelPosition, bounds.min);
+
+  struct FroopyModel {
+    // members
+    Model model;
+    Texture2D texture;
+    Vector3 pos;
+    BoundingBox bounds;
+
+    // functions
+    Vector3 GetSize() {
+      float x;
+      float y;
+      float z;
+
+      x = abs((int)(bounds.min.x - bounds.max.x));
+      y = abs((int)(bounds.max.y - bounds.min.y));
+      z = abs((int)(bounds.min.z - bounds.max.z));
+
+      return (Vector3){x, y, z};
+    }
+    BoundingBox GetBoundingBox() { return bounds; }
+  };
+
+  FroopyModel model;
+  model.model = boxModel;
+  model.texture = texture;
+  model.pos = modelPosition;
+  model.bounds = bounds;
+
   //--------------------------------------------------------
 
   // Main game loop
@@ -81,6 +120,12 @@ int main() {
       enemyManager->Update();
 
       room->Update();
+
+      // MODEL TEST collision
+      // holy shit this works
+      if (Utility::EntityCollisionObject(player1.get(), &model))
+        Utility::LockEntityAxis(player1.get(), &model);
+
       break;
     case ENDING:
       // TODO: update ending variables here
@@ -106,6 +151,12 @@ int main() {
     case GAMEPLAY:
       room->Draw();
 
+      // Drawing model
+      BeginMode3D(player1->camera);
+      DrawModel(model.model, modelPosition, 1.0f, WHITE);
+      DrawBoundingBox(model.bounds, RED);
+      EndMode3D();
+
       enemyManager->Draw();
       player1->Draw();
       pistol->Draw();
@@ -129,6 +180,8 @@ int main() {
 
   // De-initialization
   // TODO: unload all loaded data (textures, fonts, audio) here
+  UnloadTexture(texture);
+  UnloadModel(model.model);
   CloseWindow();
 
   return 0;
