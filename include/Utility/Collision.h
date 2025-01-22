@@ -42,7 +42,8 @@ inline bool XAxisCollision(const Entity &entity, const Object &IceCube) {
 
 template <typename Entity, typename Object>
 inline bool YAxisCollision(const Entity &entity, const Object &IceCube) {
-  return entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().max.y;
+  return entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().max.y ||
+         entity->GetBoundingBox().min.y <= IceCube->GetBoundingBox().min.y;
 }
 
 template <typename Entity, typename Object>
