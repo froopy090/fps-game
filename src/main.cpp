@@ -53,7 +53,7 @@ int main() {
   Model boxModel = LoadModel("box.obj");
   Texture2D texture = LoadTexture("concrete.png");
   boxModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-  Vector3 modelPosition = (Vector3){0.0f, 2.0f, 5.0f};
+  Vector3 modelPosition = (Vector3){0.0f, 2.5f, 5.0f};
   BoundingBox bounds = GetMeshBoundingBox(boxModel.meshes[0]);
   bounds.max = Vector3Add(modelPosition, bounds.max);
   bounds.min = Vector3Add(modelPosition, bounds.min);
