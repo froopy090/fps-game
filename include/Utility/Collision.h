@@ -43,7 +43,10 @@ inline bool XAxisCollision(const Entity &entity, const Object &IceCube) {
 template <typename Entity, typename Object>
 inline bool YAxisCollision(const Entity &entity, const Object &IceCube) {
   return entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().max.y ||
-         entity->GetBoundingBox().min.y <= IceCube->GetBoundingBox().min.y;
+         (entity->GetBoundingBox().min.y <
+              IceCube->GetBoundingBox().min.y - 0.5f &&
+          entity->GetBoundingBox().max.y >= IceCube->GetBoundingBox().min.y &&
+          entity->GetBoundingBox().max.y < IceCube->GetBoundingBox().max.y);
 }
 
 template <typename Entity, typename Object>
@@ -68,7 +71,9 @@ template <typename Entity> inline void LockZAxis(const Entity &entity) {
 // this lock is specifically used when on top of a box
 template <typename Entity, typename Object>
 inline void LockYAxis(const Entity &entity, const Object &IceCube) {
-  entity->SetYPosition(IceCube->GetBoundingBox().max.y + entity->GetSize().y);
+  //entity->SetYPosition(IceCube->GetBoundingBox().max.y + entity->GetSize().y);
+  //a little glitchy but kinda fixes some stuff
+  entity->SetYPosition(entity->GetPreviousPosition().y);
   entity->SetPlaneCollision(true);
 }
 
@@ -80,6 +85,7 @@ template <typename Entity, typename Object>
 inline void LockEntityAxis(const Entity &entity, const Object &IceCube) {
   // Y axis movement
   // if player is on top of box
+  // or under box
   if (YAxisCollision(entity, IceCube)) {
     LockYAxis(entity, IceCube);
     return;
