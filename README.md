@@ -1,6 +1,11 @@
-# FPS Game
+# FPS Game - CORE REWORK BRANCH 
 
-This is a simple FPS game project using `raylib`. Below are the instructions on how to compile and run the game.
+This branch is work in progress. Here are some of the major changes to be done:
+- optimization overhaul
+- core structure of the project will be ECS-inspired
+    - ECS (entity-component-system) you can check out the wikipedia page [here](https://en.wikipedia.org/wiki/Entity_component_system)
+- massive code clean up
+- in short, the code is a mess, let's fix it up
 
 ## Progress Video
 [![Watch the video](https://img.youtube.com/vi/F_vNK2XNKvg/hqdefault.jpg)](https://www.youtube.com/watch?v=F_vNK2XNKvg)
