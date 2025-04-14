@@ -7,5 +7,5 @@ class System {
 public:
     virtual ~System() = default;
 
-    virtual void update(Registry& registry, float deltaTime) = 0;
+    virtual void Update(Registry& registry) = 0;
 };
