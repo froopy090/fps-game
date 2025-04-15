@@ -5,62 +5,95 @@
 #include "ecs/ViewCameraSystem.h"
 #include <raylib.h>
 
+// Gobal variables ----------------------------------------
+// Window
+const int screenWidth = 800;
+const int screenHeight = 450;
+
+// Core
+// Registry
+Registry registry;
+
+// Entities
+Entity player = registry.createEntity();
+
+// Systems
+std::vector<System *> gameSystems;
+
+// --------------------------------------------------------
+
+// Forward declarations
+void InitGame();
+void UpdateGame();
+void DrawGame();
+void CloseGame();
+
+// Main ---------------------------------------------------
 int main() {
   // Init
-  const int screenWidth = 800;
-  const int screenHeight = 450;
+  InitGame();
 
+  // Game loop
+  while (!WindowShouldClose()) {
+    UpdateGame();
+    DrawGame();
+  }
+
+  // Shutdown
+  CloseGame();
+  return 0;
+}
+
+// --------------------------------------------------------
+
+// Helper functions
+void InitGame() {
   InitWindow(screenWidth, screenHeight, "ECS example");
 
-  Registry registry;
-  Entity player = registry.createEntity();
-  ViewCamera playerCamera;
-  playerCamera.camera = {0};
-  playerCamera.camera.position = (Vector3){0.0f, 2.0f, 4.0f};
-  playerCamera.camera.target = (Vector3){0.0f, 2.0f, 0.0f};
-  playerCamera.camera.up = (Vector3){0.0f, 1.0f, 0.0f};
-  playerCamera.camera.fovy = 60.0f;
-  playerCamera.camera.projection = CAMERA_PERSPECTIVE;
-  playerCamera.cameraMode = CAMERA_FIRST_PERSON;
-  registry.addComponent(player, playerCamera);
+  registry.addComponent(
+      player, ViewCamera{
+                  .camera = Camera3D{.position = (Vector3){0.0f, 2.0f, 4.0f},
+                                     .target = (Vector3){0.0f, 2.0f, 0.0f},
+                                     .up = (Vector3){0.0f, 1.0f, 0.0f},
+                                     .fovy = 60.0f,
+                                     .projection = CAMERA_PERSPECTIVE},
+                  .cameraMode = CAMERA_FIRST_PERSON,
+              });
 
   DisableCursor();
   SetTargetFPS(60);
 
-  std::vector<System *> gameSystems;
   gameSystems.push_back(new ViewCameraSystem());
+}
 
-  // Game loop
-  while (!WindowShouldClose()) {
-    // Update
-    for (auto &system : gameSystems) {
-      system->Update(registry);
-    }
-
-    // Draw
-    BeginDrawing();
-
-    ClearBackground(RAYWHITE);
-
-    BeginMode3D(registry.getComponent<ViewCamera>(player).camera);
-
-    DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
-              LIGHTGRAY); // Draw ground
-    DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-             BLUE); // Draw a blue wall
-    DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-             LIME); // Draw a green wall
-    DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
-             GOLD); // Draw a yellow wall
-    EndMode3D();
-    EndDrawing();
+void UpdateGame() {
+  for (auto &system : gameSystems) {
+    system->Update(registry);
   }
+}
 
-  // De-initialization
+void DrawGame() {
+  BeginDrawing();
+
+  ClearBackground(RAYWHITE);
+
+  BeginMode3D(registry.getComponent<ViewCamera>(player).camera);
+
+  DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
+            LIGHTGRAY); // Draw ground
+  DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+           BLUE); // Draw a blue wall
+  DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+           LIME); // Draw a green wall
+  DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
+           GOLD); // Draw a yellow wall
+  EndMode3D();
+  EndDrawing();
+}
+
+void CloseGame() {
   CloseWindow();
   for (auto &system : gameSystems) {
     delete system;
   }
-
-  return 0;
 }
