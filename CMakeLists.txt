@@ -7,6 +7,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
 set(SOURCES
     src/main.cpp
+    src/ecs/systems/ViewCameraSystem.cpp
     # src/Entities/Pistol.cpp
     # src/Entities/Player.cpp
     # src/Entities/Enemy.cpp
