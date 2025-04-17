@@ -1,27 +1,26 @@
 #pragma once
+#include <math.h>
 #include <raylib.h>
 
 // TODO: add all of our structs
 
-struct Position {
-  float x;
-  float y;
-  float z;
-};
-
-struct Velocity {
-  float dx;
-  float dy;
-  float dz;
-};
-
-struct Size {
-  float x;
-  float y;
-  float z;
-};
-
-struct ViewCamera{
+struct ViewCameraComponent {
   Camera3D camera;
   int cameraMode;
+};
+
+struct ModelComponent {
+  Model model;
+  Texture2D texture;
+  Vector3 position;
+  BoundingBox bounds;
+
+  Vector3 GetSize() const {
+    float x = std::fabs(bounds.max.x - bounds.min.x);
+    float y = std::fabs(bounds.max.y - bounds.min.y);
+    float z = std::fabs(bounds.max.z - bounds.min.z);
+    return {x, y, z};
+  }
+
+  BoundingBox GetBoundingBox() const { return bounds; }
 };
