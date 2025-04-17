@@ -1,99 +1,121 @@
-#include "ecs/Component.h"
-#include "ecs/Entity.h"
-#include "ecs/Registry.h"
-#include "ecs/System.h"
 #include "ecs/ViewCameraSystem.h"
+#include <GameState.h>
+#include <ecs/ModelRenderSystem.h>
 #include <raylib.h>
-
-// Gobal variables ----------------------------------------
-// Window
-const int screenWidth = 800;
-const int screenHeight = 450;
-
-// Core
-// Registry
-Registry registry;
-
-// Entities
-Entity player = registry.createEntity();
-
-// Systems
-std::vector<System *> gameSystems;
-
-// --------------------------------------------------------
+#include <raymath.h>
+#include <resource_dir.h>
 
 // Forward declarations
-void InitGame();
-void UpdateGame();
-void DrawGame();
-void CloseGame();
+void InitGame(GameState *game);
+void UpdateGame(GameState *game);
+void DrawGame(GameState *game);
+void CloseGame(GameState *game);
 
 // Main ---------------------------------------------------
 int main() {
   // Init
-  InitGame();
+  GameState game;
+  InitGame(&game);
 
   // Game loop
   while (!WindowShouldClose()) {
-    UpdateGame();
-    DrawGame();
+    UpdateGame(&game);
+    DrawGame(&game);
   }
 
   // Shutdown
-  CloseGame();
+  CloseGame(&game);
   return 0;
 }
 
 // --------------------------------------------------------
 
 // Helper functions
-void InitGame() {
-  InitWindow(screenWidth, screenHeight, "ECS example");
+void InitGame(GameState *game) {
+  // Window
+  InitWindow(game->screenWidth, game->screenHeight, "ECS example");
 
-  registry.addComponent(
-      player, ViewCamera{
-                  .camera = Camera3D{.position = (Vector3){0.0f, 2.0f, 4.0f},
-                                     .target = (Vector3){0.0f, 2.0f, 0.0f},
-                                     .up = (Vector3){0.0f, 1.0f, 0.0f},
-                                     .fovy = 60.0f,
-                                     .projection = CAMERA_PERSPECTIVE},
-                  .cameraMode = CAMERA_FIRST_PERSON,
-              });
+  SearchAndSetResourceDir("resources");
+
+  // Loading entities
+  game->registry.addComponent(
+      game->playerEntity,
+      ViewCameraComponent{
+          .camera = Camera3D{.position = (Vector3){0.0f, 2.0f, 4.0f},
+                             .target = (Vector3){0.0f, 2.0f, 0.0f},
+                             .up = (Vector3){0.0f, 1.0f, 0.0f},
+                             .fovy = 60.0f,
+                             .projection = CAMERA_PERSPECTIVE},
+          .cameraMode = CAMERA_FIRST_PERSON,
+      });
+
+  Model model = LoadModel("simple_plane.obj");
+  Texture2D texture = LoadTexture("concrete.png");
+  model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+
+  Vector3 position = {0.0f, 0.0f, 0.0f};
+  BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
+  bounds.max = Vector3Add(position, bounds.max);
+  bounds.min = Vector3Add(position, bounds.min);
+
+  ModelComponent modelComponent;
+  modelComponent.model = model;
+  modelComponent.texture = texture;
+  modelComponent.position = position;
+  modelComponent.bounds = bounds;
+
+  game->registry.addComponent(game->planeEntity, modelComponent);
 
   DisableCursor();
-  SetTargetFPS(60);
+  SetTargetFPS(144);
 
-  gameSystems.push_back(new ViewCameraSystem());
+  // Adding systems to vector
+  game->updateSystems.push_back(new ViewCameraSystem());
+  game->renderSystems.push_back(new ModelRenderSystem());
 }
 
-void UpdateGame() {
-  for (auto &system : gameSystems) {
-    system->Update(registry);
+void UpdateGame(GameState *game) {
+  for (auto &system : game->updateSystems) {
+    system->Update(game->registry);
   }
 }
 
-void DrawGame() {
+void DrawGame(GameState *game) {
   BeginDrawing();
 
   ClearBackground(RAYWHITE);
+  DrawFPS(10, 10);
 
-  BeginMode3D(registry.getComponent<ViewCamera>(player).camera);
+  BeginMode3D(
+      game->registry.getComponent<ViewCameraComponent>(game->playerEntity)
+          .camera);
 
-  DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
-            LIGHTGRAY); // Draw ground
-  DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-           BLUE); // Draw a blue wall
-  DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
-           LIME); // Draw a green wall
-  DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
-           GOLD); // Draw a yellow wall
+  for (auto &system : game->renderSystems) {
+    system->Update(game->registry);
+  }
+
+  // DrawPlane((Vector3){0.0f, 0.0f, 0.0f}, (Vector2){32.0f, 32.0f},
+  //           LIGHTGRAY); // Draw ground
+  // DrawCube((Vector3){-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+  //          BLUE); // Draw a blue wall
+  // DrawCube((Vector3){16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f,
+  //          LIME); // Draw a green wall
+  // DrawCube((Vector3){0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f,
+  //          GOLD); // Draw a yellow wall
   EndMode3D();
   EndDrawing();
 }
 
-void CloseGame() {
+void CloseGame(GameState *game) {
   CloseWindow();
-  for (auto &system : gameSystems) {
+  for (auto &system : game->updateSystems) {
     delete system;
+  }
+  for (auto &system : game->renderSystems) {
+    delete system;
+  }
+  for (auto &[entity, modelComp] : game->registry.getMap<ModelComponent>()) {
+    UnloadTexture(modelComp.texture);
+    UnloadModel(modelComp.model);
   }
 }

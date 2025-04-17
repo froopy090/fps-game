@@ -1,10 +1,6 @@
 #pragma once
 #include "Entity.h"
-#include <memory>
-#include <type_traits>
-#include <typeindex>
 #include <unordered_map>
-#include <vector>
 
 class Registry {
 public:
