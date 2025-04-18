@@ -47,10 +47,12 @@ void InitGame(GameState *game) {
   ModelComponent modelComponent;
   modelComponent.model = model;
   modelComponent.texture = texture;
-  modelComponent.position = position;
-  modelComponent.bounds = bounds;
 
   game->registry.addComponent(game->planeEntity, modelComponent);
+  game->registry.addComponent(game->planeEntity,
+                              TransformComponent{.position = position});
+  game->registry.addComponent(
+      game->planeEntity, ColliderComponent{.bounds = bounds, .isStatic = true});
 
   DisableCursor();
   SetTargetFPS(144);
