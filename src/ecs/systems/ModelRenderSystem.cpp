@@ -2,8 +2,12 @@
 
 void ModelRenderSystem::Update(Registry &registry) {
   auto &models = registry.getMap<ModelComponent>();
+  auto &transforms = registry.getMap<TransformComponent>();
 
   for (auto &[entity, model] : models) {
-    DrawModel(model.model, model.position, 1.0f, WHITE);
+    if (transforms.contains(entity)) {
+      const Vector3 &pos = transforms[entity].position;
+      DrawModel(model.model, pos, 1.0f, WHITE);
+    }
   }
 }
