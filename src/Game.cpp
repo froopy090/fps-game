@@ -1,7 +1,7 @@
 #include <Game.h>
-#include <ecs/Component.h>
-#include <ecs/ModelRenderSystem.h>
-#include <ecs/ViewCameraSystem.h>
+#include <Component.h>
+#include <systems/ModelRenderSystem.h>
+#include <systems/ViewCameraSystem.h>
 #include <iostream>
 #include <raylib.h>
 #include <raymath.h>

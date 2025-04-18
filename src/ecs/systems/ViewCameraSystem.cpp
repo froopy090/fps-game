@@ -1,4 +1,4 @@
-#include "ecs/ViewCameraSystem.h"
+#include "systems/ViewCameraSystem.h"
 
 void ViewCameraSystem::Update(Registry &registry) {
   auto &cameras = registry.getMap<ViewCameraComponent>();

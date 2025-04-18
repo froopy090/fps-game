@@ -1,8 +1,8 @@
 #pragma once
 
-#include <ecs/Component.h>
-#include <ecs/Registry.h>
-#include <ecs/System.h>
+#include <Component.h>
+#include <Registry.h>
+#include <systems/System.h>
 #include <raylib.h>
 
 class ModelRenderSystem : public System {

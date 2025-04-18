@@ -1,4 +1,4 @@
-#include <ecs/ModelRenderSystem.h>
+#include <systems/ModelRenderSystem.h>
 
 void ModelRenderSystem::Update(Registry &registry) {
   auto &models = registry.getMap<ModelComponent>();

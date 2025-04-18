@@ -1,7 +1,7 @@
 #pragma once
 
-#include <ecs/Registry.h>
-#include <ecs/System.h>
+#include <Registry.h>
+#include <systems/System.h>
 #include <vector>
 
 struct GameState {
