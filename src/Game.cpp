@@ -1,11 +1,11 @@
-#include <Game.h>
 #include <Component.h>
-#include <systems/ModelRenderSystem.h>
-#include <systems/ViewCameraSystem.h>
+#include <Game.h>
 #include <iostream>
 #include <raylib.h>
 #include <raymath.h>
 #include <resource_dir.h>
+#include <systems/ModelRenderSystem.h>
+#include <systems/ViewCameraSystem.h>
 
 void InitGame(GameState *game) {
   // Window
@@ -16,14 +16,24 @@ void InitGame(GameState *game) {
   // Loading entities
   game->registry.addComponent(
       game->playerEntity,
+      TransformComponent{.position = (Vector3){0.0f, 2.0f, 4.0f}});
+  game->registry.addComponent(game->playerEntity,
+                              VelocityComponent{.velocity = Vector3Zero()});
+  game->registry.addComponent(
+      game->playerEntity,
       ViewCameraComponent{
-          .camera = Camera3D{.position = (Vector3){0.0f, 2.0f, 4.0f},
+          .camera = Camera3D{.position = game->registry
+                                             .getComponent<TransformComponent>(
+                                                 game->playerEntity)
+                                             .position,
                              .target = (Vector3){0.0f, 2.0f, 0.0f},
                              .up = (Vector3){0.0f, 1.0f, 0.0f},
                              .fovy = 60.0f,
                              .projection = CAMERA_PERSPECTIVE},
           .cameraMode = CAMERA_FIRST_PERSON,
       });
+  // TODO: fix this later
+  game->registry.addComponent(game->playerEntity, ColliderComponent{});
 
   Model model = LoadModel("simple_plane.obj");
   Texture2D texture = LoadTexture("concrete.png");
