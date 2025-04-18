@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(fps-game)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
@@ -10,19 +10,6 @@ set(SOURCES
     src/ecs/systems/ViewCameraSystem.cpp
     src/ecs/systems/ModelRenderSystem.cpp
     src/Game.cpp
-    # src/Entities/Pistol.cpp
-    # src/Entities/Player.cpp
-    # src/Entities/Enemy.cpp
-    # src/Utility/CameraHUD.cpp
-    # src/Utility/Timer.cpp
-    # src/Utility/PlayerInfoHUD.cpp
-    # src/Utility/EnemyManager.cpp
-    # src/Utility/WorldObjectManager.cpp
-    # src/World/Room001.cpp
-    # src/World/BaseObjects.cpp
-    # src/World/LargeColumn.cpp
-    # src/World/Stairs.cpp
-    # src/World/Room002.cpp
 )
 
 include_directories(include)
