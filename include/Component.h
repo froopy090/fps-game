@@ -12,17 +12,6 @@ struct ViewCameraComponent {
 struct ModelComponent {
   Model model;
   Texture2D texture;
-  Vector3 position;
-  BoundingBox bounds;
-
-  Vector3 GetSize() const {
-    float x = std::fabs(bounds.max.x - bounds.min.x);
-    float y = std::fabs(bounds.max.y - bounds.min.y);
-    float z = std::fabs(bounds.max.z - bounds.min.z);
-    return {x, y, z};
-  }
-
-  BoundingBox GetBoundingBox() const { return bounds; }
 };
 
 struct TransformComponent {
@@ -37,4 +26,13 @@ struct VelocityComponent {
 struct ColliderComponent {
   BoundingBox bounds;
   bool isStatic;
+
+  Vector3 GetSize() const {
+    float x = std::fabs(bounds.max.x - bounds.min.x);
+    float y = std::fabs(bounds.max.y - bounds.min.y);
+    float z = std::fabs(bounds.max.z - bounds.min.z);
+    return {x, y, z};
+  }
+
+  BoundingBox GetBoundingBox() const { return bounds; }
 };
