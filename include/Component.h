@@ -24,3 +24,17 @@ struct ModelComponent {
 
   BoundingBox GetBoundingBox() const { return bounds; }
 };
+
+struct TransformComponent {
+  Vector3 position;
+  // TODO: scale and rotation
+};
+
+struct VelocityComponent {
+  Vector3 velocity;
+};
+
+struct ColliderComponent {
+  BoundingBox bounds;
+  bool isStatic;
+};
