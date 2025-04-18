@@ -1,6 +1,7 @@
 #include "ecs/ViewCameraSystem.h"
 #include <GameState.h>
 #include <ecs/ModelRenderSystem.h>
+#include <iostream>
 #include <raylib.h>
 #include <raymath.h>
 #include <resource_dir.h>
@@ -107,15 +108,25 @@ void DrawGame(GameState *game) {
 }
 
 void CloseGame(GameState *game) {
-  CloseWindow();
+  // Unloading resources first
+  for (auto &[entity, modelComp] : game->registry.getMap<ModelComponent>()) {
+    std::cout << "Unloading model with meshcount: " << modelComp.model.meshCount
+              << " , texture id: " << modelComp.texture.id << std::endl;
+
+    if (modelComp.texture.id > 0)
+      UnloadTexture(modelComp.texture);
+    if (modelComp.model.meshCount > 0)
+      UnloadModel(modelComp.model);
+  }
+
+  // Deleting systems
   for (auto &system : game->updateSystems) {
     delete system;
   }
   for (auto &system : game->renderSystems) {
     delete system;
   }
-  for (auto &[entity, modelComp] : game->registry.getMap<ModelComponent>()) {
-    UnloadTexture(modelComp.texture);
-    UnloadModel(modelComp.model);
-  }
+
+  // Closing window
+  CloseWindow();
 }
