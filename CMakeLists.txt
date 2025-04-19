@@ -2,13 +2,14 @@ cmake_minimum_required(VERSION 3.10)
 project(fps-game)
 
 set(CMAKE_CXX_STANDARD 20)
-
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
 set(SOURCES
     src/main.cpp
     src/ecs/systems/ViewCameraSystem.cpp
     src/ecs/systems/ModelRenderSystem.cpp
+    src/ecs/entities/PlayerFactory.cpp
+    src/ecs/entities/EnvironmentFactory.cpp
     src/Game.cpp
 )
 
@@ -22,6 +23,8 @@ add_executable(fps-game ${SOURCES})
 
 # Link the raylib library and the math library
 target_link_libraries(fps-game raylib m)
+
+target_include_directories(fps-game PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 # Add run command
 add_custom_target(run

@@ -13,8 +13,8 @@ struct GameState {
   Registry registry;
 
   // Entities
-  Entity playerEntity = registry.createEntity();
-  Entity planeEntity = registry.createEntity();
+  Entity playerEntity;
+  Entity planeEntity;
 
   // Systems
   std::vector<System *> updateSystems;

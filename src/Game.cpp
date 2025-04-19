@@ -1,5 +1,7 @@
 #include <Component.h>
 #include <Game.h>
+#include <entities/EnvironmentFactory.h>
+#include <entities/PlayerFactory.h>
 #include <iostream>
 #include <raylib.h>
 #include <raymath.h>
@@ -13,46 +15,8 @@ void InitGame(GameState *game) {
 
   SearchAndSetResourceDir("resources");
 
-  // Loading entities
-  game->registry.addComponent(
-      game->playerEntity,
-      TransformComponent{.position = (Vector3){0.0f, 2.0f, 4.0f}});
-  game->registry.addComponent(game->playerEntity,
-                              VelocityComponent{.velocity = Vector3Zero()});
-  game->registry.addComponent(
-      game->playerEntity,
-      ViewCameraComponent{
-          .camera = Camera3D{.position = game->registry
-                                             .getComponent<TransformComponent>(
-                                                 game->playerEntity)
-                                             .position,
-                             .target = (Vector3){0.0f, 2.0f, 0.0f},
-                             .up = (Vector3){0.0f, 1.0f, 0.0f},
-                             .fovy = 60.0f,
-                             .projection = CAMERA_PERSPECTIVE},
-          .cameraMode = CAMERA_FIRST_PERSON,
-      });
-  // TODO: fix this later
-  game->registry.addComponent(game->playerEntity, ColliderComponent{});
-
-  Model model = LoadModel("simple_plane.obj");
-  Texture2D texture = LoadTexture("concrete.png");
-  model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
-
-  Vector3 position = {0.0f, 0.0f, 0.0f};
-  BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
-  bounds.max = Vector3Add(position, bounds.max);
-  bounds.min = Vector3Add(position, bounds.min);
-
-  ModelComponent modelComponent;
-  modelComponent.model = model;
-  modelComponent.texture = texture;
-
-  game->registry.addComponent(game->planeEntity, modelComponent);
-  game->registry.addComponent(game->planeEntity,
-                              TransformComponent{.position = position});
-  game->registry.addComponent(
-      game->planeEntity, ColliderComponent{.bounds = bounds, .isStatic = true});
+  game->playerEntity = CreatePlayer(game->registry);
+  game->planeEntity = CreatePlane(game->registry);
 
   DisableCursor();
   SetTargetFPS(144);
