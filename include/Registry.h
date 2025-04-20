@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include <unordered_map>
+#include <vector>
 
 class Registry {
 public:
@@ -20,6 +21,22 @@ public:
   template <typename T> std::unordered_map<Entity, T> &getMap() {
     static std::unordered_map<Entity, T> map;
     return map;
+  }
+
+  template <typename... Components> std::vector<Entity> view() {
+    std::vector<Entity> result;
+
+    // Get the first component map to iterate over
+    auto &firstMap = getMap<
+        typename std::tuple_element<0, std::tuple<Components...>>::type>();
+
+    for (const auto &[entity, _] : firstMap) {
+      if ((hasComponent<Components>(entity) && ...)) {
+        result.push_back(entity);
+      }
+    }
+
+    return result;
   }
 
 private:
