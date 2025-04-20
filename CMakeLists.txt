@@ -10,6 +10,7 @@ set(SOURCES
     src/ecs/systems/ViewCameraSystem.cpp
     src/ecs/systems/ModelRenderSystem.cpp
     src/ecs/systems/PhysicsSystem.cpp
+    src/ecs/systems/CollisionSystem.cpp
     src/ecs/entities/PlayerFactory.cpp
     src/ecs/entities/EnvironmentFactory.cpp
     src/Game.cpp

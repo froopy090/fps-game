@@ -7,5 +7,6 @@
 #include <systems/System.h>
 
 class ViewCameraSystem : public System {
+public:
   void Update(Registry &registry) override;
 };

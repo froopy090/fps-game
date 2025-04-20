@@ -6,6 +6,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <resource_dir.h>
+#include <systems/CollisionSystem.h>
 #include <systems/ModelRenderSystem.h>
 #include <systems/PhysicsSystem.h>
 #include <systems/ViewCameraSystem.h>
@@ -25,6 +26,7 @@ void InitGame(GameState *game) {
   // Adding systems to vector
   game->updateSystems.push_back(new ViewCameraSystem());
   game->updateSystems.push_back(new PhysicsSystem());
+  game->updateSystems.push_back(new CollisionSystem());
   game->renderSystems.push_back(new ModelRenderSystem());
 }
 

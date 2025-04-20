@@ -14,6 +14,14 @@ Entity CreatePlayer(Registry &registry) {
                                              .fovy = 60.0f,
                                              .projection = CAMERA_PERSPECTIVE},
                           .cameraMode = CAMERA_FIRST_PERSON});
-  registry.addComponent(player, ColliderComponent{});
+
+  Camera3D camera = registry.getComponent<ViewCameraComponent>(player).camera;
+  ColliderComponent collider;
+  collider.bounds.min =
+      (Vector3){camera.position.x - 0.25f, camera.position.y - 1.0f,
+                camera.position.z - 0.25f};
+  collider.bounds.max = (Vector3){camera.position.x + 0.25f, camera.position.y,
+                                  camera.position.z + 0.25f};
+  registry.addComponent(player, collider);
   return player;
 }
