@@ -19,6 +19,10 @@ struct TransformComponent {
   // TODO: scale and rotation
 };
 
+struct SizeComponent {
+  Vector3 size;
+};
+
 struct VelocityComponent {
   Vector3 velocity;
 };
@@ -33,6 +37,4 @@ struct ColliderComponent {
     float z = std::fabs(bounds.max.z - bounds.min.z);
     return {x, y, z};
   }
-
-  BoundingBox GetBoundingBox() const { return bounds; }
 };
