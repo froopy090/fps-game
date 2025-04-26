@@ -23,6 +23,7 @@ public:
     return map;
   }
 
+  // returns a vector of entities that have the specified components
   template <typename... Components> std::vector<Entity> view() {
     std::vector<Entity> result;
 

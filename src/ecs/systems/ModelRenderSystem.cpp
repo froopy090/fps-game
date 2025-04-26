@@ -8,7 +8,6 @@ void ModelRenderSystem::Update(Registry &registry) {
     if (transforms.contains(entity)) {
       const Vector3 &pos = transforms[entity].position;
       DrawModel(model.model, pos, 1.0f, WHITE);
-      DrawBoundingBox(registry.getComponent<ColliderComponent>(entity).bounds, RED);
     }
   }
 }

@@ -5,8 +5,8 @@ void ViewCameraSystem::Update(Registry &registry) {
 
   for (auto &[entity, camera] : cameras) {
     // Update position
-    registry.getComponent<TransformComponent>(entity).position =
-        camera.camera.position;
+    camera.camera.position =
+        registry.getComponent<TransformComponent>(entity).position;
 
     // Update camera target to be a point directly in front of camera
     Vector3 forward = Vector3Normalize(

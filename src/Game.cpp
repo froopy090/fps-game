@@ -9,7 +9,9 @@
 #include <systems/CollisionSystem.h>
 #include <systems/ModelRenderSystem.h>
 #include <systems/PhysicsSystem.h>
+#include <systems/UpdateColliderSystem.h>
 #include <systems/ViewCameraSystem.h>
+#include <systems/debug/DebugColliderRenderSystem.h>
 
 void InitGame(GameState *game) {
   // Window
@@ -27,7 +29,10 @@ void InitGame(GameState *game) {
   game->updateSystems.push_back(new ViewCameraSystem());
   game->updateSystems.push_back(new PhysicsSystem());
   game->updateSystems.push_back(new CollisionSystem());
+  game->updateSystems.push_back(new UpdateColliderSystem());
+
   game->renderSystems.push_back(new ModelRenderSystem());
+  game->renderSystems.push_back(new DebugColliderRenderSystem());
 }
 
 void UpdateGame(GameState *game) {
