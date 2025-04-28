@@ -9,10 +9,12 @@ void PhysicsSystem::Update(Registry &registry) {
     auto &transform = registry.getComponent<TransformComponent>(entity);
 
     // Apply gravity
-    vel.velocity.y += -9.8f * GetFrameTime();
+    if (registry.hasComponent<GroundedComponent>(entity) &&
+        !registry.getComponent<GroundedComponent>(entity).isGrounded) {
+      vel.velocity.y += -9.8f * GetFrameTime();
+    }
 
     // Apply movement
-    transform.position = Vector3Add(transform.position,
-                                    Vector3Scale(vel.velocity, GetFrameTime()));
+    transform.position.y += vel.velocity.y * GetFrameTime();
   }
 }

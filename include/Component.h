@@ -38,3 +38,7 @@ struct ColliderComponent {
     return {x, y, z};
   }
 };
+
+struct GroundedComponent {
+  bool isGrounded;
+};

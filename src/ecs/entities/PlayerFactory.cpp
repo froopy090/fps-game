@@ -29,5 +29,6 @@ Entity CreatePlayer(Registry &registry) {
                 playerPosition.z + playerSize.z / 2.0f};
   collider.isStatic = false;
   registry.addComponent(player, collider);
+  registry.addComponent(player, GroundedComponent{.isGrounded = false});
   return player;
 }
