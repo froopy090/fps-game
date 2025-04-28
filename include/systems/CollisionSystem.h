@@ -36,12 +36,12 @@ private:
       std::cout << "Collision detected" << std::endl;
     }
 
-    if (box1.min.y <= box2.max.y) {
+    if (box1.min.y - tolerance <= box2.max.y + tolerance) {
       result.direction = CollisionInfo::Direction::TOP;
       return result;
     }
 
-    if (box1.max.y >= box2.min.y) {
+    if (box1.max.y + tolerance >= box2.min.y - tolerance) {
       result.direction = CollisionInfo::Direction::BOTTOM;
       return result;
     }

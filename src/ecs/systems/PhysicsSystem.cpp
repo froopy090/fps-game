@@ -15,6 +15,7 @@ void PhysicsSystem::Update(Registry &registry) {
     }
 
     // Apply movement
-    transform.position.y += vel.velocity.y * GetFrameTime();
+    transform.position = Vector3Add(transform.position,
+                                    Vector3Scale(vel.velocity, GetFrameTime()));
   }
 }

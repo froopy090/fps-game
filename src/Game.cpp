@@ -11,6 +11,7 @@
 #include <systems/PhysicsSystem.h>
 #include <systems/UpdateColliderSystem.h>
 #include <systems/ViewCameraSystem.h>
+#include <systems/InputSystem.h>
 #include <systems/debug/DebugColliderRenderSystem.h>
 
 void InitGame(GameState *game) {
@@ -26,10 +27,11 @@ void InitGame(GameState *game) {
   SetTargetFPS(144);
 
   // Adding systems to vector
-  game->updateSystems.push_back(new ViewCameraSystem());
+  game->updateSystems.push_back(new InputSystem());
   game->updateSystems.push_back(new PhysicsSystem());
   game->updateSystems.push_back(new CollisionSystem());
   game->updateSystems.push_back(new UpdateColliderSystem());
+  game->updateSystems.push_back(new ViewCameraSystem());
 
   game->renderSystems.push_back(new ModelRenderSystem());
   game->renderSystems.push_back(new DebugColliderRenderSystem());
