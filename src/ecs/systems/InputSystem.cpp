@@ -1,4 +1,5 @@
 #include <systems/InputSystem.h>
+#include <iostream>
 
 void InputSystem::Update(Registry &registry) {
   auto &velocities = registry.getMap<VelocityComponent>();
@@ -16,6 +17,7 @@ void InputSystem::Update(Registry &registry) {
     velocity.velocity.z = 0.0f;
 
     const float moveSpeed = 5.0f;
+    const float jumpForce = 100.0f;
 
     // Calculate the forward direction (XZ plane only)
     Vector3 forward =
@@ -42,6 +44,14 @@ void InputSystem::Update(Registry &registry) {
     if (IsKeyDown(KEY_A)) {
       velocity.velocity.x += right.x * moveSpeed;
       velocity.velocity.z += right.z * moveSpeed;
+    }
+    if (IsKeyPressed(KEY_SPACE)) {
+      auto &grounded = registry.getComponent<GroundedComponent>(entity);
+      if (grounded.isGrounded) {
+        velocity.velocity.y = jumpForce;
+        std::cout << "this is running" << std::endl;
+        grounded.isGrounded = false;
+      }
     }
   }
 }

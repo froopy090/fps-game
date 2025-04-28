@@ -33,7 +33,7 @@ private:
     if (box1.min.y - tolerance <= box2.max.y + tolerance &&
         box1.max.y + tolerance >= box2.min.y - tolerance) {
       result.collided = true;
-      std::cout << "Collision detected" << std::endl;
+      // std::cout << "Collision detected" << std::endl;
     }
 
     if (box1.min.y - tolerance <= box2.max.y + tolerance) {
@@ -60,7 +60,7 @@ private:
       transform.position.y = collision.box2.max.y + size.size.y;
       velocity.velocity.y = 0.0f;
       grounded.isGrounded = true;
-      std::cout << "UP collision" << std::endl;
+      // std::cout << "UP collision" << std::endl;
     }
 
     if (collision.collided &&
@@ -68,7 +68,7 @@ private:
       transform.position.y = collision.box2.min.y - size.size.y;
       velocity.velocity.y = 0.0f;
       grounded.isGrounded = false;
-      std::cout << "DOWN collision" << std::endl;
+      // std::cout << "DOWN collision" << std::endl;
     }
   };
   void LockZAxis();
