@@ -1,3 +1,4 @@
+#include <iostream>
 #include <systems/PhysicsSystem.h>
 
 void PhysicsSystem::Update(Registry &registry) {
@@ -7,15 +8,18 @@ void PhysicsSystem::Update(Registry &registry) {
       continue;
 
     auto &transform = registry.getComponent<TransformComponent>(entity);
+    auto &collider = registry.getComponent<ColliderComponent>(entity);
 
     // Apply gravity
     if (registry.hasComponent<GroundedComponent>(entity) &&
         !registry.getComponent<GroundedComponent>(entity).isGrounded) {
+      std::cout << "Applying gravity" << std::endl;
       vel.velocity.y += -9.8f * GetFrameTime();
     }
 
     // Apply movement
     transform.position = Vector3Add(transform.position,
                                     Vector3Scale(vel.velocity, GetFrameTime()));
+    // collider needs to get updated with the new position !!!
   }
 }

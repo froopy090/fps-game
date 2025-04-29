@@ -17,7 +17,7 @@ void InputSystem::Update(Registry &registry) {
     velocity.velocity.z = 0.0f;
 
     const float moveSpeed = 5.0f;
-    const float jumpForce = 100.0f;
+    const float jumpForce = 10.0f;
 
     // Calculate the forward direction (XZ plane only)
     Vector3 forward =
@@ -50,7 +50,7 @@ void InputSystem::Update(Registry &registry) {
       if (grounded.isGrounded) {
         velocity.velocity.y = jumpForce;
         std::cout << "this is running" << std::endl;
-        grounded.isGrounded = false;
+         // grounded.isGrounded = false;
       }
     }
   }

@@ -22,13 +22,20 @@ void CollisionSystem::Update(Registry &registry) {
       auto &bColliderComponent = registry.getComponent<ColliderComponent>(b);
       auto &bTransformComponent = registry.getComponent<TransformComponent>(b);
 
+      // First, update the bounding boxes of a
+      // this catches anything that happened before collisions
+      aColliderComponent.UpdateBounds(aTransformComponent.position,
+                                      aSizeComponent.size);
+
       // Check if moving entity (a) is colliding on the y axis with b
       CollisionInfo yCollision =
           YAxisCollision(aColliderComponent.bounds, bColliderComponent.bounds);
-      if (yCollision.collided) {
-        LockYAxis(aTransformComponent, aVelocityComponent, aSizeComponent,
-                  aGroundedComponent, yCollision);
-      }
+      LockYAxis(aTransformComponent, aVelocityComponent, aSizeComponent,
+                aGroundedComponent, yCollision);
+
+      // Update with new position if collisions changed something
+      aColliderComponent.UpdateBounds(aTransformComponent.position,
+                                      aSizeComponent.size);
     }
   }
 }

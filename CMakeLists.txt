@@ -11,7 +11,6 @@ set(SOURCES
     src/ecs/systems/ModelRenderSystem.cpp
     src/ecs/systems/PhysicsSystem.cpp
     src/ecs/systems/CollisionSystem.cpp
-    src/ecs/systems/UpdateColliderSystem.cpp
     src/ecs/systems/InputSystem.cpp
     src/ecs/systems/debug/DebugColliderRenderSystem.cpp
     src/ecs/entities/PlayerFactory.cpp
