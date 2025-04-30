@@ -40,6 +40,16 @@ public:
     return result;
   }
 
+  // Methods for global resources used by systems
+  template <typename T> void setResource(T value) {
+    getResource<T>() = std::move(value);
+  }
+
+  template <typename T> T &getResource() {
+    static T instance;
+    return instance;
+  }
+
 private:
   Entity nextId = 0;
 };
