@@ -2,6 +2,7 @@
 
 #include <Component.h>
 #include <Registry.h>
+#include <iostream>
 #include <systems/System.h>
 
 struct CollisionInfo {
@@ -16,36 +17,39 @@ public:
   void Update(Registry &registry) override;
 
 private:
+  // TODO: populate these with collisions 
+  // then in the collisions system you iteratate
+  // through them and check, this way changes are
+  // applied only after ALL collisions have been done
+  std::vector<CollisionInfo> xCollisions;
+  std::vector<CollisionInfo> yCollisions;
+  std::vector<CollisionInfo> zCollisions;
+
   // Collision detection
   bool XAxisCollision();
 
   CollisionInfo YAxisCollision(BoundingBox box1, BoundingBox box2) {
     float tolerance = 0.05f;
     CollisionInfo result;
-    result.collided = false;
-    result.direction = CollisionInfo::Direction::NONE;
     result.box1 = box1;
     result.box2 = box2;
-
     // First, update the collision boxes' position
 
-
-    if (CheckCollisionBoxes(box1, box2) &&
-        box1.min.y - tolerance <= box2.max.y + tolerance &&
-        box1.max.y + tolerance >= box2.min.y - tolerance) {
+    if (CheckCollisionBoxes(box1, box2)) {
       result.collided = true;
+      std::cout << "colliding" << std::endl;
+      if (box1.min.y - tolerance <= box2.max.y + tolerance) {
+        result.direction = CollisionInfo::Direction::TOP;
+        return result;
+      }
+      if (box1.max.y + tolerance >= box2.min.y - tolerance) {
+        result.direction = CollisionInfo::Direction::BOTTOM;
+        std::cout << "BOTTOM" << std::endl;
+        return result;
+      }
     } else {
       result.collided = false;
       result.direction = CollisionInfo::Direction::NONE;
-    }
-
-    if (box1.min.y - tolerance <= box2.max.y + tolerance) {
-      result.direction = CollisionInfo::Direction::TOP;
-      return result;
-    }
-
-    if (box1.max.y + tolerance >= box2.min.y - tolerance) {
-      result.direction = CollisionInfo::Direction::BOTTOM;
       return result;
     }
     return result;
@@ -74,6 +78,6 @@ private:
       // No collision
       grounded.isGrounded = false;
     }
-  };
+  }
   void LockZAxis();
 };

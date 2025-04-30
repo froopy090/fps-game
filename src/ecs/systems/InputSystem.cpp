@@ -49,6 +49,10 @@ void InputSystem::Update(Registry &registry) {
       auto &grounded = registry.getComponent<GroundedComponent>(entity);
       if (grounded.isGrounded) {
         velocity.velocity.y = jumpForce;
+        std::cout << "JUMPING" << std::endl;
+      }
+      else{
+        std::cout << "apparently not grounded" << std::endl;
       }
     }
   }

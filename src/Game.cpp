@@ -21,6 +21,7 @@ void InitGame(GameState *game) {
 
   game->playerEntity = CreatePlayer(game->registry);
   game->planeEntity = CreatePlane(game->registry);
+  game->cubeEntity = CreateCube(game->registry);
 
   DisableCursor();
   SetTargetFPS(144);
