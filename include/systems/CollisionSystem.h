@@ -2,7 +2,6 @@
 
 #include <Component.h>
 #include <Registry.h>
-#include <iostream>
 #include <systems/System.h>
 
 struct CollisionInfo {
@@ -35,11 +34,9 @@ private:
         box1.min.y - tolerance <= box2.max.y + tolerance &&
         box1.max.y + tolerance >= box2.min.y - tolerance) {
       result.collided = true;
-      // std::cout << "Collision detected" << std::endl;
     } else {
       result.collided = false;
       result.direction = CollisionInfo::Direction::NONE;
-      // std::cout << "Not colliding" << std::endl;
     }
 
     if (box1.min.y - tolerance <= box2.max.y + tolerance) {
@@ -66,18 +63,15 @@ private:
         transform.position.y = collision.box2.max.y + size.size.y;
         velocity.velocity.y = 0.0f;
         grounded.isGrounded = true;
-        // std::cout << "UP collision" << std::endl;
       }
 
       if (collision.direction == CollisionInfo::Direction::BOTTOM) {
         transform.position.y = collision.box2.min.y - size.size.y;
         velocity.velocity.y = 0.0f;
         grounded.isGrounded = false;
-        // std::cout << "DOWN collision" << std::endl;
       }
     } else {
       // No collision
-        // std::cout << "No longer grounded" << std::endl;
       grounded.isGrounded = false;
     }
   };

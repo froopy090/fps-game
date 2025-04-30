@@ -16,7 +16,7 @@ struct ModelComponent {
 
 struct TransformComponent {
   Vector3 position;
-  // TODO: scale and rotation
+  // TODO: scale and rotation ?
 };
 
 struct SizeComponent {
