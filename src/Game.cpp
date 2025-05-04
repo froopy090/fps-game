@@ -6,11 +6,12 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <resource_dir.h>
-#include <systems/CollisionSystem.h>
+#include <systems/CollisionDetectionSystem.h>
+#include <systems/GroundingSystem.h>
+#include <systems/InputSystem.h>
 #include <systems/ModelRenderSystem.h>
 #include <systems/PhysicsSystem.h>
 #include <systems/ViewCameraSystem.h>
-#include <systems/InputSystem.h>
 #include <systems/debug/DebugColliderRenderSystem.h>
 
 void InitGame(GameState *game) {
@@ -26,12 +27,16 @@ void InitGame(GameState *game) {
   DisableCursor();
   SetTargetFPS(144);
 
-  // Adding systems to vector
+  // Update systems
   game->updateSystems.push_back(new InputSystem());
   game->updateSystems.push_back(new PhysicsSystem());
-  game->updateSystems.push_back(new CollisionSystem());
+
+  game->updateSystems.push_back(new CollisionDetectionSystem());
+  game->updateSystems.push_back(new GroundingSystem());
+
   game->updateSystems.push_back(new ViewCameraSystem());
 
+  // Render systems
   game->renderSystems.push_back(new ModelRenderSystem());
   game->renderSystems.push_back(new DebugColliderRenderSystem());
 }

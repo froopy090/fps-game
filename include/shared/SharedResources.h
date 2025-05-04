@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Entity.h>
 #include <raylib.h>
 #include <vector>
 
@@ -9,6 +10,8 @@ struct CollisionInfo {
   enum class Axis { X, Y, Z } axis;
   BoundingBox box1;
   BoundingBox box2;
+  Entity entity1;
+  Entity entity2;
 };
 
 struct CollisionBuffer {
