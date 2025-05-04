@@ -23,15 +23,17 @@ private:
     if (CheckCollisionBoxes(result.box1, result.box2)) {
       result.collided = true;
       result.axis = CollisionInfo::Axis::Y;
-      std::cout << "colliding" << std::endl;
-      if (result.box1.min.y - tolerance <= result.box2.max.y + tolerance) {
+      // std::cout << "colliding" << std::endl;
+      if (result.box1.min.y - tolerance <= result.box2.max.y + tolerance &&
+          result.box1.max.y + tolerance > result.box2.max.y + tolerance) {
         result.direction = CollisionInfo::Direction::TOP;
-        std::cout << "TOP collision" << std::endl;
+        // std::cout << "TOP collision" << std::endl;
         return result;
       }
-      if (result.box1.max.y + tolerance >= result.box2.min.y - tolerance) {
+      if (result.box1.max.y + tolerance >= result.box2.min.y - tolerance &&
+          result.box1.min.y - tolerance < result.box2.min.y - tolerance) {
         result.direction = CollisionInfo::Direction::BOTTOM;
-        std::cout << "BOTTOM" << std::endl;
+        // std::cout << "BOTTOM" << std::endl;
         return result;
       }
     } else {

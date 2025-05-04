@@ -30,7 +30,7 @@ Entity CreateCube(Registry &registry) {
   Texture2D texture = LoadTexture("concrete.png");
   model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
 
-  Vector3 position = {0.0f, 3.0f, 0.0f};
+  Vector3 position = {0.0f, 6.0f, 0.0f};
   BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
   bounds.max = Vector3Add(position, bounds.max);
   bounds.min = Vector3Add(position, bounds.min);

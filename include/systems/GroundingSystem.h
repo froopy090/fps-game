@@ -17,12 +17,13 @@ private:
     if (collision.direction == CollisionInfo::Direction::TOP) {
       transform.position.y = collision.box2.max.y + size.size.y;
       velocity.velocity.y = 0.0f;
-      std::cout << "locking y axis" << std::endl;
+      std::cout << "locking y axis TOP" << std::endl;
     }
 
     if (collision.direction == CollisionInfo::Direction::BOTTOM) {
       transform.position.y = collision.box2.min.y - size.size.y;
       velocity.velocity.y = 0.0f;
+      std::cout << "locking y axis BOTTOM" << std::endl;
     }
   }
 };
