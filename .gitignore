@@ -3,6 +3,7 @@
 .cache/
 Makefile.bak
 compile_commands.json.bak
+compile_commands.json
 /lib/
 /include/raylib.h
 /include/raymath.h
