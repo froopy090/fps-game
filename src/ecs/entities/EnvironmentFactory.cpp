@@ -45,3 +45,25 @@ Entity CreateCube(Registry &registry) {
                         ColliderComponent{.bounds = bounds, .isStatic = true});
   return cube;
 }
+
+Entity CreateCubePosition(Registry &registry, Vector3 position) {
+  Entity cube = registry.createEntity();
+
+  Model model = LoadModel("cube.obj");
+  Texture2D texture = LoadTexture("concrete.png");
+  model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+
+  BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
+  bounds.max = Vector3Add(position, bounds.max);
+  bounds.min = Vector3Add(position, bounds.min);
+
+  ModelComponent modelComponent;
+  modelComponent.model = model;
+  modelComponent.texture = texture;
+
+  registry.addComponent(cube, modelComponent);
+  registry.addComponent(cube, TransformComponent{.position = position});
+  registry.addComponent(cube,
+                        ColliderComponent{.bounds = bounds, .isStatic = true});
+  return cube;
+}

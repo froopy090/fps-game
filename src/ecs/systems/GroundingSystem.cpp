@@ -15,7 +15,7 @@ void GroundingSystem::Update(Registry &registry) {
       auto &velocity = registry.getComponent<VelocityComponent>(info.entity1);
       auto &size = registry.getComponent<SizeComponent>(info.entity1);
 
-      LockYAxis(transform, velocity, size, info);
+      LockYAxis(info, registry);
       registry.getComponent<ColliderComponent>(info.entity1)
           .UpdateBounds(transform.position, size.size);
     }
@@ -26,7 +26,7 @@ void GroundingSystem::Update(Registry &registry) {
       auto &velocity = registry.getComponent<VelocityComponent>(info.entity1);
       auto &size = registry.getComponent<SizeComponent>(info.entity1);
 
-      LockYAxis(transform, velocity, size, info);
+      LockYAxis(info, registry);
       registry.getComponent<ColliderComponent>(info.entity1)
           .UpdateBounds(transform.position, size.size);
     }

@@ -4,3 +4,4 @@
 
 Entity CreatePlane(Registry &registry);
 Entity CreateCube(Registry &registry);
+Entity CreateCubePosition(Registry &registry, Vector3 position);

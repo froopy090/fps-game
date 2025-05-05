@@ -12,8 +12,13 @@ public:
   void Update(Registry &registry) override;
 
 private:
-  void LockYAxis(TransformComponent &transform, VelocityComponent &velocity,
-                 SizeComponent &size, CollisionInfo collision) {
+  void LockYAxis(CollisionInfo collision, Registry &registry) {
+    auto &transform =
+        registry.getComponent<TransformComponent>(collision.entity1);
+    auto &velocity =
+        registry.getComponent<VelocityComponent>(collision.entity1);
+    auto &size = registry.getComponent<SizeComponent>(collision.entity1);
+
     if (collision.direction == CollisionInfo::Direction::TOP) {
       transform.position.y = collision.box2.max.y + size.size.y;
       velocity.velocity.y = 0.0f;
