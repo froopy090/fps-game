@@ -26,7 +26,8 @@ private:
     }
 
     if (collision.direction == CollisionInfo::Direction::BOTTOM) {
-      transform.position.y = collision.box2.min.y - size.size.y;
+        float offset = 0.9f;
+      transform.position.y = collision.box2.min.y - size.size.y + offset;
       velocity.velocity.y = 0.0f;
       std::cout << "locking y axis BOTTOM" << std::endl;
     }
