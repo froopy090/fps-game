@@ -2,12 +2,11 @@
 
 #include <Component.h>
 #include <Registry.h>
-#include <iostream>
 #include <shared/SharedResources.h>
 #include <systems/System.h>
 #include <unordered_set>
 
-class GroundingSystem : public System {
+class YCollisionSystem : public System {
 public:
   void Update(Registry &registry) override;
 
@@ -19,17 +18,17 @@ private:
         registry.getComponent<VelocityComponent>(collision.entity1);
     auto &size = registry.getComponent<SizeComponent>(collision.entity1);
 
-    if (collision.direction == CollisionInfo::Direction::TOP) {
-      transform.position.y = collision.box2.max.y + size.size.y;
-      velocity.velocity.y = 0.0f;
-      std::cout << "locking y axis TOP" << std::endl;
-    }
+    if (collision.axis == CollisionInfo::Axis::Y) {
+      if (collision.direction == CollisionInfo::Direction::TOP) {
+        transform.position.y = collision.box2.max.y + size.size.y;
+        velocity.velocity.y = 0.0f;
+      }
 
-    if (collision.direction == CollisionInfo::Direction::BOTTOM) {
+      if (collision.direction == CollisionInfo::Direction::BOTTOM) {
         float offset = 0.9f;
-      transform.position.y = collision.box2.min.y - size.size.y + offset;
-      velocity.velocity.y = 0.0f;
-      std::cout << "locking y axis BOTTOM" << std::endl;
+        transform.position.y = collision.box2.min.y - size.size.y + offset;
+        velocity.velocity.y = 0.0f;
+      }
     }
   }
 };

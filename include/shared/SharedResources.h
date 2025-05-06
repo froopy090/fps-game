@@ -6,8 +6,8 @@
 
 struct CollisionInfo {
   bool collided;
-  enum class Direction { NONE, TOP, BOTTOM } direction;
-  enum class Axis { X, Y, Z } axis;
+  enum class Direction { NONE, TOP, BOTTOM, LEFT, RIGHT, UP, DOWN } direction;
+  enum class Axis { NONE, X, Y, Z } axis;
   BoundingBox box1;
   BoundingBox box2;
   Entity entity1;
