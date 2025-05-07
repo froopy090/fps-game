@@ -37,8 +37,10 @@ void CollisionDetectionSystem::Update(Registry &registry) {
 
       // Check if moving entity a is colliding on the y axis with b
       CollisionInfo yCollision = YAxisCollision(a, b, registry);
-      if (yCollision.collided)
+      if (yCollision.collided) {
+        std::cout << "y collision" << std::endl;
         buffer.collisions.push_back(yCollision);
+      }
     }
   }
 }

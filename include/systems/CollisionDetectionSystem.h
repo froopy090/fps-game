@@ -24,13 +24,13 @@ private:
       if (result.box1.min.x + tolerance < result.box2.min.x - tolerance) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::X;
-        result.direction = CollisionInfo::Direction::RIGHT;
+        result.direction = CollisionInfo::Direction::LEFT;
         return result;
       }
       if (result.box1.max.x - tolerance > result.box2.max.x + tolerance) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::X;
-        result.direction = CollisionInfo::Direction::LEFT;
+        result.direction = CollisionInfo::Direction::RIGHT;
         return result;
       }
     } else {

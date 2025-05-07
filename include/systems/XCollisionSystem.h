@@ -10,6 +10,7 @@ public:
   void Update(Registry &registry) override;
 
 private:
+  float offset = 0.25f;
   void LockXAxis(CollisionInfo collision, Registry &registry) {
     auto &transform =
         registry.getComponent<TransformComponent>(collision.entity1);
@@ -19,13 +20,13 @@ private:
 
     if (collision.axis == CollisionInfo::Axis::X) {
       if (collision.direction == CollisionInfo::Direction::LEFT) {
-        transform.position.x = collision.box2.min.x + size.size.x;
+        transform.position.x = collision.box2.min.x - size.size.x + offset;
         velocity.velocity.x = 0.0f;
       }
 
       if (collision.direction == CollisionInfo::Direction::RIGHT) {
         // float offset = 0.9f;
-        transform.position.x = collision.box2.max.x - size.size.x;
+        transform.position.x = collision.box2.max.x + size.size.x - offset;
         velocity.velocity.x = 0.0f;
       }
     }
