@@ -48,6 +48,7 @@ private:
     result.box1 = registry.getComponent<ColliderComponent>(e1).bounds;
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
+
     if (CheckCollisionBoxes(result.box1, result.box2)) {
       if (result.box1.min.y - tolerance < result.box2.max.y + tolerance &&
           result.box1.max.y + tolerance > result.box2.max.y + tolerance) {
