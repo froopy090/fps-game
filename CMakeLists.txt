@@ -14,6 +14,7 @@ set(SOURCES
     src/ecs/systems/CollisionDetectionSystem.cpp
     src/ecs/systems/XCollisionSystem.cpp
     src/ecs/systems/YCollisionSystem.cpp
+    src/ecs/systems/ZCollisionSystem.cpp
     src/ecs/systems/debug/DebugColliderRenderSystem.cpp
     src/ecs/entities/PlayerFactory.cpp
     src/ecs/entities/EnvironmentFactory.cpp

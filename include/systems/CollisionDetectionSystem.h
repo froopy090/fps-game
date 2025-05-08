@@ -49,21 +49,18 @@ private:
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
-      // std::cout << "colliding" << std::endl;
-      if (result.box1.min.y - tolerance <= result.box2.max.y + tolerance &&
+      if (result.box1.min.y - tolerance < result.box2.max.y + tolerance &&
           result.box1.max.y + tolerance > result.box2.max.y + tolerance) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::Y;
         result.direction = CollisionInfo::Direction::TOP;
-        // std::cout << "TOP collision" << std::endl;
         return result;
       }
-      if (result.box1.max.y + tolerance >= result.box2.min.y - tolerance &&
+      if (result.box1.max.y + tolerance > result.box2.min.y - tolerance &&
           result.box1.min.y - tolerance < result.box2.min.y - tolerance) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::Y;
         result.direction = CollisionInfo::Direction::BOTTOM;
-        // std::cout << "BOTTOM" << std::endl;
         return result;
       }
     } else {
@@ -81,16 +78,22 @@ private:
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
-      result.collided = true;
-      result.axis = CollisionInfo::Axis::X;
       if (result.box1.min.z + tolerance < result.box2.min.z - tolerance) {
-        result.direction = CollisionInfo::Direction::DOWN;
-        return result;
-      }
-      if (result.box1.max.z - tolerance > result.box2.max.z + tolerance) {
+        result.collided = true;
+        result.axis = CollisionInfo::Axis::Z;
         result.direction = CollisionInfo::Direction::UP;
         return result;
       }
+      if (result.box1.max.z - tolerance > result.box2.max.z + tolerance) {
+        result.collided = true;
+        result.axis = CollisionInfo::Axis::Z;
+        result.direction = CollisionInfo::Direction::DOWN;
+        return result;
+      }
+    } else {
+      result.collided = false;
+      result.axis = CollisionInfo::Axis::NONE;
+      result.direction = CollisionInfo::Direction::NONE;
     }
     return result;
   }

@@ -7,12 +7,13 @@
 #include <raymath.h>
 #include <resource_dir.h>
 #include <systems/CollisionDetectionSystem.h>
-#include <systems/YCollisionSystem.h>
-#include <systems/XCollisionSystem.h>
 #include <systems/InputSystem.h>
 #include <systems/ModelRenderSystem.h>
 #include <systems/PhysicsSystem.h>
 #include <systems/ViewCameraSystem.h>
+#include <systems/XCollisionSystem.h>
+#include <systems/YCollisionSystem.h>
+#include <systems/ZCollisionSystem.h>
 #include <systems/debug/DebugColliderRenderSystem.h>
 
 void InitGame(GameState *game) {
@@ -24,8 +25,10 @@ void InitGame(GameState *game) {
   game->playerEntity = CreatePlayer(game->registry);
   game->planeEntity = CreatePlane(game->registry);
   game->cubeEntity = CreateCube(game->registry);
-  game->cubeEntity2 = CreateCubePosition(game->registry, (Vector3) {1.0f, 2.0f, 4.0f});
-  game->cubeEntity3 = CreateCubePosition(game->registry, (Vector3) {0.0f, 0.0f, 0.0f});
+  game->cubeEntity2 =
+      CreateCubePosition(game->registry, (Vector3){1.0f, 2.0f, 4.0f});
+  game->cubeEntity3 =
+      CreateCubePosition(game->registry, (Vector3){0.0f, 0.0f, 0.0f});
 
   DisableCursor();
   SetTargetFPS(144);
@@ -37,6 +40,7 @@ void InitGame(GameState *game) {
   game->updateSystems.push_back(new CollisionDetectionSystem());
   game->updateSystems.push_back(new XCollisionSystem());
   game->updateSystems.push_back(new YCollisionSystem());
+  game->updateSystems.push_back(new ZCollisionSystem());
 
   game->updateSystems.push_back(new ViewCameraSystem());
 
