@@ -24,6 +24,8 @@ void InitGame(GameState *game) {
 
   game->playerEntity = CreatePlayer(game->registry);
   game->planeEntity = CreatePlane(game->registry);
+  game->planeEntity2 =
+      CreatePlanePosition(game->registry, (Vector3){10.0f, 0.0f, 10.0f});
   game->cubeEntity = CreateCube(game->registry);
   game->cubeEntity2 =
       CreateCubePosition(game->registry, (Vector3){1.0f, 2.0f, 4.0f});
@@ -38,8 +40,8 @@ void InitGame(GameState *game) {
   game->updateSystems.push_back(new PhysicsSystem());
 
   game->updateSystems.push_back(new CollisionDetectionSystem());
-  game->updateSystems.push_back(new XCollisionSystem());
   game->updateSystems.push_back(new YCollisionSystem());
+  game->updateSystems.push_back(new XCollisionSystem());
   game->updateSystems.push_back(new ZCollisionSystem());
 
   game->updateSystems.push_back(new ViewCameraSystem());

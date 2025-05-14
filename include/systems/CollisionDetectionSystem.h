@@ -11,7 +11,9 @@ public:
   void Update(Registry &registry) override;
 
 private:
-  const float tolerance = 0.05f;
+  const float tolerance = 0.01f;
+  const float xzThreshold = 0.1f; // This avoids "snapping" when at the edges
+                                  // of a bounding box
 
   CollisionInfo XAxisCollision(Entity e1, Entity e2, Registry &registry) {
     CollisionInfo result;
@@ -21,13 +23,15 @@ private:
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
-      if (result.box1.min.x + tolerance < result.box2.min.x - tolerance) {
+      if (result.box1.min.x + tolerance < result.box2.min.x - tolerance &&
+          abs(result.box1.max.x - result.box2.min.x) < xzThreshold) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::X;
         result.direction = CollisionInfo::Direction::LEFT;
         return result;
       }
-      if (result.box1.max.x - tolerance > result.box2.max.x + tolerance) {
+      if (result.box1.max.x - tolerance > result.box2.max.x + tolerance &&
+          abs(result.box1.min.x - result.box2.max.x) < xzThreshold) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::X;
         result.direction = CollisionInfo::Direction::RIGHT;
@@ -48,21 +52,36 @@ private:
     result.box1 = registry.getComponent<ColliderComponent>(e1).bounds;
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
+    const float edgeThreshold = 0.0f;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
       if (result.box1.min.y - tolerance < result.box2.max.y + tolerance &&
           result.box1.max.y + tolerance > result.box2.max.y + tolerance) {
-        result.collided = true;
-        result.axis = CollisionInfo::Axis::Y;
-        result.direction = CollisionInfo::Direction::TOP;
-        return result;
+
+        // Check if box1 is close to the edge of box2
+        if (result.box1.max.x > result.box2.min.x + edgeThreshold &&
+            result.box1.min.x < result.box2.max.x - edgeThreshold &&
+            result.box1.max.z > result.box2.min.z + edgeThreshold &&
+            result.box1.min.z < result.box2.max.z - edgeThreshold) {
+          result.collided = true;
+          result.axis = CollisionInfo::Axis::Y;
+          result.direction = CollisionInfo::Direction::TOP;
+          return result;
+        }
       }
       if (result.box1.max.y + tolerance > result.box2.min.y - tolerance &&
           result.box1.min.y - tolerance < result.box2.min.y - tolerance) {
-        result.collided = true;
-        result.axis = CollisionInfo::Axis::Y;
-        result.direction = CollisionInfo::Direction::BOTTOM;
-        return result;
+
+        // Check if box1 is close to the edge of box2
+        if (result.box1.max.x > result.box2.min.x + edgeThreshold &&
+            result.box1.min.x < result.box2.max.x - edgeThreshold &&
+            result.box1.max.z > result.box2.min.z + edgeThreshold &&
+            result.box1.min.z < result.box2.max.z - edgeThreshold) {
+          result.collided = true;
+          result.axis = CollisionInfo::Axis::Y;
+          result.direction = CollisionInfo::Direction::BOTTOM;
+          return result;
+        }
       }
     } else {
       result.collided = false;
@@ -79,13 +98,15 @@ private:
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
-      if (result.box1.min.z + tolerance < result.box2.min.z - tolerance) {
+      if (result.box1.min.z + tolerance < result.box2.min.z - tolerance &&
+          abs(result.box1.max.z - result.box2.min.z) < xzThreshold) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::Z;
         result.direction = CollisionInfo::Direction::UP;
         return result;
       }
-      if (result.box1.max.z - tolerance > result.box2.max.z + tolerance) {
+      if (result.box1.max.z - tolerance > result.box2.max.z + tolerance &&
+          abs(result.box1.min.z - result.box2.max.z) < xzThreshold) {
         result.collided = true;
         result.axis = CollisionInfo::Axis::Z;
         result.direction = CollisionInfo::Direction::DOWN;

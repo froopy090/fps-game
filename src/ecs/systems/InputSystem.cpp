@@ -16,7 +16,7 @@ void InputSystem::Update(Registry &registry) {
     velocity.velocity.x = 0.0f;
     velocity.velocity.z = 0.0f;
 
-    const float moveSpeed = 5.0f;
+    const float moveSpeed = 2.0f;
     const float jumpForce = 10.0f;
 
     // Calculate the forward direction (XZ plane only)

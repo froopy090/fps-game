@@ -23,6 +23,28 @@ Entity CreatePlane(Registry &registry) {
   return plane;
 }
 
+Entity CreatePlanePosition(Registry &registry, Vector3 position) {
+  Entity plane = registry.createEntity();
+
+  Model model = LoadModel("simple_plane.obj");
+  Texture2D texture = LoadTexture("concrete.png");
+  model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;
+
+  BoundingBox bounds = GetMeshBoundingBox(model.meshes[0]);
+  bounds.max = Vector3Add(position, bounds.max);
+  bounds.min = Vector3Add(position, bounds.min);
+
+  ModelComponent modelComponent;
+  modelComponent.model = model;
+  modelComponent.texture = texture;
+
+  registry.addComponent(plane, modelComponent);
+  registry.addComponent(plane, TransformComponent{.position = position});
+  registry.addComponent(plane,
+                        ColliderComponent{.bounds = bounds, .isStatic = true});
+  return plane;
+}
+
 Entity CreateCube(Registry &registry) {
   Entity cube = registry.createEntity();
 

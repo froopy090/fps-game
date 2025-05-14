@@ -15,6 +15,7 @@ struct GameState {
   // Entities
   Entity playerEntity;
   Entity planeEntity;
+  Entity planeEntity2;
   Entity cubeEntity;
   Entity cubeEntity2;
   Entity cubeEntity3;
