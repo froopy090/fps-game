@@ -22,7 +22,16 @@ private:
     result.box1 = registry.getComponent<ColliderComponent>(e1).bounds;
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
-    if (CheckCollisionBoxes(result.box1, result.box2)) {
+    // If the bounding boxes are touching AND
+    // box1's min height is below box2's max height;
+    // this second check is done to avoid locking the x
+    // axis whenever we're walking on top of adjacent
+    // boxes
+    if (CheckCollisionBoxes(result.box1, result.box2) &&
+        result.box1.min.y < result.box2.max.y) {
+      // Check if we are hitting it from the left AND
+      // check if we're in the threshold, this is to avoid
+      // snapping to the edge of the box whenever we get close
       if (result.box1.min.x + tolerance < result.box2.min.x - tolerance &&
           abs(result.box1.max.x - result.box2.min.x) < xzThreshold) {
         result.collided = true;
@@ -52,7 +61,7 @@ private:
     result.box1 = registry.getComponent<ColliderComponent>(e1).bounds;
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
-    const float edgeThreshold = 0.0f;
+    const float edgeThreshold = 0.05f;
 
     if (CheckCollisionBoxes(result.box1, result.box2)) {
       if (result.box1.min.y - tolerance < result.box2.max.y + tolerance &&
@@ -97,7 +106,8 @@ private:
     result.box1 = registry.getComponent<ColliderComponent>(e1).bounds;
     result.box2 = registry.getComponent<ColliderComponent>(e2).bounds;
 
-    if (CheckCollisionBoxes(result.box1, result.box2)) {
+    if (CheckCollisionBoxes(result.box1, result.box2) &&
+        result.box1.min.y < result.box2.max.y) {
       if (result.box1.min.z + tolerance < result.box2.min.z - tolerance &&
           abs(result.box1.max.z - result.box2.min.z) < xzThreshold) {
         result.collided = true;

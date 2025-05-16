@@ -7,12 +7,10 @@ void YCollisionSystem::Update(Registry &registry) {
   for (const auto &info : buffer.collisions) {
     if (info.axis == CollisionInfo::Axis::Y &&
         info.direction == CollisionInfo::Direction::TOP) {
-      // std::cout << "found a y axis collision" << std::endl;
       groundedEntities.insert(info.entity1);
       registry.getComponent<GroundedComponent>(info.entity1).isGrounded = true;
 
       auto &transform = registry.getComponent<TransformComponent>(info.entity1);
-      // auto &velocity = registry.getComponent<VelocityComponent>(info.entity1);
       auto &size = registry.getComponent<SizeComponent>(info.entity1);
 
       LockYAxis(info, registry);
