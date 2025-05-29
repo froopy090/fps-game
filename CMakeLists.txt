@@ -5,6 +5,21 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 
+# fetch raylib
+include(FetchContent)
+
+set(FETCHCONTENT_QUIET FALSE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(BUILD_GAMES)
+
+FetchContent_Declare(
+    raylib
+    GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
+    GIT_TAG "master"
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(raylib)
+
 set(SOURCES
     src/main.cpp
     src/Entities/Pistol.cpp
