@@ -23,6 +23,10 @@ struct SizeComponent {
   Vector3 size;
 };
 
+struct MapObjectTypeComponent {
+  uint id;
+};
+
 struct VelocityComponent {
   Vector3 velocity;
 };

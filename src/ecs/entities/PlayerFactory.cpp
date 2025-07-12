@@ -3,7 +3,7 @@
 Entity CreatePlayer(Registry &registry) {
   Entity player = registry.createEntity();
 
-  Vector3 playerPosition = (Vector3){0.0f, 20.0f, 4.0f};
+  Vector3 playerPosition = (Vector3){0.0f, 20.0f, 1.0f};
   registry.addComponent(player, TransformComponent{.position = playerPosition});
 
   registry.addComponent(player, VelocityComponent{.velocity = Vector3Zero()});

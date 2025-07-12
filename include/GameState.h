@@ -14,11 +14,11 @@ struct GameState {
 
   // Entities
   Entity playerEntity;
-  Entity planeEntity;
-  Entity planeEntity2;
-  Entity cubeEntity;
-  Entity cubeEntity2;
-  Entity cubeEntity3;
+  // Entity planeEntity;
+  // Entity planeEntity2;
+  // Entity cubeEntity;
+  // Entity cubeEntity2;
+  // Entity cubeEntity3;
 
   // Systems
   std::vector<System *> updateSystems;

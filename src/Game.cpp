@@ -23,14 +23,15 @@ void InitGame(GameState *game) {
   SearchAndSetResourceDir("resources");
 
   game->playerEntity = CreatePlayer(game->registry);
-  game->planeEntity = CreatePlane(game->registry);
-  game->planeEntity2 =
-      CreatePlanePosition(game->registry, (Vector3){10.0f, 0.0f, 10.0f});
-  game->cubeEntity = CreateCube(game->registry);
-  game->cubeEntity2 =
-      CreateCubePosition(game->registry, (Vector3){1.0f, 2.0f, 4.0f});
-  game->cubeEntity3 =
-      CreateCubePosition(game->registry, (Vector3){0.0f, 0.0f, 0.0f});
+  CreateMap(game->registry);
+  // game->planeEntity = CreatePlane(game->registry);
+  // game->planeEntity2 =
+  //     CreatePlanePosition(game->registry, (Vector3){10.0f, 0.0f, 10.0f});
+  // game->cubeEntity = CreateCube(game->registry);
+  // game->cubeEntity2 =
+  //     CreateCubePosition(game->registry, (Vector3){1.0f, 2.0f, 4.0f});
+  // game->cubeEntity3 =
+  //     CreateCubePosition(game->registry, (Vector3){0.0f, 0.0f, 0.0f});
 
   DisableCursor();
   SetTargetFPS(144);
