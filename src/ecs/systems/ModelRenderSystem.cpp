@@ -16,8 +16,8 @@ void ModelRenderSystem::Update(Registry &registry) {
   std::vector<Entity> mapEntities =
       registry.view<ColliderComponent, MapObjectTypeComponent>();
   for (auto &entity : mapEntities) {
-      std::cout<<"size: "<<mapEntities.size()<<std::endl;
-    Vector3 &pos = transforms[entity].position;
+    Vector3 pos = transforms[entity].position;
+    std::cout << "object at pos: " << pos.x << ", " << pos.z << std::endl;
     if (objectTypes[entity].id == 0) {
       DrawPlane(pos,
                 (Vector2){colliders[entity].GetSize().x,

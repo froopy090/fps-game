@@ -101,28 +101,27 @@ void CreateMap(Registry &registry) {
                                              {1, 0, 0, 0, 1},
                                              {1, 1, 1, 1, 1}};
   int center = MAP_SIZE / 2;
-  for (uint i = 0; i < MAP_SIZE; i++) {
-    for (uint j = 0; j < MAP_SIZE; j++) {
-      std::cout << "creating map object" << std::endl;
+  for (int i = 0; i < MAP_SIZE; i++) {
+    for (int j = 0; j < MAP_SIZE; j++) {
       Entity mapElement = registry.createEntity();
 
       TransformComponent t;
-      float x = (i - center) * (-TILE_SIZE);
+      float x = (j - center) * (-TILE_SIZE);
       float y;
-      if (mapMatrix[i][j] == 0) { // plane
+      if (mapMatrix[j][i] == 0) { // plane
         y = 0.0f;
       }
-      if (mapMatrix[i][j] == 1) { // wall
+      if (mapMatrix[j][i] == 1) { // wall
         y = WALL_HEIGHT / 2.0f;
       }
-      float z = (j - center) * (-TILE_SIZE);
+      float z = (i - center) * (-TILE_SIZE);
       t.position = (Vector3){x, y, z};
 
       ColliderComponent c;
       c.isStatic = true;
       c.bounds.min = (Vector3){t.position.x - TILE_SIZE / 2.0f, 0.0f,
                                t.position.z - TILE_SIZE / 2.0f};
-      if (mapMatrix[i][j] == 0) {
+      if (mapMatrix[j][i] == 0) {
         c.bounds.max = (Vector3){t.position.x + TILE_SIZE / 2.0f, 0.0f,
                                  t.position.z + TILE_SIZE / 2.0f};
       } else {
@@ -131,7 +130,7 @@ void CreateMap(Registry &registry) {
       }
 
       MapObjectTypeComponent m;
-      m.id = mapMatrix[i][j];
+      m.id = mapMatrix[j][i];
 
       registry.addComponent(mapElement, c);
       registry.addComponent(mapElement, t);
